@@ -6,74 +6,59 @@ class IntType extends \Webbhuset\Bifrost\Test\TestAbstract
     implements \Webbhuset\Bifrost\Test\TestInterface
 {
 
-    public function run() {
-        $this->isEqualTest();
-        $this->getErrorsTest();
-        $this->sanitizeTest();
-
-        parent::run();
-    }
 
     protected function isEqualTest()
     {
-        $intType = new Core\IntType();
-        $method     = [$intType, "isEqual"];
-        $this->testMethod($method, [514, 514], ['equal' => true]);
-        $this->testMethod($method, [-45514, -45514], ['equal' => true]);
-        $this->testMethod($method, [0, 0], ['equal' => true]);
-        $this->testMethod($method, ['0', 0], ['equal' => false]);
-        $this->testMethod($method, [null, 0], ['equal' => false]);
-        $this->testMethod($method, [[], 0], ['equal' => false]);
-        $this->testMethod($method, [514, -514], ['equal' => false]);
-
+        $this->newInstance()
+            ->testThatArgs(5123, 5123)->returns(true)
+            ->testThatArgs(-45123, -45123)->returns(true)
+            ->testThatArgs(0, 0)->returns(true);
+            /*->testThatArgs('0', 0)->returns(false)
+            ->testThatArgs(null, 0)->returns(false)
+            ->testThatArgs(0, [])->returns(false)
+            ->testThatArgs(5123, -5123)->returns(false);*/
     }
 
     protected function getErrorsTest()
     {
-        $intType = new Core\IntType();
-        $method  = [$intType, "getErrors"];
-        $this->testMethod($method, [231], ['equal' => false]);
-        $this->testMethod($method, [null], ['equal' => false]);
-        $this->testMethod($method, ['12'], ['not_equal' => false]);
-        $this->testMethod($method, [12.123], ['not_equal' => false]);
-        $this->testMethod($method, [[12]], ['not_equal' => false]);
+        $this->newInstance()
+            ->testThatArgs(231)->returns(false)
+            ->testThatArgs(null)->returns(false)
+            ->testThatArgs('12')->notReturns(false)
+            ->testThatArgs(12.123)->notReturns(false)
+            ->testThatArgs([12])->notReturns(false);
 
-        $intType = new Core\IntType(['required' => true]);
-        $method  = [$intType, "getErrors"];
-        $this->testMethod($method, [9867], ['equal' => false]);
-        $this->testMethod($method, [null], ['not_equal' => false]);
-        $this->testMethod($method, ['9867'], ['not_equal' => false]);
-        $this->testMethod($method, [12.123], ['not_equal' => false]);
-        $this->testMethod($method, [[12]], ['not_equal' => false]);
+        $this->newInstance(['required' => true])
+            ->testThatArgs(9867)->returns(false)
+            ->testThatArgs(null)->notReturns(false)
+            ->testThatArgs('9867')->notReturns(false)
+            ->testThatArgs(12.123)->notReturns(false)
+            ->testThatArgs([12])->notReturns(false);
 
-        $intType = new Core\IntType(['min_value' => -4]);
-        $method  = [$intType, "getErrors"];
-        $this->testMethod($method, [-5], ['not_equal' => false]);
-        $this->testMethod($method, [5], ['equal' => false]);
-        $this->testMethod($method, [null], ['equal' => false]);
+        $this->newInstance(['min_value' => 4])
+            ->testThatArgs(-5)->notReturns(false)
+            ->testThatArgs(5)->returns(false)
+            ->testThatArgs(null)->returns(false);
 
-        $intType = new Core\IntType(['max_value' => 40]);
-        $method  = [$intType, "getErrors"];
-        $this->testMethod($method, [5], ['equal' => false]);
-        $this->testMethod($method, [55], ['not_equal' => false]);
-        $this->testMethod($method, [null], ['equal' => false]);
+        $this->newInstance(['max_value' => 40])
+            ->testThatArgs(5)->returns(false)
+            ->testThatArgs(55)->notReturns(false)
+            ->testThatArgs(null)->returns(false);
     }
 
-    protected function sanitizeTest()
+    protected function castTest()
     {
-        $intType = new Core\IntType();
-        $method  = [$intType, "sanitize"];
-        $this->testMethod($method, [12], ['equal' => 12]);
-        $this->testMethod($method, [null], ['equal' => null]);
-        $this->testMethod($method, ['123'], ['equal' => 123]);
-        $this->testMethod($method, [12.0], ['equal' => 12]);
+        $this->newInstance()
+            ->testThatArgs(12)->returns(12)
+            ->testThatArgs(null)->returns(null)
+            ->testThatArgs('123')->returns(123)
+            ->testThatArgs(12.0)->returns(12);
 
 
-        $stringType = new Core\StringType(['required' => true]);
-        $method     = [$intType, "sanitize"];
-        $this->testMethod($method, [12], ['equal' => 12]);
-        $this->testMethod($method, [null], ['equal' => null]);
-        $this->testMethod($method, ['123'], ['equal' => 123]);
-        $this->testMethod($method, [12.0], ['equal' => 12]);
+        $this->newInstance(['required' => true])
+            ->testThatArgs(12)->returns(12)
+            ->testThatArgs(null)->returns(null)
+            ->testThatArgs('123')->returns(123)
+            ->testThatArgs(12.0)->returns(12);
     }
 }

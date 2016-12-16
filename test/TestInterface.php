@@ -3,5 +3,5 @@ namespace Webbhuset\Bifrost\Test;
 
 interface TestInterface
 {
-    public function run();
+    public function run($args);
 }

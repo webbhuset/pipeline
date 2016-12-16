@@ -18,20 +18,6 @@ class IntType extends TypeAbstract
         }
     }
 
-    public function sanitize($value)
-    {
-        if (is_null($value)) {
-            return null;
-        }
-
-        if (is_string($value)) {
-            $value = str_replace(',', '.', $value);
-            $value = filter_var($value, FILTER_SANITIZE_NUMBER_INT);
-        }
-
-        return (int) $value;
-    }
-
     public function getErrors($value)
     {
         if ($error = parent::getErrors($value)){
@@ -58,4 +44,21 @@ class IntType extends TypeAbstract
         return false;
     }
 
+    public function cast($value)
+    {
+        if (is_null($value)) {
+            return $value;
+        }
+
+        return (int) $value;
+    }
+
+    public function isEqual($a, $b)
+    {
+        if (!is_int($a) || !is_int($b)) {
+            throw new \Webbhuset\Bifrost\Core\BifrostException("Not a integer");
+        }
+
+        return $a===$b;
+    }
 }

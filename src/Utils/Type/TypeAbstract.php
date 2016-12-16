@@ -12,11 +12,6 @@ abstract class TypeAbstract implements TypeInterface
         }
     }
 
-    public function sanitize($value)
-    {
-        return $value;
-    }
-
     public function getErrors($value)
     {
         if (is_null($value) && $this->required) {
@@ -28,7 +23,6 @@ abstract class TypeAbstract implements TypeInterface
 
     public function isEqual($a, $b)
     {
-        return $a===$b;
     }
 
     /**

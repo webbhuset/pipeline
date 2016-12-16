@@ -6,7 +6,6 @@ class FloatType extends TypeAbstract
 {
     protected $max;
     protected $min;
-    protected $precision;
     protected $tolerance = 1e-5;
 
     public function __construct($params = null)
@@ -18,31 +17,9 @@ class FloatType extends TypeAbstract
         if (isset($params['min_value'])) {
             $this->min = $params['min_value'];
         }
-        if (isset($params['precision'])) {
-            $this->precision = $params['precision'];
-        }
         if (isset($params['tolerance'])) {
             $this->tolerance = $params['tolerance'];
         }
-    }
-
-    public function sanitize($value)
-    {
-        if (is_null($value)) {
-            return null;
-        }
-
-        if (is_string($value)) {
-            $value = str_replace(',', '.', $value);
-            $value = filter_var($value, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
-        }
-
-        if (isset($this->precision)) {
-            $value = (float) $value;
-            $value = round($value, $this->precision);
-        }
-
-        return (float) $value;
     }
 
     public function getErrors($value)
@@ -73,10 +50,19 @@ class FloatType extends TypeAbstract
 
     public function isEqual($a, $b)
     {
-        if (gettype($a)!=='double' || gettype($b)!=='double') {
-            return false;
+        if (!is_float($a) || !is_float($b)) {
+            throw new \Webbhuset\Bifrost\Core\BifrostException("Not a float");
         }
 
         return abs($a - $b) < $this->tolerance;
+    }
+
+    public function cast($value)
+    {
+        if (is_null($value)) {
+            return $value;
+        }
+
+        return (float) $value;
     }
 }

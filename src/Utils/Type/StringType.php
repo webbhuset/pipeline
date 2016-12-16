@@ -18,15 +18,6 @@ class StringType extends TypeAbstract
         }
     }
 
-    public function sanitize($value)
-    {
-        if (is_null($value)) {
-            return null;
-        }
-
-        return (string) $value;
-    }
-
     public function getErrors($value)
     {
         if ($error = parent::getErrors($value)){
@@ -53,4 +44,21 @@ class StringType extends TypeAbstract
         return false;
     }
 
+    public function cast($value)
+    {
+        if (is_null($value)) {
+            return $value;
+        }
+
+        return (string) $value;
+    }
+
+    public function isEqual($a, $b)
+    {
+        if (!is_string($a) || !is_string($b)) {
+            throw new \Webbhuset\Bifrost\Core\BifrostException("Not a string");
+        }
+
+        return $a===$b;
+    }
 }
