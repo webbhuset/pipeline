@@ -1,4 +1,5 @@
 <?php
+namespace Webbhuset\Bifrost\Core\Job;
 
 class TaskList
 {
@@ -21,7 +22,7 @@ class TaskList
         }
     }
 
-    public function processOne()
+    public function processNext()
     {
         $task = $this->getCurrentTask();
 
@@ -30,7 +31,7 @@ class TaskList
             return;
         }
 
-        $task->processOne();
+        $task->processNext();
 
         return true;
     }

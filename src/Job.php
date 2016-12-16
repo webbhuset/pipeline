@@ -1,14 +1,15 @@
 <?php
+namespace Webbhuset\Bifrost\Core;
 
-class Job
+class Job implements Job\JobInterface
 {
     protected $fetcher;
     protected $taskList;
 
-    public function __construct($fetcher, $taskList)
+    public function __construct($params)
     {
-        $this->fetcher  = $fetcher;
-        $this->taskList = $taskList;
+        $this->fetcher  = $params['fetcher'];
+        $this->taskList = $params['taskList'];
     }
 
     public function init($args)
@@ -17,7 +18,7 @@ class Job
         $this->taskList->init($filename, $args);
     }
 
-    public function processOne()
+    public function processNext()
     {
         $this->taskList->processOne();
     }

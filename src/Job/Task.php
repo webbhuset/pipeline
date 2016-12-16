@@ -1,6 +1,7 @@
 <?php
+namespace Webbhuset\Bifrost\Core\Job;
 
-class Task
+class Task implements Task\TaskInterface
 {
     protected $source;
     protected $dest;
@@ -10,12 +11,12 @@ class Task
 
     protected $isDone = false;
 
-    public function __construct($source, $dest, $validator, $logger)
+    public function __construct($params)
     {
-        $this->source       = $source;
-        $this->dest         = $dest;
-        $this->validator    = $validator;
-        $this->logger       = $logger;
+        $this->source       = $params['source'];
+        $this->dest         = $params['destination'];
+        $this->type         = $params['type'];
+        $this->logger       = $params['logger'];
         $this->progress     = new Progress;
     }
 
@@ -23,7 +24,6 @@ class Task
     {
         $this->source->init($filename, $args);
         $this->dest->init($args);
-        $this->validator->init($args);
         $this->logger->init($filename, $args);
         $this->progress->init($args);
 
@@ -31,7 +31,7 @@ class Task
         $this->progress->setTotal($count);
     }
 
-    public function processOne()
+    public function processNext()
     {
         try {
             $data = $this->source->getNextEntity();
@@ -40,9 +40,7 @@ class Task
                 $this->isDone = true;
                 return;
             }
-
-            $data = $this->validator->wash($data);
-            $this->validator->validate($data);
+            $this->type->getErrors($data);
 
             $this->dest->putEntity($data);
         } catch (Exception $e) {
@@ -54,7 +52,6 @@ class Task
     {
         $this->source->finalize();
         $this->dest->finalize();
-        $this->validator->finalize();
         $this->logger->finalize();
         $this->progress->finalize();
     }

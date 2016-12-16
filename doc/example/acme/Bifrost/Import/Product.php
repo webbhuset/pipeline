@@ -1,6 +1,6 @@
 <?php
 
-class Product extends Webbhuset\Bifrost\Job\Factory;
+class Product extends Webbhuset\Bifrost\Job\Factory
 {
     public function createJob()
     {

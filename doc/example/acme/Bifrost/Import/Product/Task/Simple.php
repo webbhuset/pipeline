@@ -2,18 +2,26 @@
 
 namespace Acme\Bifrost\Import\Product\Task;
 
-class Simple extends Webbhuset\Bifrost\Job\Task\Factory;
+class Simple extends Webbhuset\Bifrost\Job\Task\Factory
 {
     public function createTask()
     {
         $fields = $this->getFields();
 
         $reader = new Webbhuset\Bifrost\Utils\Reader\Csv;
-        $mapper = new Webbhuset\Bifrost\Job\Task\Source\Mapper\Simple($reader, $fields);
+        $mapper = new Webbhuset\Bifrost\Job\Task\Source\Mapper\Simple(
+            [
+                'parent' => $reader,
+                'fields' => $fields
+            ]
+        );
 
-        $validator = new Webbhuset\Bifrost\Job\Task\Validator\Default($fields);
+        $type   = Webbhuset\Bifrost\MageOne\TypeFactories\ProductTypeFactory::createType();
+
         $destination = new Webbhuset\Bifrost\Job\Task\Destination\Batch(
-            'backend' => new Webbhuset\Bifrost\MageOne\Batch\Product;
+            [
+                'backend' => new Webbhuset\Bifrost\MageOne\Batch\Product
+            ]
         );
 
         $logger = new Webbhuset\Bifrost\MageOne\Logger;
@@ -23,7 +31,7 @@ class Simple extends Webbhuset\Bifrost\Job\Task\Factory;
             [
                 'source'        => $mapper,
                 'destination'   => $destination,
-                'validator'     => $validator,
+                'type'          => $type,
                 'logger'        => $logger,
             ]
         );
@@ -46,7 +54,7 @@ class Simple extends Webbhuset\Bifrost\Job\Task\Factory;
                         '/^[\w\d\s]+$/' => 'Only letters, numbers and spaces are allowed.'
                     ],
                     'regex_fail'    => [
-                        '/^\s+/' => 'Field can not start with whitespace.'
+                        '/^\s+/' => 'Field can not start with whitespace.',
                         '/\s+$/' => 'Field can not end with whitespace.'
                     ],
                 ]),
