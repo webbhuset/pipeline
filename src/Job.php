@@ -14,8 +14,9 @@ class Job implements Job\JobInterface
 
     public function init($args)
     {
-        $filename = $this->fetcher->init($args);
-        $this->taskList->init($filename, $args);
+        $filename         = $this->fetcher->init($args);
+        $args['filename'] = $filename;
+        $this->taskList->init($args);
     }
 
     public function processNext()
@@ -26,5 +27,10 @@ class Job implements Job\JobInterface
     public function isDone()
     {
         return $this->taskList->isDone();
+    }
+
+    public function finalize()
+    {
+        return $this->taskList->finalize();
     }
 }

@@ -1,5 +1,5 @@
 <?php
-namespace Webbhuset\Bifrost\Core\Job\Task\Log;
+namespace Webbhuset\Bifrost\Core\Utils\Log;
 
 interface LogInterface
 {

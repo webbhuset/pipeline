@@ -1,5 +1,5 @@
 <?php
-namespace Webbhuset\Bifrost\Core\Job\Task;
+namespace Webbhuset\Bifrost\Core\Utils\Processor;
 use \Webbhuset\Bifrost\Core\Utils as Utils;
 abstract class ProcessorAbstract
     implements Utils\Reader\ReaderInterface, Utils\Writer\WriterInterface

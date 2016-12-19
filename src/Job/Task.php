@@ -20,11 +20,11 @@ class Task implements Task\TaskInterface
         $this->progress     = new Progress;
     }
 
-    public function init($filename, $args)
+    public function init($args)
     {
-        $this->source->init($filename, $args);
+        $this->source->init($args);
         $this->dest->init($args);
-        $this->logger->init($filename, $args);
+        $this->logger->init($args);
         $this->progress->init($args);
 
         $count = $this->source->getEntityCount();
@@ -59,5 +59,10 @@ class Task implements Task\TaskInterface
     public function isDone()
     {
         return $this->isDone;
+    }
+
+    public function getProgress()
+    {
+        return $this->progress;
     }
 }

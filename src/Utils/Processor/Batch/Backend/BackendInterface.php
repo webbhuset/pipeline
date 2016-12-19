@@ -1,5 +1,5 @@
 <?php
-namespace Webbhuset\Bifrost\Core\Job\Task\Destination\Batch\Backend;
+namespace Webbhuset\Bifrost\Core\Utils\Processor\Batch\Backend;
 
 interface BackendInterface
 {
