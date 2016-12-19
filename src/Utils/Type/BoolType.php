@@ -1,7 +1,8 @@
 <?php
 namespace Webbhuset\Bifrost\Core\Utils\Type;
+use Webbhuset\Bifrost\Core\BifrostException;
 
-class BoolType extends TypeAbstract
+class BoolType extends AbstractType
     implements TypeInterface
 {
 
@@ -16,7 +17,7 @@ class BoolType extends TypeAbstract
         }
 
         if (!is_bool($value)) {
-            $string = $this->_getValueString($value);
+            $string = $this->getValueString($value);
             return "Not a valid boolean: '{$string}'";
         }
 
@@ -35,7 +36,7 @@ class BoolType extends TypeAbstract
     public function isEqual($a, $b)
     {
         if (!is_bool($a) || !is_bool($b)) {
-            throw new \Webbhuset\Bifrost\Core\BifrostException("Not a boolean");
+            throw new BifrostException("Not a boolean");
         }
 
         return $a===$b;

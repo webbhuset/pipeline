@@ -1,7 +1,7 @@
 <?php
 namespace Webbhuset\Bifrost\Core\Utils\Type;
 
-abstract class TypeAbstract implements TypeInterface
+abstract class AbstractType implements TypeInterface
 {
     protected $required = false;
 
@@ -32,7 +32,7 @@ abstract class TypeAbstract implements TypeInterface
      *
      * @return string
      */
-    protected function _getValueString($value)
+    protected function getValueString($value)
     {
         if (is_object($value)) {
             return 'Object';
@@ -42,5 +42,10 @@ abstract class TypeAbstract implements TypeInterface
         }
 
         return (string) $value;
+    }
+
+    public function diff($old, $new)
+    {
+        throw new BifrostException("Diff method not implemented for this type.");
     }
 }

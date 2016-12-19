@@ -1,7 +1,8 @@
 <?php
 namespace Webbhuset\Bifrost\Core\Utils\Type;
+use Webbhuset\Bifrost\Core\BifrostException;
 
-class FloatType extends TypeAbstract
+class FloatType extends AbstractType
     implements TypeInterface
 {
     protected $max;
@@ -12,12 +13,23 @@ class FloatType extends TypeAbstract
     {
         parent::__construct($params);
         if (isset($params['max_value'])) {
+            if (!is_numeric($params['max_value'])) {
+                throw new BifrostException("Max value must be numeric");
+            }
             $this->max = $params['max_value'];
         }
+
         if (isset($params['min_value'])) {
+            if (!is_numeric($params['min_value'])) {
+                throw new BifrostException("Min value must be numeric");
+            }
             $this->min = $params['min_value'];
         }
+
         if (isset($params['tolerance'])) {
+            if (!is_numeric($params['tolerance'])) {
+                throw new BifrostException("Tolerance must be numeric");
+            }
             $this->tolerance = $params['tolerance'];
         }
     }
@@ -33,7 +45,7 @@ class FloatType extends TypeAbstract
         }
 
         if (!is_float($value)) {
-            $string = $this->_getValueString($value);
+            $string = $this->getValueString($value);
             return "Not a valid float: '{$string}'";
         }
 
@@ -51,7 +63,7 @@ class FloatType extends TypeAbstract
     public function isEqual($a, $b)
     {
         if (!is_float($a) || !is_float($b)) {
-            throw new \Webbhuset\Bifrost\Core\BifrostException("Not a float");
+            throw new BifrostException("Not a float");
         }
 
         return abs($a - $b) < $this->tolerance;

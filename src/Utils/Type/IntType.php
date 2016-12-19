@@ -1,7 +1,8 @@
 <?php
 namespace Webbhuset\Bifrost\Core\Utils\Type;
+use Webbhuset\Bifrost\Core\BifrostException;
 
-class IntType extends TypeAbstract
+class IntType extends AbstractType
     implements TypeInterface
 {
     protected $max;
@@ -11,9 +12,16 @@ class IntType extends TypeAbstract
     {
         parent::__construct($params);
         if (isset($params['max_value'])) {
+            if (!is_numeric($params['max_value'])) {
+                throw new BifrostException("Max value must be numeric");
+            }
             $this->max = $params['max_value'];
         }
+
         if (isset($params['min_value'])) {
+            if (!is_numeric($params['min_value'])) {
+                throw new BifrostException("Min value must be numeric");
+            }
             $this->min = $params['min_value'];
         }
     }
@@ -29,7 +37,7 @@ class IntType extends TypeAbstract
         }
 
         if (!is_integer($value)) {
-            $string = $this->_getValueString($value);
+            $string = $this->getValueString($value);
             return "Not a valid integer: '{$string}'";
         }
 
@@ -56,7 +64,7 @@ class IntType extends TypeAbstract
     public function isEqual($a, $b)
     {
         if (!is_int($a) || !is_int($b)) {
-            throw new \Webbhuset\Bifrost\Core\BifrostException("Not a integer");
+            throw new BifrostException("Not a integer");
         }
 
         return $a===$b;

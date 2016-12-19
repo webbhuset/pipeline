@@ -1,7 +1,8 @@
 <?php
 namespace Webbhuset\Bifrost\Core\Utils\Type;
+use Webbhuset\Bifrost\Core\BifrostException;
 
-class StringType extends TypeAbstract
+class StringType extends AbstractType
     implements TypeInterface
 {
     protected $maxLen = -1;
@@ -11,9 +12,15 @@ class StringType extends TypeAbstract
     {
         parent::__construct($params);
         if (isset($params['max_length'])) {
+            if (!is_numeric($params['max_length'])) {
+                throw new BifrostException("Max length must be numeric");
+            }
             $this->maxLen = $params['max_length'];
         }
         if (isset($params['min_length'])) {
+            if (!is_numeric($params['min_length'])) {
+                throw new BifrostException("Min length must be numeric");
+            }
             $this->minLen = $params['min_length'];
         }
     }
@@ -29,7 +36,7 @@ class StringType extends TypeAbstract
         }
 
         if (!is_string($value)) {
-            $string = $this->_getValueString($value);
+            $string = $this->getValueString($value);
             return "Not a valid string: '{$string}'";
         }
 
@@ -56,7 +63,7 @@ class StringType extends TypeAbstract
     public function isEqual($a, $b)
     {
         if (!is_string($a) || !is_string($b)) {
-            throw new \Webbhuset\Bifrost\Core\BifrostException("Not a string");
+            throw new BifrostException("Not a string");
         }
 
         return $a===$b;
