@@ -1,7 +1,7 @@
 <?php
-namespace Webbhuset\Bifrost\Core\Utils\Log;
+namespace Webbhuset\Bifrost\Core\Utils\Logger;
 
-interface LogInterface
+interface LoggerInterface
 {
     public function __construct($params);
     public function log($message, $type);
