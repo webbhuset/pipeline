@@ -6,27 +6,27 @@ use \Webbhuset\Bifrost\Core\BifrostException;
 abstract class AbstractProcessor implements ProcessorInterface
 {
     protected $log;
-    protected $nextChain;
+    protected $nextStep;
 
 
-    public function __construct(Utils\Log\LogInterface $log, $nextChain, $params)
+    public function __construct(Utils\Logger\LoggerInterface $log, $nextStep, $params)
     {
-        if (!$nextChain instanceof Utils\Processor\ProcessorInterface
-            && !$nextChain instanceof Utils\Writer\WriterInterface
+        if (!$nextStep instanceof Utils\Processor\ProcessorInterface
+            && !$nextStep instanceof Utils\Writer\WriterInterface
         ) {
-            throw new BifrostException('NextChain must implement ProcessorInterface or WriterInterface.');
+            throw new BifrostException('nextStep must implement ProcessorInterface or WriterInterface.');
         }
 
-        $this->log          = $log;
-        $this->nextChain    = $nextChain;
+        $this->log         = $log;
+        $this->nextStep    = $nextStep;
     }
 
     public function init($args)
     {
-        $this->nextChain->init($args);
+        $this->nextStep->init($args);
     }
 
-    public function processNext($items)
+    public function processNext($items, $onlyForCount = false)
     {
         $newItems = [];
 
@@ -39,12 +39,17 @@ abstract class AbstractProcessor implements ProcessorInterface
             }
         }
 
-        $nextChain->processNext($newItems);
+        $this->nextStep->processNext($newItems, $onlyForCount);
     }
 
-    public function finalize()
+    public function finalize($onlyForCount = false)
     {
-        $this->nextChain->finalize();
+        $this->nextStep->finalize($onlyForCount);
+    }
+
+    public function count()
+    {
+        return $this->nextStep->count();
     }
 
     abstract protected function processData($data);

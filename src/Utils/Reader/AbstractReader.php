@@ -6,19 +6,19 @@ use \Webbhuset\Bifrost\Core\BifrostException;
 abstract class AbstractReader implements ReaderInterface
 {
     protected $log;
-    protected $nextChain;
+    protected $nextStep;
 
 
-    public function __construct(Utils\Log\LogInterface $log, $nextChain, $params)
+    public function __construct(Utils\Logger\LoggerInterface $log, $nextStep, $params)
     {
-        if (!$nextChain instanceof Utils\Processor\ProcessorInterface
-            && !$nextChain instanceof Utils\Writer\WriterInterface
+        if (!$nextStep instanceof Utils\Processor\ProcessorInterface
+            && !$nextStep instanceof Utils\Writer\WriterInterface
         ) {
-            throw new BifrostException('NextChain must implement ProcessorInterface or WriterInterface');
+            throw new BifrostException('Next step must implement ProcessorInterface or WriterInterface');
         }
 
         $this->log          = $log;
-        $this->nextChain    = $nextChain;
+        $this->nextStep     = $nextStep;
     }
 
     public function processNext()
@@ -29,9 +29,32 @@ abstract class AbstractReader implements ReaderInterface
             return false;
         }
 
-        $nextChain->processNext($data);
+        $this->nextStep->processNext($data);
 
         return true;
+    }
+
+    public function getEntityCount()
+    {
+        while ($data = $this->getData()) {
+            $this->nextStep->processNext($data, true);
+        }
+
+        $count = $this->nextStep->count();
+
+        $this->nextStep->finalize(true);
+
+        return $count;
+    }
+
+    public function finalize()
+    {
+        $this->nextStep->finalize();
+    }
+
+    public function init($args)
+    {
+        $this->nextStep->init();
     }
 
     abstract protected function getData();
