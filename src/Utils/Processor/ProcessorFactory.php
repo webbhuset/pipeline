@@ -29,7 +29,7 @@ class ProcessorFactory
         $this->params   = $params;
     }
 
-    public function create(Utils\Log\LogInterface $log, $nextChain)
+    public function create(Utils\Logger\LoggerInterface $log, $nextChain)
     {
         $className = $this->class;
 

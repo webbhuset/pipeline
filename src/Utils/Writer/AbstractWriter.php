@@ -8,7 +8,7 @@ abstract class AbstractWriter implements WriterInterface
     protected $log;
 
 
-    public function __construct(Utils\Log\LogInterface $log, $params)
+    public function __construct(Utils\Logger\LoggerInterface $log, $params)
     {
         $this->log = $log;
     }
