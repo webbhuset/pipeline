@@ -3,22 +3,21 @@ namespace Webbhuset\Bifrost\Core\Utils\Type;
 use Webbhuset\Bifrost\Core\BifrostException;
 
 class StructType extends AbstractType
-    implements TypeInterface
 {
     protected $fields;
 
     public function __construct($params)
     {
-        if (!is_array($params)) {
-            throw new BifrostException("Params must be array");
+        if (!is_array($params['fields'])) {
+            throw new BifrostException("Fields params must be array");
         }
-        foreach ($params as $type) {
+        foreach ($params['fields'] as $type) {
             if (!$type instanceof TypeInterface) {
-                throw new BifrostException("Params values must implement TypeInterface");
+                throw new BifrostException("Field parameter values must implement TypeInterface");
             }
         }
 
-        $this->fields = $params;
+        $this->fields = $params['fields'];
     }
 
     public function cast($value)
@@ -78,18 +77,21 @@ class StructType extends AbstractType
     }
 
     public function diff($old, $new) {
-        $result = [
-            '+' => [],
-            '-' => [],
-        ];
+        $result = [];
         foreach ($this->fields as $key => $type) {
-            if (!isset($old[$key]) || !isset($new[$key])){
-                throw new BifrostException("Input is missing key: " . $key);
+            if (!isset($old[$key]) && !isset($new[$key])){
+                continue;
+            }
+            if (!isset($old[$key])){
+                $old[$key] = null;
+            }
+            if (!isset($new[$key])){
+                 $new[$key] = null;
             }
 
             if (!$type->isEqual($old[$key], $new[$key])) {
-                $result['+'][$key] = $new[$key];
-                $result['-'][$key] = $old[$key];
+                $result[$key]['+'] = $new[$key];
+                $result[$key]['-'] = $old[$key];
             }
         }
 

@@ -8,8 +8,10 @@ class StructType extends \Webbhuset\Bifrost\Test\TestAbstract
     protected function diffTest()
     {
         $params = [
-            'string_test' =>  new Core\StringType(),
-            'int_test' =>  new Core\IntType(),
+            'fields' => [
+                'string_test' =>  new Core\StringType(),
+                'int_test'    =>  new Core\IntType(),
+            ]
         ];
         $this->newInstance($params);
 
@@ -22,10 +24,7 @@ class StructType extends \Webbhuset\Bifrost\Test\TestAbstract
             'string_test' => 'test',
             'int_test'    => 167,
         ];
-        $expected = [
-            '+' => [],
-            '-' => [],
-        ];
+        $expected = [];
         $this->testThatArgs($old, $new)->returns($expected);
 
 
@@ -39,8 +38,10 @@ class StructType extends \Webbhuset\Bifrost\Test\TestAbstract
             'int_test'    => 167,
         ];
         $expected = [
-            '+' => ['string_test' => 'ny test'],
-            '-' => ['string_test' => 'gammal test',],
+            'string_test' => [
+                '+' => 'ny test',
+                '-' => 'gammal test'
+            ],
         ];
         $this->testThatArgs($old, $new)->returns($expected);
     }
@@ -48,8 +49,10 @@ class StructType extends \Webbhuset\Bifrost\Test\TestAbstract
     protected function isEqualTest()
     {
         $params = [
-            'string_test' =>  new Core\StringType(),
-            'int_test' =>  new Core\IntType(),
+            'fields' => [
+                'string_test' =>  new Core\StringType(),
+                'int_test'    =>  new Core\IntType(),
+            ]
         ];
         $this->newInstance($params)
             ->testThatArgs(
@@ -90,8 +93,10 @@ class StructType extends \Webbhuset\Bifrost\Test\TestAbstract
     protected function getErrorsTest()
     {
         $params = [
-            'string_test' =>  new Core\StringType(),
-            'int_test' =>  new Core\IntType(),
+            'fields' => [
+                'string_test' =>  new Core\StringType(),
+                'int_test'    =>  new Core\IntType(),
+            ]
         ];
         $this->newInstance($params)
             ->testThatArgs(
@@ -127,8 +132,10 @@ class StructType extends \Webbhuset\Bifrost\Test\TestAbstract
     protected function castTest()
     {
         $params = [
-            'string_test' =>  new Core\StringType(),
-            'int_test' =>  new Core\IntType(),
+            'fields' => [
+                'string_test' =>  new Core\StringType(),
+                'int_test'    =>  new Core\IntType(),
+            ]
         ];
         $this->newInstance($params)
             ->testThatArgs(
