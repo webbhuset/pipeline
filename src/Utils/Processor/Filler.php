@@ -5,29 +5,28 @@ use \Webbhuset\Bifrost\Core\BifrostException;
 
 class Filler extends AbstractProcessor
 {
-
-    protected $fields;
-    protected $fillVaules = [];
+    protected $backend = [];
 
     public function __construct(LoggerInterface $log, $nextStep, $params)
     {
         parent::__construct($log, $nextStep, $params);
-        if (!isset($params['fill_values'])) {
-            throw new BifrostException("'fill_values' parameter is not set.");
+        if (!isset($params['backend'])) {
+            throw new BifrostException("'Backend' parameter is not set.");
         }
-        $this->fillVaules = $params['fill_values'];
+        $this->backend = $params['backend'];
     }
 
     protected function processData($data)
     {
-        $dataAndDefaults = $this->addDefaultValues($data, $this->fillVaules);
+        $valuesToAdd          = $this->backend->getData($data);
+        $dataAndBackendValues = $this->fillValues($data, $valuesToAdd);
 
-        return $dataAndDefaults;
+        return $dataAndBackendValues;
     }
 
-    protected function addDefaultValues($data, $defaultArray)
+    protected function fillValues($data, $valuesToAdd)
     {
-        foreach ($defaultArray as $key => $defaultValue) {
+        foreach ($valuesToAdd as $key => $addValue) {
             if (isset($data[$key])) {
                 if (!is_array($data[$key])) {
                     continue;
@@ -36,12 +35,12 @@ class Filler extends AbstractProcessor
                 $data[$key] = [];
             }
 
-            if (is_array($defaultValue) && is_callable($defaultValue)) {
-                $data[$key] = call_user_func($defaultValue, $data);
-            } elseif (is_array($defaultValue)) {
-                $data[$key] = $this->addDefaultValues($data[$key], $defaultValue);
+            if (is_array($addValue) && is_callable($addValue)) {
+                $data[$key] = call_user_func($addValue, $data);
+            } elseif (is_array($addValue)) {
+                $data[$key] = $this->fillValues($data[$key], $addValue);
             } else {
-                $data[$key] = $defaultValue;
+                $data[$key] = $addValue;
             }
         }
 

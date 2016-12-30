@@ -2,6 +2,7 @@
 namespace Webbhuset\Bifrost\Test\Unit\Utils\Processor;
 use Webbhuset\Bifrost\Core\Utils\Logger\NullLogger;
 use Webbhuset\Bifrost\Core\Utils\Processor\Mock;
+use Webbhuset\Bifrost\Core\Utils\Processor\Filler\Backend\DefaultValues;
 
 class Filler extends \Webbhuset\Bifrost\Test\TestAbstract
     implements \Webbhuset\Bifrost\Test\TestInterface
@@ -17,15 +18,6 @@ class Filler extends \Webbhuset\Bifrost\Test\TestAbstract
 
     public function processNextTest()
     {
-        $nullLogger    = new NullLogger;
-        $mockProcessor = new Mock;
-        $indata = [
-            'price' => [
-                'test' => [
-                    'NOK' => 53,
-                ]
-            ],
-        ];
         $defaults = [
             'price' => [
                 'test' => [
@@ -35,6 +27,20 @@ class Filler extends \Webbhuset\Bifrost\Test\TestAbstract
                 ]
             ],
         ];
+        $backendParams = [
+            'default_values' => $defaults,
+        ];
+        $backend       = new DefaultValues($backendParams);
+        $nullLogger    = new NullLogger;
+        $mockProcessor = new Mock;
+        $indata = [
+            'price' => [
+                'test' => [
+                    'NOK' => 53,
+                ]
+            ],
+        ];
+
         $expectedOutput = [
             'price' => [
                 'test' => [
@@ -45,7 +51,7 @@ class Filler extends \Webbhuset\Bifrost\Test\TestAbstract
             ],
         ];
         $params = [
-            'fill_values' => $defaults
+            'backend' => $backend
         ];
         $this->newInstance($nullLogger, $mockProcessor, $params)
             ->testThatArgs($indata)->returns(Null);
@@ -53,10 +59,5 @@ class Filler extends \Webbhuset\Bifrost\Test\TestAbstract
 
     public function finalizeTest()
     {
-    }
-
-    public function returnApa()
-    {
-        return 'Apa';
     }
 }
