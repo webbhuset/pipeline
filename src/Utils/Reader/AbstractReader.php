@@ -1,24 +1,32 @@
 <?php
 namespace Webbhuset\Bifrost\Core\Utils\Reader;
 use \Webbhuset\Bifrost\Core\Utils as Utils;
+use \Webbhuset\Bifrost\Core\Utils\Processor\ProcessorInterface;
 use \Webbhuset\Bifrost\Core\BifrostException;
 
 abstract class AbstractReader implements ReaderInterface
 {
-    protected $log;
-    protected $nextStep;
+    protected $logger;
+    protected $nextSteps;
 
 
-    public function __construct(Utils\Logger\LoggerInterface $log, $nextStep, $params)
+    public function __construct(Utils\Logger\LoggerInterface $logger, $nextSteps, $params)
     {
-        if (!$nextStep instanceof Utils\Processor\ProcessorInterface
-            && !$nextStep instanceof Utils\Writer\WriterInterface
-        ) {
-            throw new BifrostException('Next step must implement ProcessorInterface or WriterInterface');
+        foreach ($nextSteps as $nextStep) {
+            if (!$nextStep instanceof \Webbhuset\Bifrost\Core\Utils\Processor\ProcessorInterface) {
+                throw new BifrostException('Steps following reader must implement ProcessorInterface.');
+            }
         }
 
-        $this->log          = $log;
-        $this->nextStep     = $nextStep;
+        $this->logger       = $logger;
+        $this->nextSteps    = $nextSteps;
+    }
+
+    public function init($args)
+    {
+        foreach ($this->nextSteps as $nextStep) {
+            $nextStep->init($args);
+        }
     }
 
     public function processNext()
@@ -29,7 +37,9 @@ abstract class AbstractReader implements ReaderInterface
             return false;
         }
 
-        $this->nextStep->processNext($data);
+        foreach ($this->nextSteps as $nextStep) {
+            $nextStep->processNext($data);
+        }
 
         return true;
     }
@@ -37,24 +47,27 @@ abstract class AbstractReader implements ReaderInterface
     public function getEntityCount()
     {
         while ($data = $this->getData()) {
-            $this->nextStep->processNext($data, true);
+            foreach ($this->nextSteps as $nextStep) {
+                $nextStep->processNext($data, true);
+            }
         }
 
-        $count = $this->nextStep->count();
+        $nextStep = $this->nextSteps[0];
+        $count    = $nextStep->count();
 
-        $this->nextStep->finalize(true);
+
+        foreach ($this->nextSteps as $nextStep) {
+            $nextStep->finalize(true);
+        }
 
         return $count;
     }
 
     public function finalize()
     {
-        $this->nextStep->finalize();
-    }
-
-    public function init($args)
-    {
-        $this->nextStep->init();
+        foreach ($this->nextSteps as $nextStep) {
+            $nextStep->finalize($onlyForCount);
+        }
     }
 
     abstract protected function getData();

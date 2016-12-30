@@ -5,7 +5,7 @@ use \Webbhuset\Bifrost\Core\BifrostException;
 
 class ProcessorFactory
 {
-    protected $interface = 'ProcessorInterface';
+    protected $interface = 'Webbhuset\Bifrost\Core\Utils\Processor\ProcessorInterface';
     protected $class;
     protected $params;
 
@@ -29,10 +29,10 @@ class ProcessorFactory
         $this->params   = $params;
     }
 
-    public function create(Utils\Logger\LoggerInterface $log, $nextChain)
+    public function create(Utils\Logger\LoggerInterface $logger, $nextSteps)
     {
         $className = $this->class;
 
-        return new $className($log, $nextChain, $params);
+        return new $className($logger, $nextSteps, $this->params);
     }
 }

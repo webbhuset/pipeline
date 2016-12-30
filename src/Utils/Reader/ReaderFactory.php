@@ -1,8 +1,8 @@
 <?php
-namespace Webbhuset\Bifrost\Core\Utils\Factory;
+namespace Webbhuset\Bifrost\Core\Utils\Reader;
 use \Webbhuset\Bifrost\Core\Utils\Processor\ProcessorFactory;
 
-class ReaderFactory
+class ReaderFactory extends ProcessorFactory
 {
-    protected $interface = 'ReaderInterface';
+    protected $interface = 'Webbhuset\Bifrost\Core\Utils\Reader\ReaderInterface';
 }

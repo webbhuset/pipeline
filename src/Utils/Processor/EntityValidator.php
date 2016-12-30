@@ -29,11 +29,11 @@ class EntityValidator extends AbstractProcessor
         }
 
         if (is_string($errors)) {
-            $this->log->log($errors);
+            $this->logger->log($errors);
         }
         if (is_array($errors)) {
             foreach ($errors as $error) {
-                $this->log->log($error);
+                $this->logger->log($error);
             }
         }
     }

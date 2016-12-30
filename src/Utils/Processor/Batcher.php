@@ -35,7 +35,9 @@ class Batcher extends AbstractProcessor
             return;
         }
 
-        $this->nextStep->processNext($this->batch, $onlyForCount);
+        foreach ($this->nextSteps as $nextStep) {
+            $nextStep->processNext($this->batch, $onlyForCount);
+        }
 
         return;
     }

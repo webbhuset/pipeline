@@ -5,25 +5,27 @@ use \Webbhuset\Bifrost\Core\BifrostException;
 
 abstract class AbstractProcessor implements ProcessorInterface
 {
-    protected $log;
-    protected $nextStep;
+    protected $logger;
+    protected $nextSteps;
 
 
-    public function __construct(Utils\Logger\LoggerInterface $log, $nextStep, $params)
+    public function __construct(Utils\Logger\LoggerInterface $logger, $nextSteps, $params)
     {
-        if (!$nextStep instanceof Utils\Processor\ProcessorInterface
-            && !$nextStep instanceof Utils\Writer\WriterInterface
-        ) {
-            throw new BifrostException('nextStep must implement ProcessorInterface or WriterInterface.');
+        foreach ($nextSteps as $nextStep) {
+            if (!$nextStep instanceof Utils\Processor\ProcessorInterface) {
+                throw new BifrostException('Following steps must implement ProcessorInterface.');
+            }
         }
 
-        $this->log         = $log;
-        $this->nextStep    = $nextStep;
+        $this->logger      = $logger;
+        $this->nextSteps   = $nextSteps;
     }
 
     public function init($args)
     {
-        $this->nextStep->init($args);
+        foreach ($this->nextSteps as $nextStep) {
+            $nextStep->init($args);
+        }
     }
 
     public function processNext($items, $onlyForCount = false)
@@ -41,17 +43,25 @@ abstract class AbstractProcessor implements ProcessorInterface
             }
         }
 
-        $this->nextStep->processNext($newItems, $onlyForCount);
+        foreach ($this->nextSteps as $nextStep) {
+            $nextStep->processNext($newItems, $onlyForCount);
+        }
     }
 
     public function finalize($onlyForCount = false)
     {
-        $this->nextStep->finalize($onlyForCount);
+        foreach ($this->nextSteps as $nextStep) {
+            $nextStep->finalize($onlyForCount);
+        }
     }
 
     public function count()
     {
-        return $this->nextStep->count();
+        $count = 0;
+        foreach ($this->nextSteps as $nextStep) {
+            $count += $nextStep->count();
+        }
+        return $count;
     }
 
     abstract protected function processData($data);

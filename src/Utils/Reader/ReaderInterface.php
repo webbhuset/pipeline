@@ -4,7 +4,7 @@ use \Webbhuset\Bifrost\Core\Utils\Logger\LoggerInterface;
 
 interface ReaderInterface
 {
-    public function __construct(LoggerInterface $log, $nextStep, $params);
+    public function __construct(LoggerInterface $logger, $nextStep, $params);
     public function init($args);
     public function getEntityCount();
     public function processNext();
