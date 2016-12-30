@@ -43,11 +43,11 @@ class StructType extends AbstractType
 
         $errors     = [];
         foreach ($this->fields as $key => $type) {
-            if (!isset($value[$key])){
-                $tmpError = "Input is missing key: " . $key;
-            } else {
-                $tmpError = $type->getErrors($value[$key]);
+            if (!isset($value[$key])) {
+                $value[$key] = null;
             }
+
+            $tmpError = $type->getErrors($value[$key]);
 
             if ($tmpError !== false) {
                 $errors[$key] = $tmpError;
