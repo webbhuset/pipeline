@@ -32,10 +32,12 @@ abstract class AbstractProcessor implements ProcessorInterface
 
         foreach ($items as $item) {
             try {
-                $item       = $this->processData($item);
-                $newItems[] = $item;
+                $item = $this->processData($item);
+                if (!empty($item)) {
+                    $newItems[] = $item;
+                }
             } catch (BifrostException $e) {
-                $this->log($e->getMessage());
+                $this->log->log($e->getMessage());
             }
         }
 

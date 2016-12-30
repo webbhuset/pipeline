@@ -1,10 +1,10 @@
 <?php
 namespace Webbhuset\Bifrost\Core\Utils\Processor;
 use \Webbhuset\Bifrost\Core\Utils\Logger\LoggerInterface;
-use \Webbhuset\Bifrost\Core\Utils\Type\TypeInterface;
 use \Webbhuset\Bifrost\Core\BifrostException;
+use \Webbhuset\Bifrost\Core\Utils\Type\TypeInterface;
 
-class Differ extends AbstractProcessor
+class EntityValidator extends AbstractProcessor
 {
     protected $type;
 
@@ -23,7 +23,18 @@ class Differ extends AbstractProcessor
 
     protected function processData($data)
     {
-        return $this->type->diff($data['old'], $data['new']);
-    }
+        $errors = $this->type->getErrors($data);
+        if ($errors === false) {
+            return $data;
+        }
 
+        if (is_string($errors)) {
+            $this->log->log($errors);
+        }
+        if (is_array($errors)) {
+            foreach ($errors as $error) {
+                $this->log->log($error);
+            }
+        }
+    }
 }
