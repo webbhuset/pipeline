@@ -1,0 +1,52 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
+    ],
+    "hash": "45d3ff0eaafcc893ec01d6f3ff7f8f8b",
+    "content-hash": "a9e417b3ed263f6ff01f24ecf03997cf",
+    "packages": [],
+    "packages-dev": [
+        {
+            "name": "webbhuset/test",
+            "version": "dev-dev/framework",
+            "source": {
+                "type": "git",
+                "url": "git@gitlab.webbhuset.com:libs/test.git",
+                "reference": "4ca123ddb7176879d75ad45de66d563a0c570b82"
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Webbhuset\\Test\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Webbhuset\\Test\\Dev\\": "dev/src",
+                    "Webbhuset\\Test\\Dev\\Test\\": "dev/tests"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "Test Framework",
+            "time": "2017-01-02 09:32:54"
+        }
+    ],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": {
+        "webbhuset/test": 20
+    },
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": {
+        "php": "^5.4.0 || ^7.0"
+    },
+    "platform-dev": []
+}
