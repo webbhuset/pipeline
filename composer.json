@@ -1,0 +1,30 @@
+{
+    "name": "webbhuset/bifrost",
+    "description": "A bridge between worlds.",
+    "require": {
+        "php": "^5.4.0 || ^7.0"
+    },
+    "require-dev": {
+        "webbhuset/test": "*"
+    },
+    "config": {
+        "secure-http": false,
+        "minimum-stability": "dev"
+    },
+    "autoload": {
+        "psr-4": {
+            "Webbhuset\\Bifrost\\Core\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Webbhuset\\Bifrost\\Core\\Test\\": "tests/"
+        }
+    },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "git@gitlab.webbhuset.com:libs/test.git"
+        }
+    ]
+}
