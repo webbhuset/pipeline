@@ -4,17 +4,17 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "45d3ff0eaafcc893ec01d6f3ff7f8f8b",
-    "content-hash": "a9e417b3ed263f6ff01f24ecf03997cf",
+    "hash": "26d519c24e84dee063182c9181a4aeca",
+    "content-hash": "170c9d65bee06e013120bca215a8ae60",
     "packages": [],
     "packages-dev": [
         {
             "name": "webbhuset/test",
-            "version": "dev-dev/framework",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "git@gitlab.webbhuset.com:libs/test.git",
-                "reference": "4ca123ddb7176879d75ad45de66d563a0c570b82"
+                "reference": "bbd9e4fe98587dd9ec31d6cbc284200e6615d5a3"
             },
             "require": {
                 "php": ">=5.3.0"
@@ -35,7 +35,7 @@
                 "MIT"
             ],
             "description": "Test Framework",
-            "time": "2017-01-02 09:32:54"
+            "time": "2017-01-02 11:50:02"
         }
     ],
     "aliases": [],

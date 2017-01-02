@@ -47,7 +47,7 @@ class DataGenerator
         $seed   = $this->getSeed() . $fieldSeed;
         $data   = crc32($seed);
 
-        return (bool) $data % 2;
+        return (bool) ($data % 2);
     }
 
     public function getDate($min, $max, $fieldSeed)

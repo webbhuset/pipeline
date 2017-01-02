@@ -1,21 +1,21 @@
 <?php
-namespace Webbhuset\Bifrost\Test\Unit\Utils\Processor;
+namespace Webbhuset\Bifrost\Core\Test\UnitTest\Utils\Processor;
 use Webbhuset\Bifrost\Core\Utils\Logger\NullLogger;
 use Webbhuset\Bifrost\Core\Utils\Processor\Mock;
 
-class Mapper extends \Webbhuset\Bifrost\Test\TestAbstract
-    implements \Webbhuset\Bifrost\Test\TestInterface
+class MapperTest
 {
-
-    public function initTest()
+    public static function __constructTest($test)
     {
+        $nullLogger    = new NullLogger;
+        $mockProcessor = new Mock;
+        $params        = [];
+        $test
+            ->testThatArgs($nullLogger, $mockProcessor, $params)
+            ->throws('Webbhuset\Bifrost\Core\BifrostException');
     }
 
-    public function countTest()
-    {
-    }
-
-    public function processNextTest()
+    public static function processNextTest($test)
     {
         $nullLogger    = new NullLogger;
         $mockProcessor = new Mock;
@@ -23,7 +23,7 @@ class Mapper extends \Webbhuset\Bifrost\Test\TestAbstract
             'name' => [
                 'en_US' => '/title_en',
                 'sv_SE' => '/title_sv',
-                'nb_NO' => [$this, 'returnApa'],
+                'nb_NO' => [new MapperTest, 'returnApa'],
             ],
         ];
         $indata = [
@@ -36,19 +36,21 @@ class Mapper extends \Webbhuset\Bifrost\Test\TestAbstract
         $params = [
             'fields'   => $fields,
         ];
-        $this->newInstance($nullLogger, $mockProcessor, $params)
-            ->testThatArgs($indata)->returns(Null);
+        $test->newInstance($nullLogger, $mockProcessor, $params)
+            ->testThatArgs($indata)->returnsValue(Null);
     }
 
-    public function processDataTest()
+    public static function processDataTest($test)
     {
+        $nullLogger    = new NullLogger;
+        $mockProcessor = new Mock;
 
         /* Test 1: Simple mapping and callback functions */
         $fields = [
             'name' => [
                 'en_US' => '/title_en',
                 'sv_SE' => '/title_sv',
-                'nb_NO' => [$this, 'returnApa'],
+                'nb_NO' => [new MapperTest, 'returnApa'],
             ],
         ];
         $indata = [
@@ -65,10 +67,9 @@ class Mapper extends \Webbhuset\Bifrost\Test\TestAbstract
         ];
         $params = [
             'fields'   => $fields,
-            'parent'   => new NullProcessor([]),
         ];
-        $this->newInstance($params)
-            ->testThatArgs($indata)->returns($expectedOutput);
+        $test->newInstance($nullLogger, $mockProcessor, $params)
+            ->testThatArgs($indata)->returnsValue($expectedOutput);
 
 
         /* Test 2: Path system for getting correct value from indata */
@@ -107,13 +108,20 @@ class Mapper extends \Webbhuset\Bifrost\Test\TestAbstract
         ];
         $params = [
             'fields'   => $fields,
-            'parent'   => new NullProcessor([]),
         ];
-        $this->newInstance($params)
-            ->testThatArgs($indata)->returns($expectedOutput);
+        $test->newInstance($nullLogger, $mockProcessor, $params)
+            ->testThatArgs($indata)->returnsValue($expectedOutput);
     }
 
-    public function finalizeTest()
+    public static function finalizeTest()
+    {
+    }
+
+    public static function initTest()
+    {
+    }
+
+    public static function countTest()
     {
     }
 

@@ -3,7 +3,7 @@ namespace Webbhuset\Bifrost\Core\Utils\Processor;
 use Webbhuset\Bifrost\Core\Utils\Logger\LoggerInterface;
 use Webbhuset\Bifrost\Core\BifrostException;
 
-class Batch extends AbstractProcessor
+class Batcher extends AbstractProcessor
 {
     protected $batchSize = 400;
     protected $batch     = [];

@@ -8,7 +8,7 @@ class StructType extends AbstractType
 
     public function __construct($params)
     {
-        if (!is_array($params['fields'])) {
+        if (!isset($params['fields']) || !is_array($params['fields'])) {
             throw new BifrostException("Fields params must be array");
         }
         foreach ($params['fields'] as $type) {
