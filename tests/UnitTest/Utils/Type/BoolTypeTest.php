@@ -1,18 +1,14 @@
 <?php
-namespace Webbhuset\Bifrost\Test\Unit\Utils\Type;
-use Webbhuset\Bifrost\Core\Utils\Type as Core;
+namespace Webbhuset\Bifrost\Core\Test\UnitTest\Utils\Type;
 
-class BoolType extends \Webbhuset\Bifrost\Test\TestAbstract
-    implements \Webbhuset\Bifrost\Test\TestInterface
+class BoolTypeTest
 {
-
-
-    protected function isEqualTest()
+    public static function isEqualTest($test)
     {
-        $this->newInstance()
-            ->testThatArgs(true, true)->returns(true)
-            ->testThatArgs(false, false)->returns(true)
-            ->testThatArgs(true, false)->returns(false);
+        $test->newInstance()
+            ->testThatArgs(true, true)->returnsValue(true)
+            ->testThatArgs(false, false)->returnsValue(true)
+            ->testThatArgs(true, false)->returnsValue(false);
     }
 
     protected function getErrorsTest()
