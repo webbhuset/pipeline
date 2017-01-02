@@ -13,12 +13,14 @@
     },
     "autoload": {
         "psr-4": {
-            "Webbhuset\\Bifrost\\Core\\": "src/"
+            "Webbhuset\\Bifrost\\Core\\": "src/",
+            "Webbhuset\\Bifrost\\MageOne\\": "impl/mageone/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Webbhuset\\Bifrost\\Core\\Test\\": "tests/"
+            "Webbhuset\\Bifrost\\Core\\Test\\": "tests/core/",
+            "Webbhuset\\Bifrost\\MageOne\\Test\\": "tests/mageone/"
         }
     },
     "repositories": [

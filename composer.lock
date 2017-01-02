@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "26d519c24e84dee063182c9181a4aeca",
+    "hash": "d67355746f2f4daa094455bd5cb18ed9",
     "content-hash": "170c9d65bee06e013120bca215a8ae60",
     "packages": [],
     "packages-dev": [
@@ -14,7 +14,7 @@
             "source": {
                 "type": "git",
                 "url": "git@gitlab.webbhuset.com:libs/test.git",
-                "reference": "bbd9e4fe98587dd9ec31d6cbc284200e6615d5a3"
+                "reference": "336fc07156479da3b83685d4c4e5b8a15673c677"
             },
             "require": {
                 "php": ">=5.3.0"
@@ -35,7 +35,7 @@
                 "MIT"
             ],
             "description": "Test Framework",
-            "time": "2017-01-02 11:50:02"
+            "time": "2017-01-02 14:29:34"
         }
     ],
     "aliases": [],

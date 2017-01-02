@@ -1,5 +1,6 @@
 <?php
 namespace Webbhuset\Bifrost\Core\Utils\Writer;
+use Webbhuset\Bifrost\Core\Utils\Processor\ProcessorInterface;
 
 use Webbhuset\Bifrost\Core\Utils;
 
