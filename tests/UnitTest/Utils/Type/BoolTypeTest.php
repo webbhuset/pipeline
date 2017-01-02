@@ -3,6 +3,21 @@ namespace Webbhuset\Bifrost\Core\Test\UnitTest\Utils\Type;
 
 class BoolTypeTest
 {
+    public static function __constructTest($test)
+    {
+        $params = ['required' => false];
+        $test->testThatArgs($params)
+            ->notThrows('Exception');
+
+        $params = ['required' => true];
+        $test->testThatArgs($params)
+            ->notThrows('Exception');
+
+        $params = ['required' => 'apa'];
+        $test->testThatArgs($params)
+            ->throws('Webbhuset\Bifrost\Core\BifrostException');
+    }
+
     public static function isEqualTest($test)
     {
         $test->newInstance()
@@ -11,41 +26,44 @@ class BoolTypeTest
             ->testThatArgs(true, false)->returnsValue(false);
     }
 
-    protected function getErrorsTest()
+    public static function getErrorsTest($test)
     {
-        $this->newInstance()
-            ->testThatArgs(false)->returns(false)
-            ->testThatArgs(true)->returns(false)
-            ->testThatArgs(null)->returns(false)
-            ->testThatArgs('false')->notReturns(false)
-            ->testThatArgs('1')->notReturns(false)
-            ->testThatArgs(1)->notReturns(false)
-            ->testThatArgs([true])->notReturns(false);
+        $test->newInstance()
+            ->testThatArgs(false)->returnsValue(false)
+            ->testThatArgs(true)->returnsValue(false)
+            ->testThatArgs(null)->returnsValue(false)
+            ->testThatArgs('false')->notReturnsValue(false)
+            ->testThatArgs('1')->notReturnsValue(false)
+            ->testThatArgs(1)->notReturnsValue(false)
+            ->testThatArgs([true])->notReturnsValue(false);
 
-        $this->newInstance(['required' => true])
-            ->testThatArgs(false)->returns(false)
-            ->testThatArgs(true)->returns(false)
-            ->testThatArgs(null)->notReturns(false);
+        $test->newInstance(['required' => true])
+            ->testThatArgs(false)->returnsValue(false)
+            ->testThatArgs(true)->returnsValue(false)
+            ->testThatArgs(null)->notReturnsValue(false);
 
     }
 
-    protected function castTest()
+    public static function castTest($test)
     {
-        $this->newInstance()
-            ->testThatArgs(1)->returns(true)
-            ->testThatArgs(0)->returns(false)
-            ->testThatArgs(null)->returns(null)
-            ->testThatArgs('false')->returns(true)
-            ->testThatArgs('')->returns(false);
+        $test->newInstance()
+            ->testThatArgs(1)->returnsValue(true)
+            ->testThatArgs(0)->returnsValue(false)
+            ->testThatArgs(null)->returnsValue(null)
+            ->testThatArgs('false')->returnsValue(true)
+            ->testThatArgs('')->returnsValue(false);
 
+        $test->newInstance(['required' => true])
+            ->testThatArgs(1)->returnsValue(true)
+            ->testThatArgs(0)->returnsValue(false)
+            ->testThatArgs(null)->returnsValue(null)
+            ->testThatArgs('false')->returnsValue(true)
+            ->testThatArgs('')->returnsValue(false);
+    }
 
-
-        $this->newInstance(['required' => true])
-            ->testThatArgs(1)->returns(true)
-            ->testThatArgs(0)->returns(false)
-            ->testThatArgs(null)->returns(null)
-            ->testThatArgs('false')->returns(true)
-            ->testThatArgs('')->returns(false);
-
+    public static function diffTest($test)
+    {
+        $test->newInstance()
+            ->testThatArgs(null, null)->throws('Webbhuset\Bifrost\Core\BifrostException');
     }
 }

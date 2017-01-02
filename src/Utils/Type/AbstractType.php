@@ -1,5 +1,6 @@
 <?php
 namespace Webbhuset\Bifrost\Core\Utils\Type;
+use Webbhuset\Bifrost\Core\BifrostException;
 
 abstract class AbstractType implements TypeInterface
 {
@@ -8,6 +9,9 @@ abstract class AbstractType implements TypeInterface
     public function __construct($params = null)
     {
         if (isset($params['required'])) {
+            if (!is_bool($params['required'])) {
+                throw new BifrostException("'required' parameter must be boolean.");
+            }
             $this->required = $params['required'];
         }
     }
@@ -21,9 +25,7 @@ abstract class AbstractType implements TypeInterface
         return false;
     }
 
-    public function isEqual($a, $b)
-    {
-    }
+    abstract public function isEqual($a, $b);
 
     /**
      * Returns the string representation of a value.

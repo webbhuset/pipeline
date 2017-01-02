@@ -1,17 +1,33 @@
 <?php
-namespace Webbhuset\Bifrost\Test\Unit\Utils\Type;
+namespace Webbhuset\Bifrost\Core\Test\UnitTest\Utils\Type;
 use Webbhuset\Bifrost\Core\Utils\Type as Core;
 
-class HashmapType extends \Webbhuset\Bifrost\Test\TestAbstract
-    implements \Webbhuset\Bifrost\Test\TestInterface
+class HashmapTypeTest
 {
-    protected function diffTest()
+
+    public static function __constructTest($test)
     {
         $params = [
             'key_type'   =>  new Core\StringType(),
             'value_type' =>  new Core\IntType(),
         ];
-        $this->newInstance($params);
+        $test->testThatArgs($params)->notThrows('Exception');
+
+        $params = [
+            'key_type'   =>  new Core\StringType(),
+            'value_type' =>  new \stdClass(),
+        ];
+        $test->testThatArgs($params)
+            ->throws('Webbhuset\Bifrost\Core\BifrostException');
+    }
+
+    public static function diffTest($test)
+    {
+        $params = [
+            'key_type'   =>  new Core\StringType(),
+            'value_type' =>  new Core\IntType(),
+        ];
+        $test->newInstance($params);
 
         /* Test that two equal arrays returns empty diff */
         $old = [
@@ -26,7 +42,7 @@ class HashmapType extends \Webbhuset\Bifrost\Test\TestAbstract
             '+' => [],
             '-' => [],
         ];
-        $this->testThatArgs($old, $new)->returns($expected);
+        $test->testThatArgs($old, $new)->returnsValue($expected);
 
         /* Test changed keys*/
         $old = [
@@ -41,7 +57,7 @@ class HashmapType extends \Webbhuset\Bifrost\Test\TestAbstract
             '+' => ['string2'  => 167,],
             '-' => ['string3'  => 167,],
         ];
-        $this->testThatArgs($old, $new)->returns($expected);
+        $test->testThatArgs($old, $new)->returnsValue($expected);
 
         /* Test changed values */
         $old = [
@@ -56,17 +72,17 @@ class HashmapType extends \Webbhuset\Bifrost\Test\TestAbstract
             '+' => ['string2'  => 167,],
             '-' => ['string2'  => 1600,],
         ];
-        $this->testThatArgs($old, $new)->returns($expected);
+        $test->testThatArgs($old, $new)->returnsValue($expected);
 
 
     }
-    protected function isEqualTest()
+    public static function isEqualTest($test)
     {
         $params = [
             'key_type'   =>  new Core\StringType(),
             'value_type' =>  new Core\IntType(),
         ];
-        $this->newInstance($params)
+        $test->newInstance($params)
             ->testThatArgs(
                 [
                     'string1'  => 143,
@@ -77,7 +93,7 @@ class HashmapType extends \Webbhuset\Bifrost\Test\TestAbstract
                     'string1'  => 143
                 ]
             )
-            ->returns(true)
+            ->returnsValue(true)
             ->testThatArgs(
                 [
                     'string1'  => 143,
@@ -89,7 +105,7 @@ class HashmapType extends \Webbhuset\Bifrost\Test\TestAbstract
                     'string3'  => 14,
                 ]
             )
-            ->returns(false)
+            ->returnsValue(false)
             ->testThatArgs(
                 [
                     'string1'  => 143,
@@ -100,7 +116,7 @@ class HashmapType extends \Webbhuset\Bifrost\Test\TestAbstract
                     'string2'  => 0,
                 ]
             )
-            ->returns(false)
+            ->returnsValue(false)
             ->testThatArgs(
                 [
                     '1'  => 143,
@@ -111,37 +127,37 @@ class HashmapType extends \Webbhuset\Bifrost\Test\TestAbstract
                     2    => 167
                 ]
             )
-            ->returns(true);
+            ->returnsValue(true);
     }
 
-    protected function getErrorsTest()
+    public static function getErrorsTest($test)
     {
         $params = [
             'key_type'   =>  new Core\StringType(),
             'value_type' =>  new Core\IntType(),
         ];
-        $this->newInstance($params)
+        $test->newInstance($params)
             ->testThatArgs(
                 [
                     'string1'  => 143,
                     'string2'  => 167,
                 ]
             )
-            ->returns(false)
+            ->returnsValue(false)
             ->testThatArgs(
                 [
                     'string1'  => '143',
                     'string2'  => 167,
                 ]
             )
-            ->notReturns(false)
+            ->notReturnsValue(false)
             ->testThatArgs(
                 [
                     0          => 143,
                     'string2'  => 167,
                 ]
             )
-            ->notReturns(false);
+            ->notReturnsValue(false);
 
 
         $params = [
@@ -150,7 +166,7 @@ class HashmapType extends \Webbhuset\Bifrost\Test\TestAbstract
             'min_size'   => 2,
             'max_size'   => 4,
         ];
-        $this->newInstance($params)
+        $test->newInstance($params)
             ->testThatArgs(
                 [
                     'a' => 1,
@@ -158,13 +174,13 @@ class HashmapType extends \Webbhuset\Bifrost\Test\TestAbstract
                     'c' => 1,
                 ]
             )
-            ->returns(false)
+            ->returnsValue(false)
             ->testThatArgs(
                 [
                     'a' => 1,
                 ]
             )
-            ->notReturns(false)
+            ->notReturnsValue(false)
             ->testThatArgs(
                 [
                     'a' => 1,
@@ -174,33 +190,33 @@ class HashmapType extends \Webbhuset\Bifrost\Test\TestAbstract
                     'e' => 15,
                 ]
             )
-            ->notReturns(false);
+            ->notReturnsValue(false);
     }
 
-    protected function castTest()
+    public static function castTest($test)
     {
         $params = [
             'key_type'   =>  new Core\StringType(),
             'value_type' =>  new Core\IntType(),
         ];
 
-        $this->newInstance($params)
+        $test->newInstance($params)
             ->testThatArgs(
                 ['a' => 5]
             )
-            ->returns(
+            ->returnsValue(
                ['a' => 5]
             )
             ->testThatArgs(
                 [4 => '5']
             )
-            ->returns(
+            ->returnsValue(
                ['4' => 5]
             )
             ->testThatArgs(
                 ['4.986' => 5.0]
             )
-            ->returns(
+            ->returnsValue(
                ['4.986' => 5]
             );
     }

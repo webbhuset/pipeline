@@ -1,17 +1,32 @@
 <?php
-namespace Webbhuset\Bifrost\Test\Unit\Utils\Type;
+namespace Webbhuset\Bifrost\Core\Test\UnitTest\Utils\Type;
 use Webbhuset\Bifrost\Core\Utils\Type as Core;
 
-class SetType extends \Webbhuset\Bifrost\Test\TestAbstract
-    implements \Webbhuset\Bifrost\Test\TestInterface
+class SetTypeTest
 {
-
-    protected function diffTest()
+    public static function __constructTest($test)
     {
         $params = [
             'type' =>  new Core\IntType(),
         ];
-        $this->newInstance($params);
+        $test->testThatArgs($params)
+            ->notThrows('Exception');
+
+        $params = ['type' => new \stdClass];
+        $test->testThatArgs($params)
+            ->throws('Webbhuset\Bifrost\Core\BifrostException');
+            
+        $params = [];
+        $test->testThatArgs($params)
+            ->throws('Webbhuset\Bifrost\Core\BifrostException');
+    }
+
+    public static function diffTest($test)
+    {
+        $params = [
+            'type' =>  new Core\IntType(),
+        ];
+        $test->newInstance($params);
 
         /* Test that two equal sets returns empty diff */
         $old = [11, 12, 13, 14, 15];
@@ -20,7 +35,7 @@ class SetType extends \Webbhuset\Bifrost\Test\TestAbstract
             '+' => [],
             '-' => [],
         ];
-        $this->testThatArgs($old, $new)->returns($expected);
+        $test->testThatArgs($old, $new)->returnsValue($expected);
 
         /* Test that two equal sets returns empty diff */
         $old = [11, 12, 13, 14, 15];
@@ -29,7 +44,7 @@ class SetType extends \Webbhuset\Bifrost\Test\TestAbstract
             '+' => [],
             '-' => [],
         ];
-        $this->testThatArgs($old, $new)->returns($expected);
+        $test->testThatArgs($old, $new)->returnsValue($expected);
 
         /* Test added element  */
         $old = [11, 12, 13, 14];
@@ -38,7 +53,7 @@ class SetType extends \Webbhuset\Bifrost\Test\TestAbstract
             '+' => [15],
             '-' => [],
         ];
-        $this->testThatArgs($old, $new)->returns($expected);
+        $test->testThatArgs($old, $new)->returnsValue($expected);
 
         /* Test removed element  */
         $old = [11, 12, 13, 14, 15];
@@ -47,71 +62,71 @@ class SetType extends \Webbhuset\Bifrost\Test\TestAbstract
             '+' => [],
             '-' => [11],
         ];
-        $this->testThatArgs($old, $new)->returns($expected);
+        $test->testThatArgs($old, $new)->returnsValue($expected);
 
 
     }
 
-    protected function isEqualTest()
+    public static function isEqualTest($test)
     {
         $params = [
             'type' =>  new Core\IntType(),
         ];
-        $this->newInstance($params)
+        $test->newInstance($params)
             ->testThatArgs(
                 [11, 12, 13, 14, 15],
                 [11, 12, 13, 14, 15]
             )
-            ->returns(true)
+            ->returnsValue(true)
             ->testThatArgs(
                 [11, 12, 13, 14, 15],
                 [15, 14, 13, 12, 11]
             )
-            ->returns(true)
+            ->returnsValue(true)
             ->testThatArgs(
                 [11, 12, 13, 14, 15],
                 [10, 12, 13, 14, 15]
             )
-            ->returns(false)
+            ->returnsValue(false)
             ->testThatArgs(
                 [10, 12],
                 [10, 12, 13, 14, 15]
             )
-            ->returns(false);
+            ->returnsValue(false);
 
         $params = [
             'type' =>  new Core\StringType(),
         ];
-        $this->newInstance($params)
+        $test->newInstance($params)
             ->testThatArgs(
                 ['abc','bbb','edf'],
                 ['abc','bbb','edf']
             )
-            ->returns(true)
+            ->returnsValue(true)
             ->testThatArgs(
                 ['abc','bbb','edf'],
                 ['bbb','abc','edf']
             )
-            ->returns(true)
+            ->returnsValue(true)
             ->testThatArgs(
                 ['bbb','edf'],
                 ['bbb','abc','edf']
             )
-            ->returns(false);
+            ->returnsValue(false);
 
     }
 
-    protected function getErrorsTest()
+    public static function getErrorsTest($test)
     {
         $params = [
             'type' =>  new Core\StringType(),
         ];
 
-        $this->newInstance($params)
-            ->testThatArgs(['abc','bbb','edf'])->returns(false)
-            ->testThatArgs([])->returns(false)
-            ->testThatArgs(['abc', 123, 'edf'])->notReturns(false)
-            ->testThatArgs(['abc', false])->notReturns(false);
+        $test->newInstance($params)
+            ->testThatArgs(['abc','bbb','edf'])->returnsValue(false)
+            ->testThatArgs([])->returnsValue(false)
+            ->testThatArgs(['abc', 123, 'edf'])->notReturnsValue(false)
+            ->testThatArgs(['abc', false])->notReturnsValue(false);
 
         $params = [
             'type' =>  new Core\IntType(),
@@ -119,21 +134,21 @@ class SetType extends \Webbhuset\Bifrost\Test\TestAbstract
             'max_size' => 4,
         ];
 
-        $this->newInstance($params)
-            ->testThatArgs([1, 2, 3, 4])->returns(false)
-            ->testThatArgs([66, 77])->returns(false)
-            ->testThatArgs([1])->notReturns(false)
-            ->testThatArgs([1, 2, 3, 4, 5])->notReturns(false);
+        $test->newInstance($params)
+            ->testThatArgs([1, 2, 3, 4])->returnsValue(false)
+            ->testThatArgs([66, 77])->returnsValue(false)
+            ->testThatArgs([1])->notReturnsValue(false)
+            ->testThatArgs([1, 2, 3, 4, 5])->notReturnsValue(false);
 
     }
 
-    protected function castTest()
+    public static function castTest($test)
     {
         $params = [
             'type' =>  new Core\IntType(),
         ];
 
-        $this->newInstance($params)
-            ->testThatArgs([1, 2, 33.0, '4'])->returns([1, 2, 33, 4]);
+        $test->newInstance($params)
+            ->testThatArgs([1, 2, 33.0, '4'])->returnsValue([1, 2, 33, 4]);
     }
 }

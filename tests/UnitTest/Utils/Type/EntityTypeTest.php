@@ -1,11 +1,33 @@
 <?php
-namespace Webbhuset\Bifrost\Test\Unit\Utils\Type;
+namespace Webbhuset\Bifrost\Core\Test\UnitTest\Utils\Type;
 use Webbhuset\Bifrost\Core\Utils\Type as Core;
 
-class EntityType extends \Webbhuset\Bifrost\Test\TestAbstract
-    implements \Webbhuset\Bifrost\Test\TestInterface
+class EntityTypeTest
 {
-    protected function diffTest()
+
+    public static function __constructTest($test)
+    {
+        $params = [
+            'fields' => [
+                'string_test' =>  new Core\StringType(),
+                'int_test'    =>  new Core\IntType(),
+            ]
+        ];
+        $test->testThatArgs($params)
+            ->throws('Webbhuset\Bifrost\Core\BifrostException');
+
+        $params = [
+            'entity_id_field' => 'string_test',
+            'fields' => [
+                'string_test' =>  new Core\StringType(),
+                'int_test'    =>  new Core\IntType(),
+            ]
+        ];
+        $test->testThatArgs($params)
+            ->notThrows('Webbhuset\Bifrost\Core\BifrostException');
+    }
+
+    public static function diffTest($test)
     {
         $params = [
             'entity_id_field' => 'id',
@@ -15,7 +37,7 @@ class EntityType extends \Webbhuset\Bifrost\Test\TestAbstract
                 'int_test'    => new Core\IntType(),
             ]
         ];
-        $this->newInstance($params);
+        $test->newInstance($params);
 
         /* Test that two equal arrays returns empty diff */
         $old = [
@@ -29,7 +51,7 @@ class EntityType extends \Webbhuset\Bifrost\Test\TestAbstract
             'int_test'    => 167,
         ];
         $expected = [];
-        $this->testThatArgs($old, $new)->returns($expected);
+        $test->testThatArgs($old, $new)->returnsValue($expected);
 
 
         /* Test that id is outputed even if id is the same */
@@ -50,10 +72,10 @@ class EntityType extends \Webbhuset\Bifrost\Test\TestAbstract
             ],
             'id'          => 334,
         ];
-        $this->testThatArgs($old, $new)->returns($expected);
+        $test->testThatArgs($old, $new)->returnsValue($expected);
     }
 
-    protected function isEqualTest()
+    public static function isEqualTest($test)
     {
         $params = [
             'entity_id_field' => 'id',
@@ -63,7 +85,7 @@ class EntityType extends \Webbhuset\Bifrost\Test\TestAbstract
                 'int_test'    => new Core\IntType(),
             ]
         ];
-        $this->newInstance($params)
+        $test->newInstance($params)
             ->testThatArgs(
                 [
                     'id'          => 334,
@@ -76,7 +98,7 @@ class EntityType extends \Webbhuset\Bifrost\Test\TestAbstract
                     'int_test'    => 167,
                 ]
             )
-            ->returns(true)
+            ->returnsValue(true)
             ->testThatArgs(
                 [
                     'id'          => 334,
@@ -89,7 +111,7 @@ class EntityType extends \Webbhuset\Bifrost\Test\TestAbstract
                     'int_test'    => 167,
                 ]
             )
-            ->returns(false)
+            ->returnsValue(false)
             ->testThatArgs(
                 [
                     'id'          => 334,
@@ -102,10 +124,10 @@ class EntityType extends \Webbhuset\Bifrost\Test\TestAbstract
                     'int_test'    => 12346,
                 ]
             )
-            ->returns(false);
+            ->returnsValue(false);
     }
 
-    protected function getErrorsTest()
+    public static function getErrorsTest($test)
     {
         $params = [
             'entity_id_field' => 'id',
@@ -115,7 +137,7 @@ class EntityType extends \Webbhuset\Bifrost\Test\TestAbstract
                 'int_test'    => new Core\IntType(),
             ]
         ];
-        $this->newInstance($params)
+        $test->newInstance($params)
             ->testThatArgs(
                 [
                     'id'          => 334,
@@ -123,7 +145,7 @@ class EntityType extends \Webbhuset\Bifrost\Test\TestAbstract
                     'int_test'    => 167,
                 ]
             )
-            ->returns(false)
+            ->returnsValue(false)
             ->testThatArgs(
                 [
                     'id'          => 334,
@@ -131,7 +153,7 @@ class EntityType extends \Webbhuset\Bifrost\Test\TestAbstract
                     'int_test'    => 167,
                 ]
             )
-            ->notReturns(false)
+            ->notReturnsValue(false)
             ->testThatArgs(
                 [
                     'id'          => 334,
@@ -139,7 +161,7 @@ class EntityType extends \Webbhuset\Bifrost\Test\TestAbstract
                     'int_test'    => 'elefant',
                 ]
             )
-            ->notReturns(false)
+            ->notReturnsValue(false)
             ->testThatArgs(
                 [
                     'id'          => 334,
@@ -147,10 +169,10 @@ class EntityType extends \Webbhuset\Bifrost\Test\TestAbstract
                     'int_test'    => '12',
                 ]
             )
-            ->notReturns(false);
+            ->notReturnsValue(false);
     }
 
-    protected function castTest()
+    public static function castTest($test)
     {
     }
 }
