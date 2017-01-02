@@ -5,7 +5,7 @@
         "php": "^5.4.0 || ^7.0"
     },
     "require-dev": {
-        "webbhuset/test": "dev-dev/framework"
+        "webbhuset/test": "dev-master"
     },
     "config": {
         "secure-http": false,
