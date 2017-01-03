@@ -14,7 +14,7 @@
             "source": {
                 "type": "git",
                 "url": "git@gitlab.webbhuset.com:libs/test.git",
-                "reference": "336fc07156479da3b83685d4c4e5b8a15673c677"
+                "reference": "f71edd362ae74134e6f660968eb0a8038277192d"
             },
             "require": {
                 "php": ">=5.3.0"
@@ -35,7 +35,7 @@
                 "MIT"
             ],
             "description": "Test Framework",
-            "time": "2017-01-02 14:29:34"
+            "time": "2017-01-03 09:14:57"
         }
     ],
     "aliases": [],

@@ -9,7 +9,7 @@ class EntityValidatorTest
     public static function __constructTest($test)
     {
         $nullLogger    = new NullLogger;
-        $mockProcessor = new Mock;
+        $mockProcessor = [new Mock];
         $params = [
             'type' => new \stdClass
         ];
@@ -31,7 +31,7 @@ class EntityValidatorTest
         ];
         $type          = new Type\StructType($structParams);
         $nullLogger    = new NullLogger;
-        $mockProcessor = new Mock;
+        $mockProcessor = [new Mock];
         $params = [
             'type' => $type
         ];
@@ -60,7 +60,7 @@ class EntityValidatorTest
         ];
         $type          = new Type\StructType($structParams);
         $nullLogger    = new NullLogger;
-        $mockProcessor = new Mock;
+        $mockProcessor = [new Mock];
         $indata = [
             [
                 'sku'   => '123',

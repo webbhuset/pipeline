@@ -15,7 +15,7 @@ class DifferTest
             ]
         ];
         $nullLogger    = new NullLogger;
-        $mockProcessor = new Mock;
+        $mockProcessor = [new Mock];
         $params = [
             'type' => new Type\StructType($structParams),
         ];
@@ -38,7 +38,7 @@ class DifferTest
             ]
         ];
         $nullLogger    = new NullLogger;
-        $mockProcessor = new Mock;
+        $mockProcessor = [new Mock];
         $params = [
             'type' => new Type\StructType($structParams),
         ];
@@ -86,7 +86,7 @@ class DifferTest
         ];
         $type          = new Type\StructType($structParams);
         $nullLogger    = new NullLogger;
-        $mockProcessor = new Mock;
+        $mockProcessor = [new Mock];
         $indata = [
             [
                 'old' => [

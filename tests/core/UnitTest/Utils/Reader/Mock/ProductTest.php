@@ -9,7 +9,7 @@ class ProductTest
     public static function getEntityCountTest($test)
     {
         $nullLogger    = new NullLogger;
-        $mockProcessor = new Mock;
+        $mockProcessor = [new Mock];
         $params = [
             'seed'           => 'apa',
             'no_of_entities' => 2,
@@ -28,7 +28,7 @@ class ProductTest
     public static function processNextTest($test)
     {
         $nullLogger    = new NullLogger;
-        $mockProcessor = new Mock;
+        $mockProcessor = [new Mock];
         $params = [
             'seed'           => 'apa',
             'no_of_entities' => 2,

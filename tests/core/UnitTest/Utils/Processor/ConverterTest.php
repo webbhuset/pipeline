@@ -26,7 +26,7 @@ class ConverterTest
             'fields' => $fields,
         ];
         $nullLogger    = new NullLogger;
-        $mockProcessor = new Mock;
+        $mockProcessor = [new Mock];
         $test->newInstance($nullLogger, $mockProcessor, $params);
 
         $indata = [
@@ -66,7 +66,7 @@ class ConverterTest
             'fields' => $fields,
         ];
         $nullLogger    = new NullLogger;
-        $mockProcessor = new Mock;
+        $mockProcessor = [new Mock];
         $test->newInstance($nullLogger, $mockProcessor, $params);
 
         $indata = [

@@ -12,7 +12,7 @@ class BatcherTest
             'batch_size'   => 4,
         ];
         $nullLogger    = new NullLogger;
-        $mockProcessor = new Mock;
+        $mockProcessor = [new Mock];
 
         $test
             ->testThatArgs($nullLogger, $mockProcessor, $params)
@@ -27,7 +27,7 @@ class BatcherTest
     public static function processNextTest($test)
     {
         $nullLogger    = new NullLogger;
-        $mockProcessor = new Mock;
+        $mockProcessor = [new Mock];
 
         $params = [
             'batch_size'   => 4,

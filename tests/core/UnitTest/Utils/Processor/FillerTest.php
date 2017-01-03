@@ -9,7 +9,7 @@ class FillerTest
     public static function __constructTest($test)
     {
         $nullLogger    = new NullLogger;
-        $mockProcessor = new Mock;
+        $mockProcessor = [new Mock];
         $backendParams = [
             'default_values' => ['price' => 123],
         ];
@@ -39,7 +39,7 @@ class FillerTest
         ];
         $backend       = new DefaultValues($backendParams);
         $nullLogger    = new NullLogger;
-        $mockProcessor = new Mock;
+        $mockProcessor = [new Mock];
         $params = [
             'backend' => $backend
         ];
@@ -81,7 +81,7 @@ class FillerTest
         ];
         $backend       = new DefaultValues($backendParams);
         $nullLogger    = new NullLogger;
-        $mockProcessor = new Mock;
+        $mockProcessor = [new Mock];
         $indata = [
             'price' => [
                 'test' => [

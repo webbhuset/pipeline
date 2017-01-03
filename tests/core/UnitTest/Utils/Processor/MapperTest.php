@@ -8,7 +8,7 @@ class MapperTest
     public static function __constructTest($test)
     {
         $nullLogger    = new NullLogger;
-        $mockProcessor = new Mock;
+        $mockProcessor = [new Mock];
         $params        = [];
         $test
             ->testThatArgs($nullLogger, $mockProcessor, $params)
@@ -18,7 +18,7 @@ class MapperTest
     public static function processNextTest($test)
     {
         $nullLogger    = new NullLogger;
-        $mockProcessor = new Mock;
+        $mockProcessor = [new Mock];
         $fields = [
             'name' => [
                 'en_US' => '/title_en',
@@ -43,7 +43,7 @@ class MapperTest
     public static function processDataTest($test)
     {
         $nullLogger    = new NullLogger;
-        $mockProcessor = new Mock;
+        $mockProcessor = [new Mock];
 
         /* Test 1: Simple mapping and callback functions */
         $fields = [
