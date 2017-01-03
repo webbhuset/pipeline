@@ -1,6 +1,7 @@
 <?php
 namespace Webbhuset\Bifrost\MageOne\Utils\Writer;
 use Webbhuset\Bifrost\Core\Utils\Writer\WriterInterface;
+use Webbhuset\Bifrost\Core\Utils\Logger\LoggerInterface;
 use Webbhuset\Bifrost\Core\BifrostException;
 
 
@@ -9,8 +10,9 @@ class TableInserter implements WriterInterface
     protected $adapter;
     protected $tableName;
     protected $columns;
+    protected $logger;
 
-    public function __construct($params)
+    public function __construct(LoggerInterface $logger, $params)
     {
         if (!isset($params['adapter'])) {
             throw new BifrostException("Adapter parameter is not set.");
@@ -33,6 +35,7 @@ class TableInserter implements WriterInterface
             throw new BifrostException("Columns parameter must be array.");
         }
 
+        $this->logger       = $logger;
         $this->adapter      = $params['adapter'];
         $this->tableName    = $params['table_name'];
         $this->columns      = $params['columns'];

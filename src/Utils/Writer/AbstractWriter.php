@@ -5,10 +5,10 @@ use Webbhuset\Bifrost\Core\BifrostException;
 
 abstract class AbstractWriter implements WriterInterface
 {
-    protected $log;
+    protected $logger;
 
-    public function __construct(Utils\Logger\LoggerInterface $log, $params)
+    public function __construct(Utils\Logger\LoggerInterface $logger, $params)
     {
-        $this->log = $log;
+        $this->logger = $logger;
     }
 }

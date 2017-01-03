@@ -6,8 +6,8 @@ use Webbhuset\Bifrost\Core\Utils;
 
 interface WriterInterface
 {
-    public function __construct(Utils\Logger\LoggerInterface $log, $params);
+    public function __construct(Utils\Logger\LoggerInterface $logger, $params);
     public function init($args);
-    public function processNext($data);
-    public function finalize();
+    public function processNext($data, $onlyCount);
+    public function finalize($onlyCount);
 }

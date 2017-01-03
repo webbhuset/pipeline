@@ -1,10 +1,12 @@
 <?php
 namespace Webbhuset\Bifrost\MageOne\Test\UnitTest\Utils\Writer;
+
+use Webbhuset\Bifrost\Core\Utils\Logger;
 use Webbhuset\Bifrost\MageOne\Utils\Writer\TableDeleter;
 
 class TableDeleterTest extends TableDeleter
 {
-    public function __construct($params)
+    public function __construct(Logger\LoggerInterface $logger, $params)
     {
         /**
         * The following code has been commented out to be able to test anythin without adapter:
@@ -39,6 +41,7 @@ class TableDeleterTest extends TableDeleter
 
     public static function getWhereTest($test)
     {
+        $logger = new Logger\NullLogger();
         $params = [
             'table_name' => 'djur',
             'columns'    => [
@@ -48,7 +51,7 @@ class TableDeleterTest extends TableDeleter
                 'katt',
             ]
         ];
-        $test->newInstance($params)
+        $test->newInstance($logger, $params)
             ->testThatArgs()->returnsValue('apa = :apa AND fisk = :fisk AND hund = :hund AND katt = :katt');
 
         $params = [
@@ -60,7 +63,7 @@ class TableDeleterTest extends TableDeleter
                     'katt',
                 ]
             ];
-        $test->newInstance($params)
+        $test->newInstance($logger, $params)
             ->testThatArgs()->throws('Webbhuset\Bifrost\Core\BifrostException');
 
         $params = [
@@ -72,12 +75,13 @@ class TableDeleterTest extends TableDeleter
                     'katt',
                 ]
             ];
-        $test->newInstance($params)
+        $test->newInstance($logger, $params)
             ->testThatArgs()->throws('Webbhuset\Bifrost\Core\BifrostException');
     }
 
     public static function getBindTest($test)
     {
+        $logger = new Logger\NullLogger();
         $params = [
             'table_name' => 'djur',
             'columns'    => [
@@ -87,7 +91,7 @@ class TableDeleterTest extends TableDeleter
                 'katt',
             ]
         ];
-        $test->newInstance($params);
+        $test->newInstance($logger, $params);
 
         $indata = [
             'katt' => "mjau",
