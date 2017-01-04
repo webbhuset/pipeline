@@ -39,7 +39,7 @@ abstract class AbstractProcessor implements ProcessorInterface
                     $newItems[] = $item;
                 }
             } catch (BifrostException $e) {
-                $this->log->log($e->getMessage());
+                $this->logger->log($e->getMessage());
             }
         }
 
