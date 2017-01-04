@@ -3,7 +3,7 @@ namespace Webbhuset\Bifrost\Core\Job;
 
 interface JobInterface
 {
-    public function __construct($params);
+    public function __construct($fetcher, $taskList);
     public function init($args);
     public function processNext();
     public function isDone();

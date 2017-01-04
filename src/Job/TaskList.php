@@ -3,22 +3,24 @@ namespace Webbhuset\Bifrost\Core\Job;
 
 class TaskList
 {
-    protected $progress;
-    protected $tasks = [];
-    protected $currentTaskIdx = 0;
-
+    protected $tasks  = [];
     protected $isDone = false;
 
     public function __construct(array $tasks)
     {
+        foreach ($tasks as $task) {
+            if (!$task instanceof Task\TaskInterface) {
+                throw new BifrostException('Task must implement TaskInterface.');
+            }
+        }
+
         $this->tasks = $tasks;
-        $this->progress = new Progress;
     }
 
-    public function init($filename, $args)
+    public function init($args)
     {
         foreach ($this->tasks as $task) {
-            $task->init($filename, $args);
+            $task->init($args);
         }
     }
 
@@ -52,5 +54,12 @@ class TaskList
     public function isDone()
     {
         return $this->isDone;
+    }
+
+    public function finalize()
+    {
+        foreach ($this->tasks as $task) {
+            $task->finalize();
+        }
     }
 }

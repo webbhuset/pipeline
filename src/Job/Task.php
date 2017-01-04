@@ -1,59 +1,43 @@
 <?php
 namespace Webbhuset\Bifrost\Core\Job;
+use \Webbhuset\Bifrost\Core\Utils\Logger\LoggerInterface;
+use Webbhuset\Bifrost\Core\Utils\Reader\ReaderInterface;
 
 class Task implements Task\TaskInterface
 {
-    protected $source;
-    protected $dest;
-    protected $validator;
+    protected $bridge;
     protected $logger;
-    protected $progress;
+    protected $name;
 
     protected $isDone = false;
 
-    public function __construct($params)
+    public function __construct(LoggerInterface $logger, $name, ReaderInterface $bridge)
     {
-        $this->source       = $params['source'];
-        $this->dest         = $params['destination'];
-        $this->type         = $params['type'];
-        $this->logger       = $params['logger'];
-        $this->progress     = new Progress;
+        $this->logger    = $logger;
+        $this->name      = $name;
+        $this->bridge    = $bridge;
     }
 
     public function init($args)
     {
-        $this->source->init($args);
-        $this->dest->init($args);
+        $this->$bridge->init($args);
         $this->logger->init($args);
-        $this->progress->init($args);
 
-        $count = $this->source->getEntityCount();
-        $this->progress->setTotal($count);
+        $count = $this->$bridge->getEntityCount();
+        $this->logger->setTotal($count);
     }
 
     public function processNext()
     {
-        try {
-            $data = $this->source->getNextEntity();
+        $hasMoreData  = $this->bridge->processNext();
+        $this->isDone = !$hasMoreData;
 
-            if ($data === false) {
-                $this->isDone = true;
-                return;
-            }
-            $this->type->getErrors($data);
-
-            $this->dest->putEntity($data);
-        } catch (Exception $e) {
-            $this->logger->write($e->getMessage());
-        }
+        return $hasMoreData;
     }
 
     public function finalize()
     {
-        $this->source->finalize();
-        $this->dest->finalize();
-        $this->logger->finalize();
-        $this->progress->finalize();
+        $this->$bridge->finalize();
     }
 
     public function isDone()
@@ -61,8 +45,8 @@ class Task implements Task\TaskInterface
         return $this->isDone;
     }
 
-    public function getProgress()
+    public function getLogger()
     {
-        return $this->progress;
+        return $this->logger;
     }
 }

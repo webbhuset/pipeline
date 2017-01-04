@@ -1,15 +1,30 @@
 <?php
 namespace Webbhuset\Bifrost\Core;
+use Webbhuset\Bifrost\Core\Utils\Fetcher\FetcherInterface;
 
 class Job implements Job\JobInterface
 {
     protected $fetcher;
     protected $taskList;
 
-    public function __construct($params)
+    public function __construct($fetcher, $taskList)
     {
-        $this->fetcher  = $params['fetcher'];
-        $this->taskList = $params['taskList'];
+        if (!isset($fetcher)) {
+            throw new BifrostException("Fetcher is not set.");
+        }
+        if (!$fetcher instanceof FetcherInterface) {
+            throw new BifrostException("Fetcher parameter must implement FetcherInterface");
+        }
+
+        if (!isset($taskList)) {
+            throw new BifrostException("Task list parameter is not set.");
+        }
+        if (!$taskList instanceof Job\TaskList) {
+            throw new BifrostException("Task list parameter must be instance of TaskList");
+        }
+
+        $this->fetcher  = $fetcher;
+        $this->taskList = $taskList;
     }
 
     public function init($args)
@@ -21,7 +36,7 @@ class Job implements Job\JobInterface
 
     public function processNext()
     {
-        $this->taskList->processOne();
+        $this->taskList->processNext();
     }
 
     public function isDone()
