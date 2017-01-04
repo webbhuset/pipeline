@@ -2,7 +2,11 @@
     "name": "webbhuset/bifrost",
     "description": "A bridge between worlds.",
     "require": {
-        "php": "^5.4.0 || ^7.0"
+        "php": "^5.4.0 || ^7.0",
+        "salsify/json-streaming-parser": "dev-master"
+    },
+    "provide": {
+        "salsify/json-streaming-parser": "dev-master"
     },
     "require-dev": {
         "webbhuset/test": "dev-master"
@@ -27,6 +31,10 @@
         {
             "type": "vcs",
             "url": "git@gitlab.webbhuset.com:libs/test.git"
+        },
+        {
+            "type": "vcs",
+            "url": "git@github.com:webbhuset/jsonstreamingparser.git"
         }
     ]
 }
