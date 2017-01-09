@@ -3,7 +3,7 @@ namespace Webbhuset\Bifrost\Core\Test\UnitTest\Utils\Reader\File;
 use Webbhuset\Bifrost\Core\Utils\Reader\File\Csv;
 use Webbhuset\Bifrost\Core\Utils\Logger\NullLogger;
 use Webbhuset\Bifrost\Core\Utils\Logger\LoggerInterface;
-use Webbhuset\Bifrost\Core\Utils\Processor\Mock;
+use Webbhuset\Bifrost\Core\Utils\Writer\Mock\Collector;
 
 class CsvTest extends Csv
 {
@@ -19,7 +19,7 @@ class CsvTest extends Csv
     public static function getEntityCountTest($test)
     {
         $nullLogger    = new NullLogger;
-        $mockProcessor = [new Mock];
+        $mockProcessor = [new Collector];
         $test->newInstance($nullLogger, $mockProcessor, null)
             ->testThatArgs()->returnsValue(6);
     }
@@ -27,7 +27,7 @@ class CsvTest extends Csv
     public static function processNextTest($test)
     {
         $nullLogger    = new NullLogger;
-        $mockProcessor = [new Mock];
+        $mockProcessor = [new Collector];
         $test->newInstance($nullLogger, $mockProcessor, null)
             ->testThatArgs()->returnsValue(true)
             ->testThatArgs()->returnsValue(true)
@@ -43,7 +43,7 @@ class CsvTest extends Csv
     public static function initTest($test)
     {
         $nullLogger    = new NullLogger;
-        $mockProcessor = [new Mock];
+        $mockProcessor = [new Collector];
         $args          = [
             'filename' => 'blablabla'
         ];
@@ -54,7 +54,7 @@ class CsvTest extends Csv
     public static function getDataTest($test)
     {
         $nullLogger    = new NullLogger;
-        $mockProcessor = [new Mock];
+        $mockProcessor = [new Collector];
         $test->newInstance($nullLogger, $mockProcessor, null);
 
         $expected = [

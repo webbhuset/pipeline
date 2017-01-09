@@ -1,7 +1,7 @@
 <?php
 namespace Webbhuset\Bifrost\Core\Test\UnitTest\Utils\Processor;
 use Webbhuset\Bifrost\Core\Utils\Logger\NullLogger;
-use Webbhuset\Bifrost\Core\Utils\Processor\Mock;
+use Webbhuset\Bifrost\Core\Utils\Writer\Mock\Collector;
 use Webbhuset\Bifrost\Core\Utils\Type as Type;
 
 class EntityValidatorTest
@@ -9,7 +9,7 @@ class EntityValidatorTest
     public static function __constructTest($test)
     {
         $nullLogger    = new NullLogger;
-        $mockProcessor = [new Mock];
+        $mockProcessor = [new Collector];
         $params = [
             'type' => new \stdClass
         ];
@@ -31,7 +31,7 @@ class EntityValidatorTest
         ];
         $type          = new Type\StructType($structParams);
         $nullLogger    = new NullLogger;
-        $mockProcessor = [new Mock];
+        $mockProcessor = [new Collector];
         $params = [
             'type' => $type
         ];
@@ -60,7 +60,7 @@ class EntityValidatorTest
         ];
         $type          = new Type\StructType($structParams);
         $nullLogger    = new NullLogger;
-        $mockProcessor = [new Mock];
+        $mockProcessor = [new Collector];
         $indata = [
             [
                 'sku'   => '123',

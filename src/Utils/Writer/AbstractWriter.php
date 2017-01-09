@@ -11,4 +11,10 @@ abstract class AbstractWriter implements WriterInterface
     {
         $this->logger = $logger;
     }
+
+    public function getNextSteps()
+    {
+        return false;
+    }
+
 }

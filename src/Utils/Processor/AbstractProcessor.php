@@ -33,13 +33,9 @@ abstract class AbstractProcessor implements ProcessorInterface
         $newItems = [];
 
         foreach ($items as $item) {
-            try {
-                $item = $this->processData($item);
-                if (!empty($item)) {
-                    $newItems[] = $item;
-                }
-            } catch (BifrostException $e) {
-                $this->logger->log($e->getMessage());
+            $item = $this->processData($item);
+            if (!empty($item)) {
+                $newItems[] = $item;
             }
         }
 
@@ -65,4 +61,9 @@ abstract class AbstractProcessor implements ProcessorInterface
     }
 
     abstract protected function processData($data);
+
+    public function getNextSteps()
+    {
+        return $this->nextSteps;
+    }
 }

@@ -27,11 +27,11 @@ BRIDGE;
 
     public function mockProcessor1()
     {
-        return new ProcessorFactory('Webbhuset\Bifrost\Core\Utils\Processor\Mock', []);
+        return new ProcessorFactory('Webbhuset\Bifrost\Core\Utils\Writer\Mock\Collector', []);
     }
     public function mockProcessor2()
     {
-        return new ProcessorFactory('Webbhuset\Bifrost\Core\Utils\Processor\Mock', []);
+        return new ProcessorFactory('Webbhuset\Bifrost\Core\Utils\Writer\Mock\Collector', []);
     }
 
     public static function createTest($test)
@@ -39,5 +39,9 @@ BRIDGE;
         $logger = new NullLogger;
         $test->newInstance($logger)
             ->testThatArgs()->returnsInstanceOf('Webbhuset\Bifrost\Core\Utils\Reader\Mock\Product');
+    }
+
+    public static function __constructTest($test)
+    {
     }
 }

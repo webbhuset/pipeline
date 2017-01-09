@@ -71,4 +71,9 @@ abstract class AbstractReader implements ReaderInterface
     }
 
     abstract protected function getData();
+
+    public function getNextSteps()
+    {
+        return $this->nextSteps;
+    }
 }

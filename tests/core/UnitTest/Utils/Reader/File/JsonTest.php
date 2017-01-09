@@ -3,7 +3,7 @@ namespace Webbhuset\Bifrost\Core\Test\UnitTest\Utils\Reader\File;
 use Webbhuset\Bifrost\Core\Utils\Reader\File\Json;
 use Webbhuset\Bifrost\Core\Utils\Logger\NullLogger;
 use Webbhuset\Bifrost\Core\Utils\Logger\LoggerInterface;
-use Webbhuset\Bifrost\Core\Utils\Processor\Mock;
+use Webbhuset\Bifrost\Core\Utils\Writer\Mock\Collector;
 
 class JsonTest extends Json
 {
@@ -19,7 +19,7 @@ class JsonTest extends Json
     public static function getEntityCountTest($test)
     {
         $nullLogger    = new NullLogger;
-        $mockProcessor = [new Mock];
+        $mockProcessor = [new Collector];
         $test->newInstance($nullLogger, $mockProcessor, null)
             ->testThatArgs()->returnsValue(6);
     }
@@ -27,7 +27,7 @@ class JsonTest extends Json
     public static function processNextTest($test)
     {
         $nullLogger    = new NullLogger;
-        $mockProcessor = [new Mock];
+        $mockProcessor = [new Collector];
         $test->newInstance($nullLogger, $mockProcessor, null)
             ->testThatArgs()->returnsValue(true)
             ->testThatArgs()->returnsValue(true)
@@ -41,7 +41,7 @@ class JsonTest extends Json
     public static function initTest($test)
     {
         $nullLogger    = new NullLogger;
-        $mockProcessor = [new Mock];
+        $mockProcessor = [new Collector];
         $args          = [
             'filename' => 'blablabla'
         ];
@@ -52,7 +52,7 @@ class JsonTest extends Json
     public static function getDataTest($test)
     {
         $nullLogger    = new NullLogger;
-        $mockProcessor = [new Mock];
+        $mockProcessor = [new Collector];
         $test->newInstance($nullLogger, $mockProcessor, null);
 
         $expected = [
@@ -128,7 +128,39 @@ class JsonTest extends Json
     {
     }
 
-    public static function __constructTest()
+    public static function startDocumentTest()
+    {
+    }
+
+    public static function startArrayTest()
+    {
+    }
+
+    public static function endDocumentTest()
+    {
+    }
+
+    public static function startObjectTest()
+    {
+    }
+
+    public static function endObjectTest()
+    {
+    }
+
+    public static function endArrayTest()
+    {
+    }
+
+    public static function keyTest()
+    {
+    }
+
+    public static function valueTest()
+    {
+    }
+
+    public static function whitespaceTest()
     {
     }
 }

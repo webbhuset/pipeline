@@ -1,7 +1,7 @@
 <?php
 namespace Webbhuset\Bifrost\Core\Test\UnitTest\Utils\Processor;
 use Webbhuset\Bifrost\Core\Utils\Logger\NullLogger;
-use Webbhuset\Bifrost\Core\Utils\Processor\Mock;
+use Webbhuset\Bifrost\Core\Utils\Writer\Mock\Collector;
 
 class BatcherTest
 {
@@ -12,7 +12,7 @@ class BatcherTest
             'batch_size'   => 4,
         ];
         $nullLogger    = new NullLogger;
-        $mockProcessor = [new Mock];
+        $mockProcessor = [new Collector];
 
         $test
             ->testThatArgs($nullLogger, $mockProcessor, $params)
@@ -27,7 +27,7 @@ class BatcherTest
     public static function processNextTest($test)
     {
         $nullLogger    = new NullLogger;
-        $mockProcessor = [new Mock];
+        $mockProcessor = [new Collector];
 
         $params = [
             'batch_size'   => 4,

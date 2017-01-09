@@ -1,7 +1,7 @@
 <?php
 namespace Webbhuset\Bifrost\Core\Utils\Processor\Filler\Backend;
 
-class defaultValues implements BackendInterface
+class DefaultValues implements BackendInterface
 {
     protected $defaultValues;
 

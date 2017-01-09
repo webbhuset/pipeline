@@ -1,7 +1,7 @@
 <?php
 namespace Webbhuset\Bifrost\Core\Test\UnitTest\Utils\Processor;
 use Webbhuset\Bifrost\Core\Utils\Logger\NullLogger;
-use Webbhuset\Bifrost\Core\Utils\Processor\Mock;
+use Webbhuset\Bifrost\Core\Utils\Writer\Mock\Collector;
 use Webbhuset\Bifrost\Core\Utils\Type as Type;
 
 class DifferTest
@@ -15,7 +15,7 @@ class DifferTest
             ]
         ];
         $nullLogger    = new NullLogger;
-        $mockProcessor = [new Mock];
+        $mockProcessor = [new Collector];
         $params = [
             'type' => new Type\StructType($structParams),
         ];
@@ -38,7 +38,7 @@ class DifferTest
             ]
         ];
         $nullLogger    = new NullLogger;
-        $mockProcessor = [new Mock];
+        $mockProcessor = [new Collector];
         $params = [
             'type' => new Type\StructType($structParams),
         ];
@@ -86,7 +86,7 @@ class DifferTest
         ];
         $type          = new Type\StructType($structParams);
         $nullLogger    = new NullLogger;
-        $mockProcessor = [new Mock];
+        $mockProcessor = [new Collector];
         $indata = [
             [
                 'old' => [

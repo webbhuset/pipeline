@@ -6,19 +6,23 @@ use Webbhuset\Bifrost\Core\Utils\Writer\AbstractWriter;
 abstract class AbstractWriterTest extends AbstractWriter
 {
 
-    public function __constructTest()
+    public static function __constructTest()
     {
     }
 
-    public function initTest()
+    public static function initTest()
     {
     }
 
-    public function processNextTest()
+    public static function processNextTest()
     {
     }
 
-    public function finalizeTest()
+    public static function finalizeTest()
+    {
+    }
+
+    public static function getNextStepsTest()
     {
     }
 

@@ -22,6 +22,14 @@ abstract class AbstractProcessorTest extends AbstractProcessor
     {
     }
 
+    public static function countTest()
+    {
+    }
+
+    public static function getNextStepsTest()
+    {
+    }
+
     protected function getData()
     {
     }

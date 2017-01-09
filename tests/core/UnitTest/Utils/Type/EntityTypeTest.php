@@ -70,7 +70,10 @@ class EntityTypeTest
                 '+' => 'ny test',
                 '-' => 'gammal test'
             ],
-            'id'          => 334,
+            'id' => [
+                '+' => 334,
+                '-' => 334,
+            ]
         ];
         $test->testThatArgs($old, $new)->returnsValue($expected);
     }

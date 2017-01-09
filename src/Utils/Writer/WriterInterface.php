@@ -4,7 +4,7 @@ use Webbhuset\Bifrost\Core\Utils\Processor\ProcessorInterface;
 
 use Webbhuset\Bifrost\Core\Utils;
 
-interface WriterInterface
+interface WriterInterface extends ProcessorInterface
 {
     public function __construct(Utils\Logger\LoggerInterface $logger, $params);
     public function init($args);

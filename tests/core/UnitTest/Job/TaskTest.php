@@ -1,7 +1,7 @@
 <?php
 namespace Webbhuset\Bifrost\Core\Test\UnitTest\Job;
 use Webbhuset\Bifrost\Core\Utils\Logger\NullLogger;
-use Webbhuset\Bifrost\Core\Utils\Processor\Mock;
+use Webbhuset\Bifrost\Core\Utils\Writer\Mock\Collector;
 use Webbhuset\Bifrost\Core\Utils\Reader\Mock\Product;
 
 class TaskTest
@@ -9,7 +9,7 @@ class TaskTest
     public static function __constructTest($test)
     {
         $nullLogger    = new NullLogger;
-        $mockProcessor = [new Mock];
+        $mockProcessor = [new Collector];
         $params = [
             'seed'           => 'apa',
             'no_of_entities' => 2,
@@ -27,7 +27,7 @@ class TaskTest
     public static function processNextTest($test)
     {
         $nullLogger    = new NullLogger;
-        $mockProcessor = [new Mock];
+        $mockProcessor = [new Collector];
         $params = [
             'seed'           => 'apa',
             'no_of_entities' => 4,
@@ -47,6 +47,10 @@ class TaskTest
     }
 
     public static function finalizeTest()
+    {
+    }
+
+    public static function getLoggerTest()
     {
     }
 }

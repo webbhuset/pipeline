@@ -74,7 +74,7 @@
             "source": {
                 "type": "git",
                 "url": "git@gitlab.webbhuset.com:libs/test.git",
-                "reference": "f71edd362ae74134e6f660968eb0a8038277192d"
+                "reference": "facf17f2e70d3c5120c12d79687f22fd8da39efa"
             },
             "require": {
                 "php": ">=5.3.0"
@@ -88,14 +88,15 @@
             "autoload-dev": {
                 "psr-4": {
                     "Webbhuset\\Test\\Dev\\": "dev/src",
-                    "Webbhuset\\Test\\Dev\\Test\\": "dev/tests"
+                    "Webbhuset\\Test\\Dev\\Test\\": "dev/tests",
+                    "Webbhuset\\Test\\Test\\": "tests"
                 }
             },
             "license": [
                 "MIT"
             ],
             "description": "Test Framework",
-            "time": "2017-01-03 09:14:57"
+            "time": "2017-01-05 16:55:37"
         }
     ],
     "aliases": [],

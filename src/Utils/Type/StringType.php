@@ -62,7 +62,10 @@ class StringType extends AbstractType
 
     public function isEqual($a, $b)
     {
-        if (!is_string($a) || !is_string($b)) {
+        if (!(is_string($a) || is_null($a))) {
+            throw new BifrostException("Not a string");
+        }
+        if (!(is_string($b) || is_null($b))) {
             throw new BifrostException("Not a string");
         }
 

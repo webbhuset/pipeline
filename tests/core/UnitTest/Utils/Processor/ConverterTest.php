@@ -1,7 +1,7 @@
 <?php
 namespace Webbhuset\Bifrost\Core\Test\UnitTest\Utils\Processor;
 use Webbhuset\Bifrost\Core\Utils\Logger\NullLogger;
-use Webbhuset\Bifrost\Core\Utils\Processor\Mock;
+use Webbhuset\Bifrost\Core\Utils\Writer\Mock\Collector;
 use Webbhuset\Bifrost\Core\Utils\ValueConverter\StringToInt;
 use Webbhuset\Bifrost\Core\Utils\ValueConverter\StringToFloat;
 
@@ -26,7 +26,7 @@ class ConverterTest
             'fields' => $fields,
         ];
         $nullLogger    = new NullLogger;
-        $mockProcessor = [new Mock];
+        $mockProcessor = [new Collector];
         $test->newInstance($nullLogger, $mockProcessor, $params);
 
         $indata = [
@@ -66,7 +66,7 @@ class ConverterTest
             'fields' => $fields,
         ];
         $nullLogger    = new NullLogger;
-        $mockProcessor = [new Mock];
+        $mockProcessor = [new Collector];
         $test->newInstance($nullLogger, $mockProcessor, $params);
 
         $indata = [

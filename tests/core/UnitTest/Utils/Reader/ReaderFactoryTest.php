@@ -1,7 +1,7 @@
 <?php
 namespace Webbhuset\Bifrost\Core\Test\UnitTest\Utils\Reader;
 use Webbhuset\Bifrost\Core\Utils\Logger\NullLogger;
-use Webbhuset\Bifrost\Core\Utils\Processor\Mock;
+use Webbhuset\Bifrost\Core\Utils\Writer\Mock\Collector;
 
 class ReaderFactoryTest
 {
@@ -22,6 +22,6 @@ class ReaderFactoryTest
         ];
         $nullLogger = new NullLogger;
         $test->newInstance('Webbhuset\Bifrost\Core\Utils\Reader\Mock\Product', $params)
-            ->testThatArgs($nullLogger, new Mock)->returnsInstanceOf('Webbhuset\Bifrost\Core\Utils\Reader\Mock\Product');
+            ->testThatArgs($nullLogger, new Collector)->returnsInstanceOf('Webbhuset\Bifrost\Core\Utils\Reader\Mock\Product');
     }
 }

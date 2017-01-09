@@ -1,5 +1,6 @@
 <?php
 namespace Webbhuset\Bifrost\Core\Job;
+use Webbhuset\Bifrost\Core\BifrostException;
 
 class TaskList
 {

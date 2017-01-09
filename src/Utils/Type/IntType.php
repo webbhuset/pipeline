@@ -63,7 +63,10 @@ class IntType extends AbstractType
 
     public function isEqual($a, $b)
     {
-        if (!is_int($a) || !is_int($b)) {
+        if (!(is_int($a) || is_null($a))) {
+            throw new BifrostException("Not a integer");
+        }
+        if (!(is_int($b) || is_null($b))) {
             throw new BifrostException("Not a integer");
         }
 

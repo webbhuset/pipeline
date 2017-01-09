@@ -1,7 +1,7 @@
 <?php
 namespace Webbhuset\Bifrost\Core\Test\UnitTest\Utils\Processor;
 use Webbhuset\Bifrost\Core\Utils\Logger\NullLogger;
-use Webbhuset\Bifrost\Core\Utils\Processor\Mock;
+use Webbhuset\Bifrost\Core\Utils\Writer\Mock\Collector;
 use Webbhuset\Bifrost\Core\Utils\Processor\Filler\Backend\DefaultValues;
 
 class FillerTest
@@ -9,7 +9,7 @@ class FillerTest
     public static function __constructTest($test)
     {
         $nullLogger    = new NullLogger;
-        $mockProcessor = [new Mock];
+        $mockProcessor = [new Collector];
         $backendParams = [
             'default_values' => ['price' => 123],
         ];
@@ -39,7 +39,7 @@ class FillerTest
         ];
         $backend       = new DefaultValues($backendParams);
         $nullLogger    = new NullLogger;
-        $mockProcessor = [new Mock];
+        $mockProcessor = [new Collector];
         $params = [
             'backend' => $backend
         ];
@@ -81,7 +81,7 @@ class FillerTest
         ];
         $backend       = new DefaultValues($backendParams);
         $nullLogger    = new NullLogger;
-        $mockProcessor = [new Mock];
+        $mockProcessor = [new Collector];
         $indata = [
             'price' => [
                 'test' => [

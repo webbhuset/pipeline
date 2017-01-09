@@ -1,14 +1,14 @@
 <?php
 namespace Webbhuset\Bifrost\Core\Test\UnitTest\Utils\Processor;
 use Webbhuset\Bifrost\Core\Utils\Logger\NullLogger;
-use Webbhuset\Bifrost\Core\Utils\Processor\Mock;
+use Webbhuset\Bifrost\Core\Utils\Writer\Mock\Collector;
 
 class MapperTest
 {
     public static function __constructTest($test)
     {
         $nullLogger    = new NullLogger;
-        $mockProcessor = [new Mock];
+        $mockProcessor = [new Collector];
         $params        = [];
         $test
             ->testThatArgs($nullLogger, $mockProcessor, $params)
@@ -18,7 +18,7 @@ class MapperTest
     public static function processNextTest($test)
     {
         $nullLogger    = new NullLogger;
-        $mockProcessor = [new Mock];
+        $mockProcessor = [new Collector];
         $fields = [
             'name' => [
                 'en_US' => '/title_en',
@@ -43,7 +43,7 @@ class MapperTest
     public static function processDataTest($test)
     {
         $nullLogger    = new NullLogger;
-        $mockProcessor = [new Mock];
+        $mockProcessor = [new Collector];
 
         /* Test 1: Simple mapping and callback functions */
         $fields = [

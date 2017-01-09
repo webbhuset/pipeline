@@ -1,7 +1,6 @@
 <?php
 namespace Webbhuset\Bifrost\Core\Test\UnitTest\Job;
 use Webbhuset\Bifrost\Core\Utils\Logger\NullLogger;
-use Webbhuset\Bifrost\Core\Utils\Processor\Mock;
 use Webbhuset\Bifrost\Core\Utils\Reader\Mock\Product;
 
 class TaskListTest

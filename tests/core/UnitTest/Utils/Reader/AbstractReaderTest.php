@@ -6,23 +6,27 @@ use Webbhuset\Bifrost\Core\Utils\Reader\AbstractReader;
 abstract class AbstractReaderTest extends AbstractReader
 {
 
-    public function __constructTest()
+    public static function __constructTest()
     {
     }
 
-    public function initTest()
+    public static function initTest()
     {
     }
 
-    public function processNextTest()
+    public static function processNextTest()
     {
     }
 
-    public function getEntityCountTest()
+    public static function getEntityCountTest()
     {
     }
 
-    public function finalizeTest()
+    public static function finalizeTest()
+    {
+    }
+
+    public static function getNextStepsTest()
     {
     }
 

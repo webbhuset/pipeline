@@ -62,7 +62,10 @@ class FloatType extends AbstractType
 
     public function isEqual($a, $b)
     {
-        if (!is_float($a) || !is_float($b)) {
+        if (!(is_float($a) || is_null($a))) {
+            throw new BifrostException("Not a float");
+        }
+        if (!(is_float($b) || is_null($b))) {
             throw new BifrostException("Not a float");
         }
 

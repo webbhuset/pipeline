@@ -29,6 +29,11 @@ class Mapper extends AbstractProcessor
     protected function mapData($fields, $data)
     {
         $result = [];
+
+        if (is_array($fields) && is_callable($fields)) {
+            return call_user_func($fields, $data);
+        }
+
         foreach ($fields as $key => $fieldConfig) {
             if (is_array($fieldConfig) && is_callable($fieldConfig)) {
                 $result[$key] = call_user_func($fieldConfig, $data);

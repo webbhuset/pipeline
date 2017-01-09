@@ -23,10 +23,9 @@ class StringTypeTest
             ->testThatArgs('apa123', 'apa123')->returnsValue(true)
             ->testThatArgs('', '')->returnsValue(true)
             ->testThatArgs('apa123', 'apa')->returnsValue(false)
-            ->testThatArgs('apa', 'apa123')->returnsValue(false);
-
-        $test->testThatArgs('', null)->throws('Webbhuset\Bifrost\Core\BifrostException')
-            ->testThatArgs(null, '')->throws('Webbhuset\Bifrost\Core\BifrostException')
+            ->testThatArgs('apa', 'apa123')->returnsValue(false)
+            ->testThatArgs(null, '')->returnsValue(false)
+            ->testThatArgs('', null)->returnsValue(false)
             ->testThatArgs(0, '')->throws('Webbhuset\Bifrost\Core\BifrostException')
             ->testThatArgs(0, [])->throws('Webbhuset\Bifrost\Core\BifrostException');
     }

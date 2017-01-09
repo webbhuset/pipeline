@@ -1,7 +1,7 @@
 <?php
 namespace Webbhuset\Bifrost\Core\Test\UnitTest\Utils\Reader\Mock;
 use Webbhuset\Bifrost\Core\Utils\Logger\NullLogger;
-use Webbhuset\Bifrost\Core\Utils\Processor\Mock;
+use Webbhuset\Bifrost\Core\Utils\Writer\Mock\Collector;
 
 class ProductTest
 {
@@ -9,7 +9,7 @@ class ProductTest
     public static function getEntityCountTest($test)
     {
         $nullLogger    = new NullLogger;
-        $mockProcessor = [new Mock];
+        $mockProcessor = [new Collector];
         $params = [
             'seed'           => 'apa',
             'no_of_entities' => 2,
@@ -28,7 +28,7 @@ class ProductTest
     public static function processNextTest($test)
     {
         $nullLogger    = new NullLogger;
-        $mockProcessor = [new Mock];
+        $mockProcessor = [new Collector];
         $params = [
             'seed'           => 'apa',
             'no_of_entities' => 2,

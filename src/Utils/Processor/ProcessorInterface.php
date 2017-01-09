@@ -7,4 +7,5 @@ interface ProcessorInterface
     public function processNext($data, $onlyForCount);
     public function finalize($onlyForCount);
     public function count();
+    public function getNextSteps();
 }
