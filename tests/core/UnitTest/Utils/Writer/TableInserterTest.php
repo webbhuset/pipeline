@@ -1,5 +1,5 @@
 <?php
-namespace Webbhuset\Bifrost\MageOne\Test\UnitTest\Utils\Writer;
+namespace Webbhuset\Bifrost\Core\Test\UnitTest\Utils\Writer;
 
 class TableInserterTest
 {
@@ -57,6 +57,10 @@ class TableInserterTest
     }
 
     public static function countTest($test)
+    {
+    }
+
+    public static function getNextStepsTest($test)
     {
     }
 }

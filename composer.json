@@ -1,5 +1,7 @@
 {
     "name": "webbhuset/bifrost",
+    "type": "magento-module",
+    "license": "proprietary",
     "description": "A bridge between worlds.",
     "require": {
         "php": "^5.4.0 || ^7.0",
@@ -35,6 +37,22 @@
         {
             "type": "vcs",
             "url": "git@github.com:webbhuset/jsonstreamingparser.git"
+        },
+        {
+            "type": "vcs",
+            "url": "git@gitlab.webbhuset.com:libs/bifrost.git"
         }
-    ]
+    ],
+    "extra": {
+        "map": [
+            [
+                "impl/mageone/app/code/community/Webbhuset/Bifrost/",
+                "app/code/community/Webbhuset/Bifrost/"
+            ],
+            [
+                "impl/mageone/app/etc/modules/Webbhuset_Bifrost.xml",
+                "app/etc/modules/Webbhuset_Bifrost.xml"
+            ]
+        ]
+    }
 }

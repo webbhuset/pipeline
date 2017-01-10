@@ -1,0 +1,19 @@
+<config>
+    <modules>
+        <Webbhuset_Bifrost>
+            <version>2.0.0</version>
+        </Webbhuset_Bifrost>
+    </modules>
+    <global>
+        <helpers>
+            <whbifrost>
+                <class>Webbhuset_Bifrost_Helper</class>
+            </whbifrost>
+        </helpers>
+        <blocks>
+            <whbifrost>
+                <class>Webbhuset_Bifrost_Block</class>
+            </whbifrost>
+        </blocks>
+    </global>
+</config>

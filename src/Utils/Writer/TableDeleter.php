@@ -1,5 +1,5 @@
 <?php
-namespace Webbhuset\Bifrost\MageOne\Utils\Writer;
+namespace Webbhuset\Bifrost\Core\Utils\Writer;
 use Webbhuset\Bifrost\Core\Utils\Writer\WriterInterface;
 use Webbhuset\Bifrost\Core\Utils\Logger\LoggerInterface;
 use Webbhuset\Bifrost\Core\BifrostException;
@@ -100,5 +100,10 @@ class TableDeleter implements WriterInterface
 
     public function count()
     {
+    }
+
+    public function getNextSteps()
+    {
+        return false;
     }
 }

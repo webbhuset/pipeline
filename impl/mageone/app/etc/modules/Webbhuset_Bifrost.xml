@@ -1,0 +1,8 @@
+<config>
+    <modules>
+        <Webbhuset_Bifrost>
+            <active>true</active>
+            <codePool>community</codePool>
+        </Webbhuset_Bifrost>
+    </modules>
+</config>

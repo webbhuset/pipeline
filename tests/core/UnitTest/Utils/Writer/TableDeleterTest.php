@@ -1,8 +1,8 @@
 <?php
-namespace Webbhuset\Bifrost\MageOne\Test\UnitTest\Utils\Writer;
+namespace Webbhuset\Bifrost\Core\Test\UnitTest\Utils\Writer;
 
 use Webbhuset\Bifrost\Core\Utils\Logger;
-use Webbhuset\Bifrost\MageOne\Utils\Writer\TableDeleter;
+use Webbhuset\Bifrost\Core\Utils\Writer\TableDeleter;
 
 class TableDeleterTest extends TableDeleter
 {
@@ -163,6 +163,10 @@ class TableDeleterTest extends TableDeleter
     }
 
     public static function countTest($test)
+    {
+    }
+
+    public static function getNextStepsTest($test)
     {
     }
 }
