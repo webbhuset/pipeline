@@ -52,6 +52,10 @@
             [
                 "impl/mageone/app/etc/modules/Webbhuset_Bifrost.xml",
                 "app/etc/modules/Webbhuset_Bifrost.xml"
+            ],
+            [
+                "src/",
+                "lib/Webbhuset/Bifrost"
             ]
         ]
     }

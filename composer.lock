@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "c9bf4d7c9b93077f9e7ae11ccfeb6cf8",
-    "content-hash": "38888072c4400da876e970578e77fe67",
+    "hash": "3aaad506fe003ab55dbb8f3222b483f5",
+    "content-hash": "1a96b623af9e73387d1b5962b987ab6f",
     "packages": [
         {
             "name": "salsify/json-streaming-parser",
@@ -74,7 +74,7 @@
             "source": {
                 "type": "git",
                 "url": "git@gitlab.webbhuset.com:libs/test.git",
-                "reference": "facf17f2e70d3c5120c12d79687f22fd8da39efa"
+                "reference": "aab9c3e237a201819810416ef4c07a6705431464"
             },
             "require": {
                 "php": ">=5.3.0"
@@ -96,7 +96,7 @@
                 "MIT"
             ],
             "description": "Test Framework",
-            "time": "2017-01-05 16:55:37"
+            "time": "2017-01-09 14:05:22"
         }
     ],
     "aliases": [],
