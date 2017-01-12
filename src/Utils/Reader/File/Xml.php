@@ -8,6 +8,7 @@ class Xml extends AbstractReader
 {
     protected $nodeName;
     protected $fileName;
+    protected $xml;
 
     public function __construct(LoggerInterface $logger, $nextSteps, $params)
     {
@@ -66,12 +67,11 @@ class Xml extends AbstractReader
 
     protected function xmlToarray($xml)
     {
+        $xml    = (array) $xml;
         $result = array();
 
-        foreach ($xml as $element) {
-            $key = $element->getName();
-            $e   = get_object_vars($element);
-            if (!empty($e)) {
+        foreach ($xml as $key => $element) {
+            if (is_object($element)) {
                 $result[$key] = $element instanceof \SimpleXMLElement ? $this->xmlToarray($element) : $e;
             } else {
                 $result[$key] = trim($element);

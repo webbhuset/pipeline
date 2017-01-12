@@ -25,7 +25,7 @@ class StructType extends AbstractType
         $result = [];
         foreach ($this->fields as $key => $type) {
             if (!isset($value[$key])){
-                throw new BifrostException("Input is missing key: " . $key);
+                continue;
             }
 
             $result[$key] = $type->cast($value[$key]);

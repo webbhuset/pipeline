@@ -39,6 +39,10 @@ abstract class AbstractProcessor implements ProcessorInterface
             }
         }
 
+        if (empty($newItems)) {
+            return;
+        }
+
         foreach ($this->nextSteps as $nextStep) {
             $nextStep->processNext($newItems, $onlyForCount);
         }

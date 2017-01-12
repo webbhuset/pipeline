@@ -18,9 +18,12 @@ class EntityType extends StructType
 
     public function diff($old, $new) {
         $result = parent::diff($old, $new);
-        if (!empty($result) && !isset($result[$this->entityId])) {
+        if (!empty($result) && !isset($result[$this->entityId]) && isset($new[$this->entityId])) {
             $result[$this->entityId]['+'] = $new[$this->entityId];
             $result[$this->entityId]['-'] = $new[$this->entityId];
+        }
+        if (count($result)===1 && isset($result[$this->entityId])) {
+            return [];
         }
 
         return $result;

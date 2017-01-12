@@ -66,7 +66,7 @@ abstract class AbstractReader implements ReaderInterface
     public function finalize()
     {
         foreach ($this->nextSteps as $nextStep) {
-            $nextStep->finalize($onlyForCount);
+            $nextStep->finalize();
         }
     }
 

@@ -49,6 +49,7 @@ class ProcessorsTest
         $indata[0]['test1']['namn'] = 'ny apa';
         $bridge->setData($indata);
         $bridge->processNext();
+
         if ($writers['varchar2']->getData()[0]['value'] !== 'ny apa') {
             throw new \Exception('Unexpected Value');
         }

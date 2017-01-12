@@ -35,18 +35,24 @@ class Batcher extends AbstractProcessor
             return;
         }
 
-        foreach ($this->nextSteps as $nextStep) {
-            $nextStep->processNext($this->batch, $onlyForCount);
+        foreach (array_chunk($this->batch, $this->batchSize) as $chunk) {
+            foreach ($this->nextSteps as $nextStep) {
+                $nextStep->processNext($chunk, $onlyForCount);
+            }
         }
-
         $this->batch = [];
 
         return;
     }
 
-    public function finalize($onlyForCount)
+    public function finalize($onlyForCount = false)
     {
-        $this->nextStep->processNext($this->batch);
+        foreach (array_chunk($this->batch, $this->batchSize) as $chunk) {
+            foreach ($this->nextSteps as $nextStep) {
+                $nextStep->processNext($chunk, $onlyForCount);
+            }
+        }
+        $this->batch = [];
 
         return parent::finalize($onlyForCount);
     }

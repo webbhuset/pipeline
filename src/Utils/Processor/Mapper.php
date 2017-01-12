@@ -7,6 +7,7 @@ class Mapper extends AbstractProcessor
 {
 
     protected $fields;
+    protected $singleCallback = false;
 
     public function __construct(LoggerInterface $log, $nextStep, $params)
     {
@@ -18,7 +19,6 @@ class Mapper extends AbstractProcessor
         $this->fields = $params['fields'];
 
     }
-
     protected function processData($data)
     {
         $mapped = $this->mapData($this->fields, $data);
@@ -30,12 +30,12 @@ class Mapper extends AbstractProcessor
     {
         $result = [];
 
-        if (is_array($fields) && is_callable($fields)) {
+        if (is_callable($fields)) {
             return call_user_func($fields, $data);
         }
 
         foreach ($fields as $key => $fieldConfig) {
-            if (is_array($fieldConfig) && is_callable($fieldConfig)) {
+            if (is_callable($fieldConfig)) {
                 $result[$key] = call_user_func($fieldConfig, $data);
             } elseif (is_array($fieldConfig)) {
                 $result[$key] = $this->mapData($fieldConfig, $data);

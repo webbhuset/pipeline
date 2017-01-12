@@ -91,7 +91,8 @@ BRIDGE;
             'default_values' => $defaults,
         ];
         $params = [
-            'backend' => new DefaultValues($backendParams)
+            'backend'           => new DefaultValues($backendParams),
+            'key_specification' => ['sku'],
         ];
         return new ProcessorFactory('Webbhuset\Bifrost\Core\Utils\Processor\Filler', $params);
     }
@@ -116,11 +117,12 @@ BRIDGE;
     {
         $fields       = [$this, "mapToOldNewFormat"];
         $mapperParams = [
-            "fields" => $fields,
+            "fields"            => $fields,
         ];
         $mapper  = new ProcessorFactory('Webbhuset\Bifrost\Core\Utils\Processor\Mapper', $mapperParams);
 
         $fillerParams = [
+            'key_specification' => [$this, 'getOldDataFillerKey'],
             'backend' => new Repeater(
                 [
                     'key_attribute' => 'sku'
@@ -129,7 +131,12 @@ BRIDGE;
         ];
         $filler = new ProcessorFactory('Webbhuset\Bifrost\Core\Utils\Processor\Filler', $fillerParams);
 
-        return [$filler,$mapper];
+        return [$mapper, $filler];
+    }
+
+    public function getOldDataFillerKey($item)
+    {
+        return [$item['new']['sku']];
     }
 
     public function mapToOldNewFormat($data)

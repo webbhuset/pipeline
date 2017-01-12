@@ -29,8 +29,8 @@ class Job implements Job\JobInterface
 
     public function init($args)
     {
-        $filename         = $this->fetcher->init($args);
-        $args['filename'] = $filename;
+        $this->fetcher->init($args);
+        $args['filename'] = $this->fetcher->fetch();
         $this->taskList->init($args);
     }
 

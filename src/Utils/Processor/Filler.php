@@ -5,7 +5,9 @@ use \Webbhuset\Bifrost\Core\BifrostException;
 
 class Filler extends AbstractProcessor
 {
-    protected $backend = [];
+    protected $backend  = [];
+    protected $collector;
+    protected $keySpec;
 
     public function __construct(LoggerInterface $log, $nextStep, $params)
     {
@@ -13,15 +15,69 @@ class Filler extends AbstractProcessor
         if (!isset($params['backend'])) {
             throw new BifrostException("'Backend' parameter is not set.");
         }
-        $this->backend = $params['backend'];
+        $this->backend   = $params['backend'];
+        $writers         = $this->getWriters($params['backend']);
+        if (count($writers)!==1) {
+            throw new BifrostException("The backend chain must have exactly one writer.");
+        }
+
+        if (!method_exists($writers[0], 'getData')) {
+            throw new BifrostException("The collector must have a 'getData' method.");
+        }
+
+        $this->collector = $writers[0];
+        if (!isset($params['key_specification'])) {
+            throw new BifrostException("'key_specification' parameter is not set.");
+        }
+        $this->keySpec = $params['key_specification'];
     }
 
-    protected function processData($data)
+    public function processNext($items, $onlyForCount = false)
     {
-        $valuesToAdd          = $this->backend->getData($data);
-        $dataAndBackendValues = $this->fillValues($data, $valuesToAdd);
+        $this->backend->processNext($items, $onlyForCount);
+        $backendData = $this->collector->getData();
 
-        return $dataAndBackendValues;
+        $newItem = [];
+        foreach ($items as $item) {
+            $key         = $this->getKey($item);
+            $valuesToAdd = $this->getValueFromKey($backendData, $key);
+            $newItem     = $this->fillValues($item, $valuesToAdd);
+
+            if (!empty($item)) {
+                $newItems[] = $newItem;
+            }
+        }
+
+        foreach ($this->nextSteps as $nextStep) {
+            $nextStep->processNext($newItems, $onlyForCount);
+        }
+    }
+
+    protected function getKey($item)
+    {
+        $keySpec = $this->keySpec;
+        if (is_array($keySpec)
+            && count($keySpec) === 1
+            && is_string($keySpec[0]))
+        {
+            return [$this->getValueFromKey($item, $keySpec)];
+        }
+
+        if (is_callable($keySpec)) {
+            return call_user_func($keySpec, $item);
+        }
+    }
+
+    protected function getValueFromKey($data, $key)
+    {
+        foreach ($key as $keyPart) {
+            if (!isset($data[$keyPart])) {
+                return [];
+            }
+            $data = $data[$keyPart];
+        }
+
+        return $data;
     }
 
     protected function fillValues($data, $valuesToAdd)
@@ -47,4 +103,21 @@ class Filler extends AbstractProcessor
         return $data;
     }
 
+    protected function processData($data)
+    {
+    }
+
+    protected function getWriters($processor)
+    {
+        if (!$processor->getNextSteps()) {
+            return [$processor];
+        }
+
+        $writers = [];
+        foreach ($processor->getNextSteps() as $step) {
+            $writers += $this->getWriters($step);
+        }
+
+        return $writers;
+    }
 }

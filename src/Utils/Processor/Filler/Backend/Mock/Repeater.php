@@ -1,12 +1,16 @@
 <?php
 namespace Webbhuset\Bifrost\Core\Utils\Processor\Filler\Backend\Mock;
-use Webbhuset\Bifrost\Core\Utils\Processor\Filler\Backend\BackendInterface;
 use \Webbhuset\Bifrost\Core\BifrostException;
+use Webbhuset\Bifrost\Core\Utils\Processor\AbstractProcessor;
 
-class Repeater implements BackendInterface
+
+class Repeater extends AbstractProcessor
 {
-    protected $oldData;
+    protected $oldData = [];
+    protected $tmpData = [];
+
     protected $keyAttribute;
+
     public function __construct($params = null)
     {
         if (!isset($params['key_attribute'])) {
@@ -15,16 +19,21 @@ class Repeater implements BackendInterface
         $this->keyAttribute = $params['key_attribute'];
     }
 
-    public function getData($inputData)
+    public function getData()
     {
-        $tmpData = [];
-        $key = $inputData['new'][$this->keyAttribute];
-        if (isset($this->oldData[$key])) {
-            $inputData['old'] = $this->oldData[$key];
+        $result = [];
+        foreach ($this->oldData as $key => $item) {
+            $result[$key]['old'] = $this->oldData[$key];
         }
+        $this->oldData = $this->tmpData;
+        $this->tmpData = [];
 
-        $this->oldData[$key] = $inputData['new'];
+        return $result;
+    }
 
-        return $inputData;
+    public function processData($data)
+    {
+        $key                 = $data['new'][$this->keyAttribute];
+        $this->tmpData[$key] = $data['new'];
     }
 }

@@ -15,5 +15,10 @@
                 <class>Webbhuset_Bifrost_Block</class>
             </whbifrost>
         </blocks>
+        <models>
+            <whbifrost>
+                <class>Webbhuset_Bifrost_Model</class>
+            </whbifrost>
+        </models>
     </global>
 </config>

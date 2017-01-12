@@ -14,7 +14,8 @@ class FillerTest
             'default_values' => ['price' => 123],
         ];
         $params = [
-            'backend' => new DefaultValues($backendParams),
+            'key_specification' => ['price'],
+            'backend'           => new DefaultValues($backendParams),
         ];
         $test->testThatArgs($nullLogger, $mockProcessor, $params)->notThrows('Exception');
 
@@ -22,47 +23,6 @@ class FillerTest
         $test
             ->testThatArgs($nullLogger, $mockProcessor, $params)
             ->throws('Webbhuset\Bifrost\Core\BifrostException');
-    }
-
-    public static function processDataTest($test) {
-        $defaults = [
-            'price' => [
-                'test' => [
-                    'EUR' => 132,
-                    'SEK' => [],
-                    'NOK' => 83,
-                ]
-            ],
-        ];
-        $backendParams = [
-            'default_values' => $defaults,
-        ];
-        $backend       = new DefaultValues($backendParams);
-        $nullLogger    = new NullLogger;
-        $mockProcessor = [new Collector];
-        $params = [
-            'backend' => $backend
-        ];
-        $test->newInstance($nullLogger, $mockProcessor, $params);
-
-        $indata = [
-            'price' => [
-                'test' => [
-                    'NOK' => 53,
-                ]
-            ],
-        ];
-        $expectedOutput = [
-            'price' => [
-                'test' => [
-                    'NOK' => 53,
-                    'SEK' => [],
-                    'EUR' => 132,
-                ]
-            ],
-        ];
-
-        $test->testThatArgs($indata)->returnsValue($expectedOutput);
     }
 
     public static function processNextTest($test)
@@ -83,11 +43,13 @@ class FillerTest
         $nullLogger    = new NullLogger;
         $mockProcessor = [new Collector];
         $indata = [
-            'price' => [
-                'test' => [
-                    'NOK' => 53,
-                ]
-            ],
+            [
+                'price' => [
+                    'test' => [
+                        'NOK' => 53,
+                    ]
+                ],
+            ]
         ];
 
         $expectedOutput = [
@@ -100,7 +62,8 @@ class FillerTest
             ],
         ];
         $params = [
-            'backend' => $backend
+            'key_specification' => ['price'],
+            'backend'           => $backend
         ];
         $test->newInstance($nullLogger, $mockProcessor, $params)
             ->testThatArgs($indata)->returnsNull();

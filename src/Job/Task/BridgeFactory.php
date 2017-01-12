@@ -88,6 +88,7 @@ abstract class BridgeFactory
         if (!is_array($factories)) {
             $factories = [$factories];
         }
+        $factories  = array_reverse($factories);
 
         foreach ($array['children'] as $child) {
             $children[] = $this->recursiveCreate($child, false);
@@ -95,9 +96,7 @@ abstract class BridgeFactory
 
         foreach ($factories as $factory) {
             $processor = $factory->create($this->logger, $children);
-            if ($isRoot && !$processor instanceof ReaderInterface) {
-                throw new BifrostException('The first processor must implement ReaderInterface');
-            } elseif (!$isRoot && $processor instanceof ReaderInterface) {
+            if (!$isRoot && $processor instanceof ReaderInterface) {
                 throw new BifrostException('Only the first processor can implement ReaderInterface');
             }
             $children = [$processor];
