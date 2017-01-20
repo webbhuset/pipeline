@@ -67,7 +67,7 @@ class DataGenerator
         }
 
         $magnitude = floor(log10($data));
-        $fraction  = (1 / $data) * 10**$magnitude;
+        $fraction  = (1 / $data) * pow(10, $magnitude);
 
         return $data + $fraction;
     }
