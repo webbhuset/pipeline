@@ -6,6 +6,7 @@ use \Webbhuset\Bifrost\Core\BifrostException;
 class Reducer extends AbstractProcessor
 {
     protected $callback;
+    protected $initialValue;
 
     public function __construct(LoggerInterface $log, $nextStep, $params)
     {
@@ -18,13 +19,15 @@ class Reducer extends AbstractProcessor
             throw new BifrostException("'callback' parameter is not callable.");
         }
 
-        $this->callback = $params['fields'];
-
+        $this->callback     = $params['callback'];
+        $this->initialValue = isset($params['initial'])
+                            ? $params['initial']
+                            : null;
     }
 
     public function processNext($items, $onlyForCount = false)
     {
-        $newItems = array_reduce($items, $this->callback);
+        $newItems = $this->processData($items);
 
         if (empty($newItems)) {
             return;
@@ -35,8 +38,8 @@ class Reducer extends AbstractProcessor
         }
     }
 
-     protected function processData($data)
-     {
-
-     }
+    protected function processData($items)
+    {
+        return array_reduce($items, $this->callback, $this->initialValue);
+    }
 }
