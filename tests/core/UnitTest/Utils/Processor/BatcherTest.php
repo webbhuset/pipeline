@@ -45,14 +45,4 @@ class BatcherTest
             ->testThatArgs($indata)->returnsNull()
             ->testThatArgs($indata)->returnsNull();
     }
-
-    public static function finalizeTest()
-    {
-    }
-    public static function initTest()
-    {
-    }
-    public static function countTest()
-    {
-    }
 }

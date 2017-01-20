@@ -116,16 +116,4 @@ class DifferTest
         $test->newInstance($nullLogger, $mockProcessor, $params)
             ->testThatArgs($indata)->returnsNull();
     }
-
-    public static function finalizeTest()
-    {
-    }
-
-    public static function initTest()
-    {
-    }
-
-    public static function countTest()
-    {
-    }
 }

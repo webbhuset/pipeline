@@ -113,18 +113,6 @@ class MapperTest
             ->testThatArgs($indata)->returnsValue($expectedOutput);
     }
 
-    public static function finalizeTest()
-    {
-    }
-
-    public static function initTest()
-    {
-    }
-
-    public static function countTest()
-    {
-    }
-
     public function returnApa()
     {
         return 'Apa';
