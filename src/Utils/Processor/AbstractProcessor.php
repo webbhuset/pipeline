@@ -8,7 +8,6 @@ abstract class AbstractProcessor implements ProcessorInterface
     protected $logger;
     protected $nextSteps;
 
-
     public function __construct(Utils\Logger\LoggerInterface $logger, $nextSteps, $params)
     {
         foreach ($nextSteps as $nextStep) {
