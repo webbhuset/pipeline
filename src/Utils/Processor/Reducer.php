@@ -35,4 +35,8 @@ class Reducer extends AbstractProcessor
         }
     }
 
+     protected function processData($data)
+     {
+
+     }
 }
