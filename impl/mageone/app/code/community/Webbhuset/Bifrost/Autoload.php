@@ -87,6 +87,10 @@ class Webbhuset_Bifrost_Autoload
 
         return false;
     }
+
+    public static function load()
+    {
+    }
 }
 
 Webbhuset_Bifrost_Autoload::registerBase('Webbhuset\Bifrost\Core', Mage::getBaseDir('lib') . '/Webbhuset/Bifrost');

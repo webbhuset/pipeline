@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<layout>
+    <adminhtml_bifrost_log_index>
+        <reference name="content">
+            <block type="whbifrost/adminhtml_log" name="bifrost_log" />
+        </reference>
+    </adminhtml_bifrost_log_index>
+
+    <adminhtml_bifrost_log_grid>
+        <block type="whbifrost/adminhtml_log_grid" name="root" />
+    </adminhtml_bifrost_log_grid>
+
+    <adminhtml_bifrost_log_view>
+        <reference name="content">
+            <block type="whbifrost/adminhtml_message" name="bifrost_log_message" />
+        </reference>
+    </adminhtml_bifrost_log_view>
+
+    <adminhtml_bifrost_log_messagegrid>
+        <block type="whbifrost/adminhtml_message_grid" name="root" />
+    </adminhtml_bifrost_log_messagegrid>
+</layout>

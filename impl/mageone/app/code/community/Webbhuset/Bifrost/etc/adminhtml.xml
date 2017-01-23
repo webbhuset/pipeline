@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<config>
+    <menu>
+        <webbhuset>
+            <title>Webbhuset</title>
+            <sort_order>31</sort_order>
+            <children>
+                <whbifrost translate="title" module="whbifrost">
+                    <title>Import/Export Logs</title>
+                    <sort_order>30</sort_order>
+                    <action>adminhtml/bifrost_log</action>
+                </whbifrost>
+            </children>
+        </webbhuset>
+    </menu>
+    <acl>
+        <resources>
+            <admin>
+                <children>
+                    <webbhuset>
+                        <title>Webbhuset</title>
+                        <sort_order>-100</sort_order>
+                        <children>
+                            <whbifrost translate="title" module="whbifrost">
+                                <title>Import/Export Logs</title>
+                                <sort_order>30</sort_order>
+                            </whbifrost>
+                        </children>
+                    </webbhuset>
+                    <system>
+                        <children>
+                            <config>
+                                <children>
+                                    <whbifrost translate="title">
+                                        <title>Bifrost (Import/Export)</title>
+                                        <sort_order>100</sort_order>
+                                    </whbifrost>
+                                </children>
+                            </config>
+                        </children>
+                    </system>
+                </children>
+            </admin>
+        </resources>
+    </acl>
+</config>

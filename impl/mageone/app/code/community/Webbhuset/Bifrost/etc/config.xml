@@ -1,7 +1,7 @@
 <config>
     <modules>
         <Webbhuset_Bifrost>
-            <version>2.0.0</version>
+            <version>1.0.3</version>
         </Webbhuset_Bifrost>
     </modules>
     <global>
@@ -18,7 +18,47 @@
         <models>
             <whbifrost>
                 <class>Webbhuset_Bifrost_Model</class>
+                <resourceModel>whbifrost_resource</resourceModel>
             </whbifrost>
+            <whbifrost_resource>
+                <class>Webbhuset_Bifrost_Model_Resource</class>
+                <entities>
+                    <log>
+                        <table>whbifrost_log</table>
+                    </log>
+                    <log_message>
+                        <table>whbifrost_log_message</table>
+                    </log_message>
+                </entities>
+            </whbifrost_resource>
         </models>
+        <resources>
+            <whbifrost_setup>
+                <setup>
+                    <module>Webbhuset_Bifrost</module>
+                    <class>Webbhuset_Bifrost_Model_Resource_Setup</class>
+                </setup>
+            </whbifrost_setup>
+        </resources>
     </global>
+    <admin>
+        <routers>
+            <adminhtml>
+                <args>
+                    <modules>
+                        <Webbhuset_Bifrost before="Mage_Adminhtml">Webbhuset_Bifrost_Adminhtml</Webbhuset_Bifrost>
+                    </modules>
+                </args>
+            </adminhtml>
+        </routers>
+    </admin>
+    <adminhtml>
+        <layout>
+            <updates>
+                <whbifrost>
+                    <file>webbhuset/bifrost.xml</file>
+                </whbifrost>
+            </updates>
+        </layout>
+    </adminhtml>
 </config>

@@ -65,4 +65,29 @@ class DataGeneratorTest
     {
     }
 
+    public static function getRandomBytesGeneratorTest($test)
+    {
+    }
+
+    public static function getLettersTest($test)
+    {
+    }
+
+    public static function getWordTest($test)
+    {
+    }
+
+    public static function getSentenceTest($test)
+    {
+        $test->newInstance()
+            ->testThatArgs(mt_rand())
+            ->returnsString();
+    }
+
+    public static function getParagraphTest($test)
+    {
+        $test->newInstance()
+            ->testThatArgs(mt_rand())
+            ->returnsString();
+    }
 }
