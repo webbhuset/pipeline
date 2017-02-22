@@ -12,10 +12,10 @@ class Directory implements ComponentInterface
 {
     protected $recursive        = false;
     protected $onlyFiles        = true;
-    protected $pathname         = false;
+    protected $pathname         = true;
     protected $relative         = false;
 
-    public function __construct($config)
+    public function __construct($config = [])
     {
         if (isset($config['recursive'])) {
             $this->recursive = $config['recursive'];
@@ -31,22 +31,28 @@ class Directory implements ComponentInterface
         }
     }
 
-    public function process($dirname)
+    public function process($items)
     {
-        if (!is_dir($dirname)) {
-            throw new BifrostException("Dir {$dirname} does not exists.");
-        }
-        $iterator = $this->getIterator($dirname);
-
-        foreach ($iterator as $file) {
-            if ($this->onlyFiles && !$file->isFile()) {
+        foreach ($items as $key => $item) {
+            if (is_string($key)) {
+                yield $key => $item;
                 continue;
             }
-            if ($this->pathname) {
 
-                yield $this->getPath($file, $dirname);
-            } else {
-                yield $file;
+            if (!is_dir($item)) {
+                throw new BifrostException("Dir {$item} does not exists.");
+            }
+            $iterator = $this->getIterator($item);
+
+            foreach ($iterator as $file) {
+                if ($this->onlyFiles && !$file->isFile()) {
+                    continue;
+                }
+                if ($this->pathname) {
+                    yield $this->getPath($file, $item);
+                } else {
+                    yield $file;
+                }
             }
         }
     }

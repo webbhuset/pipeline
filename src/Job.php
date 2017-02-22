@@ -1,51 +1,62 @@
 <?php
+
 namespace Webbhuset\Bifrost\Core;
-use Webbhuset\Bifrost\Core\Utils\Fetcher\FetcherInterface;
 
-class Job implements Job\JobInterface
+use Webbhuset\Bifrost\Core\BifrostException;
+use Webbhuset\Bifrost\Core\Component\ComponentInterface;
+
+/**
+ * Job
+ *
+ * @author    Webbhuset AB <info@webbhuset.se>
+ * @copyright Copyright (C) 2017 Webbhuset AB
+ */
+class Job
 {
-    protected $fetcher;
-    protected $taskList;
+    protected $generator;
+    protected $isDone;
 
-    public function __construct($fetcher, $taskList)
+    /**
+     * Constructor.
+     *
+     * @param Webbhuset\Bifrost\Core\Component\ComponentInterface $component
+     * @param mixed $input
+     *
+     * @return void
+     */
+    public function __construct(ComponentInterface $component, $input)
     {
-        if (!isset($fetcher)) {
-            throw new BifrostException("Fetcher is not set.");
-        }
-        if (!$fetcher instanceof FetcherInterface) {
-            throw new BifrostException("Fetcher parameter must implement FetcherInterface");
-        }
-
-        if (!isset($taskList)) {
-            throw new BifrostException("Task list parameter is not set.");
-        }
-        if (!$taskList instanceof Job\TaskList) {
-            throw new BifrostException("Task list parameter must be instance of TaskList");
-        }
-
-        $this->fetcher  = $fetcher;
-        $this->taskList = $taskList;
+        $this->generator    = $component->process($input);
+        $this->isDone       = false;
     }
 
-    public function init($args)
-    {
-        $this->fetcher->init($args);
-        $args['filename'] = $this->fetcher->fetch();
-        $this->taskList->init($args);
-    }
-
+    /**
+     * Process next. Returns true if there's more to process, else false.
+     *
+     * @return bool
+     */
     public function processNext()
     {
-        $this->taskList->processNext();
+        if ($this->isDone) {
+            return false;
+        }
+
+        $this->generator->next();
+
+        if (!$this->generator->valid()) {
+            $this->isDone = true;
+        }
+
+        return !$this->isDone;
     }
 
+    /**
+     * Is processing done?
+     *
+     * @return bool
+     */
     public function isDone()
     {
-        return $this->taskList->isDone();
-    }
-
-    public function finalize()
-    {
-        return $this->taskList->finalize();
+        return $this->isDone;
     }
 }

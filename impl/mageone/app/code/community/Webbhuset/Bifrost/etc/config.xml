@@ -1,7 +1,7 @@
 <config>
     <modules>
         <Webbhuset_Bifrost>
-            <version>1.0.3</version>
+            <version>1.0.0</version>
         </Webbhuset_Bifrost>
     </modules>
     <global>
@@ -40,6 +40,19 @@
                 </setup>
             </whbifrost_setup>
         </resources>
+        <webbhuset>
+            <whpeasant>
+                <jobs>
+                    <whbifrost_job>
+                        <priority>200</priority>
+                        <class>whbifrost/peasant</class>
+                        <on_duplicate>wait</on_duplicate>
+                        <global_unique>0</global_unique>
+                        <can_use_progress>1</can_use_progress>
+                    </whbifrost_job>
+                </jobs>
+            </whpeasant>
+        </webbhuset>
     </global>
     <admin>
         <routers>
