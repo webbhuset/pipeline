@@ -9,6 +9,14 @@
 class Webbhuset_Bifrost_Model_Log
     extends Mage_Core_Model_Abstract
 {
+    const TYPE_INFO         = 'info';
+    const TYPE_ERROR        = 'error';
+    const TYPE_CREATED      = 'created';
+    const TYPE_UPDATED      = 'updated';
+    const TYPE_SKIPPED      = 'skipped';
+    const TYPE_NOT_FOUND    = 'not_found';
+    const TYPE_DELETED      = 'deleted';
+
     /**
      * Number of rows to insert in each insert.
      *
@@ -55,7 +63,7 @@ class Webbhuset_Bifrost_Model_Log
      *
      * @return void
      */
-    public function write($message, $type = Webbhuset_Bifrost_Model_System_Source_Log::TYPE_INFO)
+    public function write($message, $type = self::TYPE_INFO)
     {
         $this->_toInsert[] = [
             'log_id'    => $this->getId(),
@@ -77,7 +85,7 @@ class Webbhuset_Bifrost_Model_Log
     protected function _insertBatch()
     {
         $resource = $this->getResource();
-        $resource->insertLogMessage($this->_toInsert);
+        $resource->insertLogMessages($this->_toInsert);
         $this->_toInsert = [];
     }
 
@@ -110,5 +118,18 @@ class Webbhuset_Bifrost_Model_Log
         $this->setData('completed_at', $time)->save();
 
         return $this;
+    }
+
+    public function getTypeArray()
+    {
+        return [
+            self::TYPE_INFO         => Mage::helper('whbifrost')->__('Information'),
+            self::TYPE_CREATED      => Mage::helper('whbifrost')->__('Created'),
+            self::TYPE_UPDATED      => Mage::helper('whbifrost')->__('Updated'),
+            self::TYPE_SKIPPED      => Mage::helper('whbifrost')->__('Skipped'),
+            self::TYPE_NOT_FOUND    => Mage::helper('whbifrost')->__('Not Found'),
+            self::TYPE_DELETED      => Mage::helper('whbifrost')->__('Deleted'),
+            self::TYPE_ERROR        => Mage::helper('whbifrost')->__('Error'),
+        ];
     }
 }

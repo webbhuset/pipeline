@@ -1,6 +1,8 @@
 <?php
 
 require 'abstract.php';
+use \Webbhuset\Bifrost\Core\Helper\ArgsParser;
+use \Webbhuset\Bifrost\Core\BifrostException;
 
 /**
  * Bifrost CLI script.
@@ -42,6 +44,8 @@ class Webbhuset_Bifrost_Shell
 
         $help = $this->getArg('help');
         if (!$help || is_bool($help)) {
+            $this->_showAvailableJobs();
+
             return;
         }
 
@@ -187,13 +191,34 @@ Usage: php whbifrost.php [OPTION]...
 Example: php whbifrost -r products
 
 General options:
-  -r, --run [JOB]           Runs specified job(s).
-  -h, --help [JOB]          Displays help for specified job(s).
+  -r, --run                 Runs specified job(s).
+  -h, --help                Displays help for specified job(s).
   -p, --peasant             Job(s) are run as peasant jobs instead of directly.
   -D, --no-draw             Disables progress update drawing in terminal.
 
 
 USAGE;
+    }
+
+    protected function _showAvailableJobs()
+    {
+        $availableJobs  = Mage::helper('whbifrost')->getJobs();
+        $jobs = [];
+
+        foreach ($availableJobs as $type => $typeJobs) {
+            foreach ($typeJobs as $code => $model) {
+                $jobs[] = "{$type}/{$code}";
+            }
+        }
+
+        $jobs = implode("\n  ", $jobs);
+
+        echo <<<JOBS
+Available jobs:
+  $jobs
+
+
+JOBS;
     }
 
     /**
@@ -207,11 +232,31 @@ USAGE;
     protected function _showJobHelp($job, $code)
     {
         $commands = [];
-        foreach ($job->getCommands() as $command => $info) {
-            if (strlen($command) > 24) {
-                $commands[] = "  {$command}  {$info}";
+        foreach ($job->getCommands() as $command => $commandData) {
+            $alias = [];
+            if (isset($commandData['alias'])) {
+                $commandAliases = $commandData['alias'];
+
+                if (!is_array($commandAliases)) {
+                    $commandAliases = [$commandAliases];
+                }
+
+                foreach ($commandAliases as $commandAlias) {
+                    if (strlen($commandAlias) == 1) {
+                        $alias[] = "-{$commandAlias}";
+                    } else {
+                        $alias[] = "--{$commandAlias}";
+                    }
+                }
+            }
+
+            $alias[] = "--{$command}";
+            $alias = implode(', ', $alias);
+
+            if (strlen($alias) > 24) {
+                $commands[] = "  {$alias}  {$commandData['info']}";
             } else {
-                $commands[] = '  ' . str_pad($command, 26) . $info;
+                $commands[] = '  ' . str_pad($alias, 26) . $commandData['info'];
             }
         }
 
@@ -240,56 +285,14 @@ JOB;
      */
     protected function _parseArgs()
     {
-        $current = null;
-
-        foreach ($_SERVER['argv'] as $arg) {
-            $match = [];
-            if (preg_match('/^--([\w\d_-]+)$/', $arg, $match)) {
-                $current = $match[1];
-                if (!isset($this->_args[$current])) {
-                    $this->_args[$current] = true;
-                }
-
-                continue;
-            }
-
-            if (preg_match('/^-([\w\d_]+)$/', $arg, $match)) {
-                $split = str_split($match[1]);
-                foreach ($split as $char) {
-                    foreach ($this->_aliases as $alias => $command) {
-                        if ($char == $alias) {
-                            $char = $command;
-                            break;
-                        }
-                    }
-                    $current = $char;
-                    if (!isset($this->_args[$current])) {
-                        $this->_args[$current] = true;
-                    }
-                }
-
-                continue;
-            }
-
-            if ($current) {
-                if (is_bool($this->_args[$current])) {
-                    $this->_args[$current] = $arg;
-
-                    continue;
-                }
-
-                if (is_string($this->_args[$current])) {
-                    $this->_args[$current] = [$this->_args[$current]];
-                }
-
-                $this->_args[$current][] = $arg;
-            } else if (preg_match('#^([\w\d_]{1,})$#', $arg, $match)) {
-                echo "Unexpected argument '{$arg}'. Did you mean '--{$arg}'?\n";
-                die;
-            }
+        try {
+            $args = $_SERVER['argv'];
+            array_shift($args);
+            $this->_args = ArgsParser::parseArgs($args, $this->_aliases);
+        } catch (BifrostException $e) {
+            echo $e->getMessage();
+            die;
         }
-
-        return $this;
     }
 
     /**

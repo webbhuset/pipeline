@@ -80,7 +80,7 @@ class Webbhuset_Bifrost_Block_Adminhtml_Message_Grid
                 'header'    => 'Type',
                 'width'     => '120px',
                 'type'      => 'options',
-                'options'   => Mage::getModel('whbifrost/system_source_log')->toGridArray(),
+                'options'   => Mage::getModel('whbifrost/log')->getTypeArray(),
                 'index'     => 'type',
             ]
         );

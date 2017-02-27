@@ -19,30 +19,23 @@ abstract class Webbhuset_Bifrost_Model_Job_Abstract
     protected $_description = 'No description available.';
 
     /**
-     * Job commands.
+     * Job commands (arguments).
      *
      * Format:
-     *  'Command' => 'Command description'
+     *  'COMMAND' => [
+     *      'info'  => 'COMMAND DESCRIPTION',
+     *      'alias' => '[ALIASES]',
+     *  ];
      *
      * Example:
-     *  '-h, --help' => 'Shows help'
+     *  'help' => [
+     *      'info'  => 'Shows help',
+     *      'alias' => ['h', '?'],
+     *  ];
      *
      * @var array
      */
     protected $_commands    = [];
-
-    /**
-     * Command aliases.
-     *
-     * Format:
-     *  'Alias' => 'Command'
-     *
-     * Example:
-     *  'h' => 'help'
-     *
-     * @var array
-     */
-    protected $_aliases     = [];
 
 
     /**
@@ -63,6 +56,20 @@ abstract class Webbhuset_Bifrost_Model_Job_Abstract
             $job->processNext();
         }
     }
+
+    /**
+     * Get component to run.
+     *
+     * @return Webbhuset\Bifrost\Core\Component\ComponentInterface
+     */
+    protected abstract function _getComponent();
+
+    /**
+     * Get input to component.
+     *
+     * @return mixed
+     */
+    protected abstract function _getInput();
 
     /**
      * Get description.
@@ -93,11 +100,27 @@ abstract class Webbhuset_Bifrost_Model_Job_Abstract
      */
     protected function _replaceAliases($args)
     {
+        $aliases = [];
+        foreach ($this->_commands as $command => $commandData) {
+            if (!isset($commandData['alias'])) {
+                continue;
+            }
+
+            $commandAliases = $commandData['alias'];
+            if (!is_array($commandAliases)) {
+                $commandAliases = [$commandAliases];
+            }
+
+            foreach ($commandAliases as $alias) {
+                $aliases[$alias] = $command;
+            }
+        }
+
         foreach ($args as $arg => $value) {
-            if (isset($this->_aliases[$arg])) {
+            if (isset($aliases[$arg])) {
                 unset($args[$arg]);
 
-                $newArg = $this->_aliases[$arg];
+                $newArg = $aliases[$arg];
 
                 if (!isset($args[$newArg]) || is_bool($args[$newArg])) {
                     $oldValue = [];
@@ -128,17 +151,4 @@ abstract class Webbhuset_Bifrost_Model_Job_Abstract
         return $args;
     }
 
-    /**
-     * Get component to run.
-     *
-     * @return Webbhuset\Bifrost\Core\Component\ComponentInterface
-     */
-    protected abstract function _getComponent();
-
-    /**
-     * Get input to component.
-     *
-     * @return mixed
-     */
-    protected abstract function _getInput();
 }

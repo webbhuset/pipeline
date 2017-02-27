@@ -52,10 +52,6 @@ $logTable = $installer->getConnection()
         'default'   => 0,
         'unsigned'  => true,
     ], 'Errors')
-    ->addColumn('message', Varien_Db_Ddl_Table::TYPE_TEXT, null, [
-        'nullable'  => true,
-        'default'   => '',
-    ], 'Message')
     ->setComment('Bifrost Log Table');
 
 $installer->getConnection()->createTable($logTable);

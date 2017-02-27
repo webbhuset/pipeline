@@ -21,7 +21,7 @@ class Webbhuset_Bifrost_Model_Resource_Log
      *
      * @access public
      */
-    public function deleteLogMessage($logId)
+    public function deleteLogMessages($logId)
     {
         if (empty($logId)) {
             return;
@@ -39,7 +39,7 @@ class Webbhuset_Bifrost_Model_Resource_Log
      *
      * @access public
      */
-    public function insertLogMessage($data)
+    public function insertLogMessages($data)
     {
         if (empty($data)) {
             return;
