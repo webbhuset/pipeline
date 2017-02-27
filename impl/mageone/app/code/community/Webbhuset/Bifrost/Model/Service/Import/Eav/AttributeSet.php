@@ -28,21 +28,22 @@ class Webbhuset_Bifrost_Model_Service_Import_Eav_AttributeSet
         return new Component\Sequence\Import\Table\Flat($config);
     }
 
-    public function createMonad($afterCreateCallback = null, array $setDefault = [])
+    public function createMonad($type, $afterCreateCallback = null, array $setDefault = [])
     {
         $resource = Mage::getSingleton('core/resource');
         $adapter  = $resource->getConnection('core_write');
         $table    = $resource->getTableName('eav/attribute_set');
+        $entityTypeId = (int)$type->getId();
 
         $qHeader  = 'SELECT `eas`.`attribute_set_id` FROM ';
         $qFooter  = "LEFT JOIN {$table} AS `eas` ON `eas`.`attribute_set_name` = `_key`.`attribute_set_name`\n"
-                  . "AND `eas`.`entity_type_id` = 4\n";
+                  . "AND `eas`.`entity_type_id` = {$entityTypeId}\n";
 
         $queryBuilder = new Helper\Db\QueryBuilder\StaticUnion(['attribute_set_name'], $adapter, $qHeader, $qFooter);
 
         $default = array_fill_keys(array_keys($adapter->describeTable($table)), null);
         $default = array_replace($default, [
-            'entity_type_id'        => 4,
+            'entity_type_id'        => (int)$type->getId(),
             'is_content_type'       => 0,
             'show_direct_create'    => 0,
             'can_be_standalone'     => 1,
