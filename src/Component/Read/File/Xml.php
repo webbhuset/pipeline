@@ -15,28 +15,37 @@ class Xml implements ComponentInterface
         $this->path = $path;
     }
 
-    public function process($filename)
+    public function process($files)
     {
-        if (!is_file($filename)) {
-            throw new BifrostException("File not found {$filename}");
-        }
-
-        $reader = new XMLReader;
-        $reader->open($filename);
-
-        $name = $this->findStart($reader);
-
-        do {
-            $node = trim($reader->readOuterXML());
-            if (!$node) {
+        foreach ($files as $key => $filename) {
+            if (is_string($key)) {
+                yield $key => $filename;
                 continue;
             }
-            $xmlObject = simplexml_load_string($node);
-            $item = [
-                $xmlObject->getName() => json_decode(json_encode($xmlObject), true),
-            ];
-            yield $item;
-        } while ($name ? $reader->next($name) : $reader->next());
+            if (!is_file($filename)) {
+                $msg = "File not found {$filename}";
+                $item = new Data\Error($msg, $filename);
+                yield 'event' => new Data\Reference($item, 'error');
+                continue;
+            }
+
+            $reader = new XMLReader;
+            $reader->open($filename);
+
+            $name = $this->findStart($reader);
+
+            do {
+                $node = trim($reader->readOuterXML());
+                if (!$node) {
+                    continue;
+                }
+                $xmlObject = simplexml_load_string($node);
+                $item = [
+                    $xmlObject->getName() => json_decode(json_encode($xmlObject), true),
+                ];
+                yield $item;
+            } while ($name ? $reader->next($name) : $reader->next());
+        }
     }
 
     protected function findStart($reader)
