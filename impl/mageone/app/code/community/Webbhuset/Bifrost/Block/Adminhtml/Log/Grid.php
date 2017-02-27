@@ -126,7 +126,7 @@ class Webbhuset_Bifrost_Block_Adminhtml_Log_Grid
         );
 
 
-        foreach (['created', 'updated', 'skipped', 'not_found', 'errors'] as $code) {
+        foreach (['created', 'updated', 'skipped', 'not_found', 'deleted', 'errors'] as $code) {
             $this->addColumn(
                 $code,
                 [
@@ -138,15 +138,6 @@ class Webbhuset_Bifrost_Block_Adminhtml_Log_Grid
                 ]
             );
         }
-
-        $this->addColumn(
-            'message',
-            [
-                'header'    => 'Message',
-                'index'     => 'message',
-                'sortable'  => false,
-            ]
-        );
 
         $this->addColumn(
             'log',

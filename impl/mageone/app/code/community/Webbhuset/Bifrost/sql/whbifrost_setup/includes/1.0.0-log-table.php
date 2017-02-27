@@ -48,6 +48,10 @@ $logTable = $installer->getConnection()
         'unsigned'  => true,
         'default'   => 0,
     ], 'Not Found')
+    ->addColumn('deleted', Varien_Db_Ddl_Table::TYPE_INTEGER, null, [
+        'unsigned'  => true,
+        'default'   => 0,
+    ], 'Deleted')
     ->addColumn('errors', Varien_Db_Ddl_Table::TYPE_INTEGER, null, [
         'default'   => 0,
         'unsigned'  => true,
