@@ -3,6 +3,7 @@
 namespace Webbhuset\Bifrost\Core\Helper\Eav;
 
 use Webbhuset\Bifrost\Core\Type;
+use Webbhuset\Bifrost\Core\TypeConstructor as T;
 
 class EntityTypeCreator
 {
@@ -18,5 +19,16 @@ class EntityTypeCreator
         $structType = new Type\StructType(['fields' => $fields]);
 
         return $structType;
+    }
+
+    public static function createFromSets($sets)
+    {
+        $entityTypes = [];
+        foreach ($sets as $set) {
+            $id                 = $set->getId();
+            $entityTypes[$id]   = self::createFromAttributes($set->getAttributes());
+        }
+
+        return $entityTypes;
     }
 }
