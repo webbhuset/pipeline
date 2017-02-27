@@ -115,8 +115,21 @@ class Attribute implements AttributeInterface
         return !is_null($this->data['options']);
     }
 
+    public function isMultiSelect()
+    {
+        return isset($this->data['input']) && $this->data['input'] == 'multiselect';
+    }
+
     public function mapOptionValue($value)
     {
+        if (is_array($value)) {
+            foreach ($value as &$v) {
+                $v = $this->mapOptionValue($v);
+            }
+
+            return $value;
+        }
+
         $key = mb_strtoupper($value);
 
         if (isset($this->optionsValueMap[$key])) {

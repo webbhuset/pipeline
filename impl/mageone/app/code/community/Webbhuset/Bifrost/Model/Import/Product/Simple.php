@@ -9,7 +9,7 @@ class Webbhuset_Bifrost_Model_Import_Product_Simple
 {
     public function create($config = [])
     {
-        $config = array_merge([
+        $config = array_replace([
             'updateAttributes'      => [],
             'keys'                  => ['sku'],
             'afterCreateCallback'   => $this->getAfterCreateCallback(),

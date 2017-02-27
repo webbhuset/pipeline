@@ -17,7 +17,7 @@ class Webbhuset_Bifrost_Model_Service_Import_Eav_Attribute_Option
             $this->getComponentEntityValidator($attributes),
             $this->getComponentMapAttributes($attributes),
             $this->getComponentTableUpdater(),
-            $this->createMonad($attributes),
+            $this->createMonad($this->createInsertValueCallback()),
         ];
     }
 
@@ -27,7 +27,7 @@ class Webbhuset_Bifrost_Model_Service_Import_Eav_Attribute_Option
 
         return [
             $this->getComponentOptionsReducer($attributes),
-            $this->getComponentMapTree($attributes),
+            $this->getComponentMapTree(),
         ];
     }
 
@@ -96,26 +96,36 @@ class Webbhuset_Bifrost_Model_Service_Import_Eav_Attribute_Option
 
         return new Component\Transform\Reduce(function($carry, $item) use ($attributes) {
             foreach ($attributes as $code => $attribute) {
-                if (!isset($item[$code])) {
+                if (empty($item[$code])) {
                     continue;
                 }
-                $value  = trim($item[$code]);
-                $key    = mb_strtoupper($value);
+                $values  = $item[$code];
 
-                if (isset($item[$code][$key])) {
-                    continue;
+                if (!is_array($values)) {
+                    $values = [$values];
                 }
+                foreach ($values as $value) {
+                    $value = trim($value);
+                    if (!$value) {
+                        continue;
+                    }
+                    $key    = mb_strtoupper($value);
 
-                $carry[$code][$key] = $value;
+                    if (isset($item[$code][$key])) {
+                        continue;
+                    }
+
+                    $carry[$code][$key] = $value;
+                }
             }
 
             return $carry;
         }, array_fill_keys($codes, []));
     }
 
-    protected function getComponentMapTree($attributes)
+    protected function getComponentMapTree()
     {
-        return new Component\Transform\Expand(function($data) use ($attributes) {
+        return new Component\Transform\Expand(function($data) {
             foreach ($data as $attributeCode => $options) {
                 foreach ($options as $key => $labels) {
                     $item = [
@@ -145,14 +155,12 @@ class Webbhuset_Bifrost_Model_Service_Import_Eav_Attribute_Option
         });
     }
 
-    protected function createMonad($attributes)
+    protected function createMonad($afterCreateCallback = null, $defaultValues = [])
     {
-        $resource   = Mage::getSingleton('core/resource');
-        $adapter    = $resource->getConnection('core_write');
-
-        $config['adapter']            = $adapter;
-        $config['optionTable']        = $resource->getTableName('eav/attribute_option');
-        $config['optionValueTable']   = $resource->getTableName('eav/attribute_option_value');
+        $resource       = Mage::getSingleton('core/resource');
+        $adapter        = $resource->getConnection('core_write');
+        $optionTable    = $resource->getTableName('eav/attribute_option');
+        $tableColumns   = array_keys($adapter->describeTable($optionTable));
 
         $qHeader = 'SELECT '
                  . 'MAX(`o`.`option_id`) AS `option_id`,'
@@ -166,10 +174,71 @@ class Webbhuset_Bifrost_Model_Service_Import_Eav_Attribute_Option
                  . "GROUP BY `_key`.`pos`";
 
         $queryBuilder = new Helper\Db\QueryBuilder\StaticUnion(['attribute_id', 'key'], $adapter, $qHeader, $qFooter);
+        $default = array_fill_keys($tableColumns, null);
+        $default = array_replace($default, [
+            'sort_order' => 0,
+        ], $defaultValues);
 
-        $config['queryBuilder'] = $queryBuilder;
-        $actionHandler          = Mage::getModel('whbifrost/resource_import_eav_attribute_optionActions', $config);
+        $config = [
+            'adapter'               => $adapter,
+            'tableName'             => $optionTable,
+            'primaryKey'            => 'option_id',
+            'idQueryBuilder'        => $queryBuilder,
+            'rowDefault'            => $default,
+            'afterCreateCallback'   => $afterCreateCallback,
+        ];
+
+        $actionHandler = Mage::getModel('whbifrost/resource_import_table_flatActions', $config);
 
         return new Component\Monad\Standard($actionHandler);
+    }
+
+    public function createInsertValueCallback()
+    {
+        $resource           = Mage::getSingleton('core/resource');
+        $optionValueTable   = $resource->getTableName('eav/attribute_option_value');
+        $helper             = Mage::helper('whbifrost');
+
+        $insertOptionValue = function($rows, $insertedIds, $adapter) use ($optionValueTable) {
+            $valueRows = [];
+
+            foreach ($insertedIds as $idx => $row) {
+                $valueRow                = $row;
+                $valueRow['store_id']    = 0;
+                $valueRow['value']       = $rows[$idx]['label'][0];
+                $valueRows[] = $valueRow;
+            }
+
+            $adapter->insertMultiple($optionValueTable, $valueRows);
+        };
+
+        $urlKeyTable = null;
+
+        try {
+            $urlKeyTable = Mage::getSingleton('core/resource')->getTableName('eav/attribute_option_columns_varchar');
+        } catch (Exception $e) {
+        }
+
+        if ($urlKeyTable) {
+            return function($rows, $insertedIds, $adapter) use ($urlKeyTable, $helper, $insertOptionValue) {
+                $insertOptionValue($rows, $insertedIds, $adapter);
+                $urlRows = [];
+
+                foreach ($insertedIds as $idx => $row) {
+                    $label = $rows[$idx]['label'][0];
+                    $urlKey = $helper->makeUrlSafe($label);
+
+                    $valueRow                = $row;
+                    $valueRow['store_id']    = 0;
+                    $valueRow['column_name'] = 'url_key';
+                    $valueRow['value']       = $urlKey;
+                    $urlRows[] = $valueRow;
+                }
+
+                $adapter->insertMultiple($urlKeyTable, $urlRows);
+            };
+        }
+
+        return $insertOptionValue;
     }
 }

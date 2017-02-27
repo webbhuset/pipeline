@@ -16,10 +16,12 @@ class Webbhuset_Bifrost_Model_Service_Import_Eav_Entity
         $sets       = $eavHelper->getAttributeSets($type, $attributes);
 
         $mapOptions = $this->getComponentOptionsMapper($attributes);
-        $validate   = $this->getComponentValidate($attributes);
+        $validate   = $this->getComponentValidate($attributes, $sets);
         $mapTree    = $this->getComponentMapTree($attributes);
         $sequence   = $this->getComponentEavSequence($attributes, $sets, $type);
         $monad      = $this->getComponentMonad($type, $config, $attributes);
+
+        $dahbug = new Component\Dev\Dahbug();
 
         return [$mapOptions, $validate, $mapTree, $sequence, $monad];
     }
@@ -42,7 +44,9 @@ class Webbhuset_Bifrost_Model_Service_Import_Eav_Entity
                 }
 
                 $value       = $item[$code];
-                $item[$code] = $attribute->mapOptionValue($value);
+                $value       = $attribute->mapOptionValue($value);
+
+                $item[$code] = $value;
             }
             return $item;
         });
@@ -50,10 +54,10 @@ class Webbhuset_Bifrost_Model_Service_Import_Eav_Entity
         return $mapOptions;
     }
 
-    public function getComponentValidate($attributes)
+    public function getComponentValidate($attributes, $sets)
     {
-        $entityType = Helper\Eav\EntityTypeCreator::createFromAttributes($attributes);
-        $validate   = new Component\Validate\Entity($entityType);
+        $entityTypes = Helper\Eav\EntityTypeCreator::createFromSets($sets);
+        $validate   = new Component\Validate\EntityWithSets($entityTypes, 'attribute_set_id');
 
         return $validate;
     }
@@ -64,6 +68,7 @@ class Webbhuset_Bifrost_Model_Service_Import_Eav_Entity
         $attributeMap   = [];
         $scopes         = [];
         $globalScope    = new Helper\ArrayHelper\KeyMapper([], 0);
+        $multiSelectAttributes = [];
 
         foreach ($attributes as $attribute) {
             if ($attribute->isStatic()) {
@@ -73,6 +78,10 @@ class Webbhuset_Bifrost_Model_Service_Import_Eav_Entity
             $id                  = $attribute->getId();
             $attributeMap[$code] = $id;
 
+            if ($attribute->isMultiSelect()) {
+                $multiSelectAttributes[] = $code;
+            }
+
             if ($usesScope) {
                 $scopes[$code] = $globalScope;
             }
@@ -80,7 +89,13 @@ class Webbhuset_Bifrost_Model_Service_Import_Eav_Entity
         $atCodeToId = new Helper\ArrayHelper\KeyMapper($attributeMap);
         $treeMapper = Helper\ArrayHelper\Tree::buildRecursiveMapper($atCodeToId, $scopes);
 
-        return new Component\Transform\Map(function($item) use ($treeMapper) {
+
+        return new Component\Transform\Map(function($item) use ($treeMapper, $multiSelectAttributes) {
+            foreach ($multiSelectAttributes as $attribute) {
+                if (isset($item[$attribute]) && is_array($item[$attribute])) {
+                    $item[$attribute] = implode(',', $item[$attribute]);
+                }
+            }
             return $treeMapper->map($item);
         });
     }

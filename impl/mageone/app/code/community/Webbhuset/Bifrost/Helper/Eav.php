@@ -3,6 +3,7 @@ Webbhuset_Bifrost_Autoload::load();
 
 use Webbhuset\Bifrost\Core\Data;
 use Webbhuset\Bifrost\Core\Type;
+use Webbhuset\Bifrost\Core\Type\TypeConstructor as T;
 use Webbhuset\Bifrost\Core\Helper;
 
 class Webbhuset_Bifrost_Helper_Eav
@@ -32,6 +33,10 @@ class Webbhuset_Bifrost_Helper_Eav
             $code       = $attribute->getAttributeCode();
             $typeObject = $config[['types', $code]];
 
+            if (!$typeObject) {
+                $typeObject = $this->getTypeObjectFromAttribute($attribute);
+            }
+
             $options = null;
 
             if ($attribute->usesSource()) {
@@ -49,6 +54,7 @@ class Webbhuset_Bifrost_Helper_Eav
                 'typeObject'    => $typeObject,
                 'defaultValue'  => $attribute->getDefaultValue(),
                 'options'       => $options,
+                'input'         => $attribute->getFrontendInput(),
             ]);
         }
 
@@ -173,6 +179,9 @@ class Webbhuset_Bifrost_Helper_Eav
         $options    = [];
 
         foreach ($allOptions as $option) {
+            if (is_array($option['value'])) {
+                return [];
+            }
             $options[$option['value']] = $option['label'];
         }
 
@@ -188,6 +197,14 @@ class Webbhuset_Bifrost_Helper_Eav
 
         return $columns;
     }
+
+    protected function getTypeObjectFromAttribute($attribute)
+    {
+        if ($attribute->getFrontendInput() == 'multiselect' && $attribute->getBackendType() == 'varchar') {
+            return T::Set(['type' => T::String()]);
+        }
+    }
+
     protected function getTypeObjectFromColumnDefinition($def)
     {
         $type       = $def['DATA_TYPE'];

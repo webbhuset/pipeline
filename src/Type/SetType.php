@@ -36,7 +36,7 @@ class SetType extends AbstractType
     public function cast($valueArray)
     {
         if (!is_array($valueArray)) {
-            throw new BifrostException("Can only cast arrays.");
+            return $this->type->cast($valueArray);
         }
 
         $result = [];
@@ -49,6 +49,9 @@ class SetType extends AbstractType
 
     public function getErrors($valueArray)
     {
+        if (!$this->required && is_null($valueArray)) {
+            return false;
+        }
         if (!is_array($valueArray)) {
             $string = $this->getValueString($valueArray);
             return "Not a valid array: '{$string}'";

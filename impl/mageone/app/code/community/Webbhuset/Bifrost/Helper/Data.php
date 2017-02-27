@@ -33,4 +33,13 @@ class Webbhuset_Bifrost_Helper_Data
 
         return $jobs;
     }
+
+    public function makeUrlSafe($string)
+    {
+        $urlKey = preg_replace('#[^0-9a-z]+#i', '-', Mage::helper('catalog/product_url')->format($string));
+        $urlKey = strtolower($urlKey);
+        $urlKey = trim($urlKey, '-');
+
+        return $urlKey;
+    }
 }
