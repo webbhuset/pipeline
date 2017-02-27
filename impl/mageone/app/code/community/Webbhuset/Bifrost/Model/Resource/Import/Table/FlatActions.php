@@ -43,7 +43,7 @@ class Webbhuset_Bifrost_Model_Resource_Import_Table_FlatActions
         $insertRows = [];
 
         foreach ($rows as $row) {
-            $newRow         = array_replace($this->rowDefault, $row);
+            $newRow         = array_replace($this->rowDefault, array_intersect_key($row, $this->rowDefault));
             $insertRows[]   = $newRow;
         }
 
@@ -72,7 +72,15 @@ class Webbhuset_Bifrost_Model_Resource_Import_Table_FlatActions
 
     public function updateRows(array $rows, array $updateColumns)
     {
-        $adapter    = $this->adapter;
-        return [];
+        $adapter = $this->adapter;
+
+        $updateRows = [];
+
+        foreach ($rows as $row) {
+            $newRow         = array_intersect_key($row, $this->rowDefault);
+            $updateRows[]   = $newRow;
+        }
+
+        $adapter->insertOnDuplicate($this->tableName, $updateRows, $updateColumns);
     }
 }

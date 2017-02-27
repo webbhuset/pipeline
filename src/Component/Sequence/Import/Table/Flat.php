@@ -80,14 +80,6 @@ class Flat implements Component\ComponentInterface
                 }
             }),
             $this->createOrUpdate($config),
-            new Component\Transform\Expand(function($rows) {
-                foreach ($rows as $row) {
-                    if (empty($row)) {
-                        continue;
-                    }
-                    yield $row;
-                }
-            }),
         ]));
     }
 
@@ -148,7 +140,7 @@ class Flat implements Component\ComponentInterface
                 $newRow[$primary] = $pKey;
 
                 if ($pKey === null) {
-                    $updateRows[] = array_intersect_key($newRow, $columns);
+                    $updateRows[] = $newRow;
                     continue;
                 }
 
@@ -156,7 +148,7 @@ class Flat implements Component\ComponentInterface
                     $oldValue = $oldRow[$column];
                     $newValue = $newRow[$column];
                     if ($oldValue != $newValue) {
-                        $updateRows[] = array_intersect_key($newRow, $columns);
+                        $updateRows[] = $newRow;
                         break;
                     }
                 }
