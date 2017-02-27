@@ -17,7 +17,7 @@ class Webbhuset_Bifrost_Model_Service_Import_Eav_Attribute_Option
             $this->getComponentEntityValidator($attributes),
             $this->getComponentMapAttributes($attributes),
             $this->getComponentTableUpdater(),
-            $this->getComponentMonad($attributes),
+            $this->createMonad($attributes),
         ];
     }
 
@@ -145,7 +145,7 @@ class Webbhuset_Bifrost_Model_Service_Import_Eav_Attribute_Option
         });
     }
 
-    protected function getComponentMonad($attributes)
+    protected function createMonad($attributes)
     {
         $resource   = Mage::getSingleton('core/resource');
         $adapter    = $resource->getConnection('core_write');
@@ -154,11 +154,16 @@ class Webbhuset_Bifrost_Model_Service_Import_Eav_Attribute_Option
         $config['optionTable']        = $resource->getTableName('eav/attribute_option');
         $config['optionValueTable']   = $resource->getTableName('eav/attribute_option_value');
 
-        $qHeader = 'SELECT `o`.`option_id`, `o`.`attribute_id`, `o`.`sort_order`, `v`.`value` FROM ';
+        $qHeader = 'SELECT '
+                 . 'MAX(`o`.`option_id`) AS `option_id`,'
+                 . 'MAX(`o`.`attribute_id`) AS `attribute_id`,'
+                 . 'MAX(`o`.`sort_order`) AS `sort_order`,'
+                 . '`v`.`value` FROM ';
         $qFooter = "LEFT JOIN `eav_attribute_option_value` AS `v` ON `v`.`store_id` = 0 "
                  .     "AND UPPER(`v`.`value`) = `_key`.`key`\n"
                  . "LEFT JOIN `eav_attribute_option` AS `o` ON `o`.`attribute_id` = `_key`.`attribute_id` "
-                 .     "AND `o`.`option_id` = `v`.`option_id`";
+                 .     "AND `o`.`option_id` = `v`.`option_id`\n"
+                 . "GROUP BY `_key`.`pos`";
 
         $queryBuilder = new Helper\Db\QueryBuilder\StaticUnion(['attribute_id', 'key'], $adapter, $qHeader, $qFooter);
 
