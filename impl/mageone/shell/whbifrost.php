@@ -85,8 +85,8 @@ class Webbhuset_Bifrost_Shell
                 );
             }
         } else {
-            foreach ($jobModels as $model) {
-                $model->run($this->_args);
+            foreach ($jobModels as $code => $model) {
+                $model->run($code, $this->_args);
             }
         }
     }

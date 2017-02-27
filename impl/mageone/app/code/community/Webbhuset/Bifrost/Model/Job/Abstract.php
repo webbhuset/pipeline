@@ -45,16 +45,34 @@ abstract class Webbhuset_Bifrost_Model_Job_Abstract
      *
      * @return void
      */
-    public function run($args)
+    public function run($typecode, $args)
     {
-        $args = $this->_replaceAliases($args);
-        $this->setArgs($args);
+        $args   = $this->_replaceAliases($args);
 
-        $job = new Bifrost\Job($this->_getComponent(), $this->_getInput());
+        list($type, $code) = explode('/', $typecode);
+
+        $log    = Mage::getModel('whbifrost/log')
+            ->setType($type)
+            ->setCode($code)
+            ->setStartedAt(Mage::getModel('core/date')->gmtDate())
+            //->setTotal($mapper->getEntityCount())
+            //->setFile($file)
+            ->save();
+        $this->setArgs($args);
+        $this->setLog($log);
+
+        $pipeline = new Bifrost\Component\Flow\Pipeline([
+            $this->_getComponent(),
+            $this->_getLogMonad(),
+        ]);
+
+        $job = new Bifrost\Job($pipeline, $this->_getInput());
 
         while (!$job->isDone()) {
             $job->processNext();
         }
+
+        $log->finalize();
     }
 
     /**
@@ -70,6 +88,63 @@ abstract class Webbhuset_Bifrost_Model_Job_Abstract
      * @return mixed
      */
     protected abstract function _getInput();
+
+    protected function _getLogMonad()
+    {
+        $log = $this->getLog();
+        return new Bifrost\Component\Monad\Observer([
+            'task_start' => [
+                function ($item, $eventName, $data) use ($log) {
+                    $job    = $data['job'];
+                    $task   = $data['task'];
+                    $log->write("Started task '{$task}' in TaskList '{$job}'");
+                }
+            ],
+            'task_done' => [
+                function ($item, $eventName, $data) use ($log) {
+                    $job    = $data['job'];
+                    $task   = $data['task'];
+                    $log->write("Completed task '{$task}' in TaskList '{$job}'");
+                }
+            ],
+            'info' => [
+                function ($item) use ($log) {
+                    $log->write("Info", $log::TYPE_INFO);
+                }
+            ],
+            'error' => [
+                function ($error) use ($log) {
+                    $log->write($error->getErrors(), $log::TYPE_ERROR);
+                }
+            ],
+            'created' => [
+                function ($item, $bind) use ($log) {
+                    \dahbug::dump($bind);
+                    $log->write("Created item", $log::TYPE_CREATED);
+                }
+            ],
+            'updated' => [
+                function ($item) use ($log) {
+                    $log->write("Updated item", $log::TYPE_UPDATED);
+                }
+            ],
+            'skipped' => [
+                function ($item) use ($log) {
+                    $log->write("Skipped item", $log::TYPE_SKIPPED);
+                }
+            ],
+            'not_found' => [
+                function ($item) use ($log) {
+                    $log->write("Item not found", $log::TYPE_NOT_FOUND);
+                }
+            ],
+            'deleted' => [
+                function ($item) use ($log) {
+                    $log->write("Item deleted", $log::TYPE_DELETED);
+                }
+            ],
+        ]);
+    }
 
     /**
      * Get description.
