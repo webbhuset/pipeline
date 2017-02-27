@@ -58,4 +58,22 @@ class DataAccess implements ArrayAccess
     {
         throw new BifrostException("Not implemented yet");
     }
+
+    public function getArrayFromPrefix($prefix)
+    {
+        $result = [];
+        $len = mb_strlen($prefix);
+        foreach ($this->array as $key => $value) {
+            if (mb_strpos($key, $prefix) === 0) {
+                $newKey = mb_substr($key, $len);
+                if (!$newKey) {
+                    continue;
+                }
+
+                $result[$newKey] = $value;
+            }
+        }
+
+        return $result;
+    }
 }
