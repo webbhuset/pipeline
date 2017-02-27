@@ -9,12 +9,14 @@ class DataAccess implements ArrayAccess
 {
     protected $pathSeparator;
     protected $defaultValue;
+    protected $forceOnEmpty;
     protected $array = [];
 
-    public function __construct(array $array, $pathSeparator = null, $defaultValue = null)
+    public function __construct(array $array, $pathSeparator = null, $defaultValue = null, $forceOnEmpty = false)
     {
         $this->pathSeparator    = $pathSeparator;
         $this->defaultValue     = $defaultValue;
+        $this->forceOnEmpty     = $forceOnEmpty;
         $this->array            = $array;
     }
 
@@ -39,6 +41,10 @@ class DataAccess implements ArrayAccess
             $value  = array_key_exists($offset, $this->array)
                     ? $this->array[$offset]
                     : $this->defaultValue;
+        }
+
+        if ($this->forceOnEmpty && empty($value)) {
+            return $this->defaultValue;
         }
 
         return $value;
