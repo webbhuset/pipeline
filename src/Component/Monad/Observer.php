@@ -32,12 +32,9 @@ class Observer implements ComponentInterface
                     foreach ($observers as $observer) {
                         call_user_func_array($observer, $item->data);
                     }
-                } else {
-                    yield $key => $item;
                 }
-            } else {
-                yield $key => $item;
             }
+            yield $key => $item;
         }
     }
 
