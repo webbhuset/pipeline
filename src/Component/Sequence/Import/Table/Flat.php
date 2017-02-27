@@ -104,11 +104,15 @@ class Flat implements Component\ComponentInterface
                 new Component\Transform\Merge(
                     new Component\Action\SideEffect('insertNewRows')
                 ),
+                $this->expandRows(),
+                new Component\Action\Event('created'),
             ]),
             new Component\Flow\Pipeline([
                 $this->filterByColumnValue($primaryKey, true),
                 new Component\Transform\Group($batchSize),
                 new Component\Action\SideEffect('updateRows', $updateColumns),
+                $this->expandRows(),
+                new Component\Action\Event('updated'),
             ]),
         ]);
     }
@@ -159,6 +163,18 @@ class Flat implements Component\ComponentInterface
             }
 
             return $updateRows;
+        });
+    }
+
+    protected function expandRows()
+    {
+        return new Component\Transform\Expand(function($rows) {
+            foreach ($rows as $row) {
+                if (empty($row)) {
+                    continue;
+                }
+                yield $row;
+            }
         });
     }
 
