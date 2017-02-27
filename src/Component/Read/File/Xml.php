@@ -39,7 +39,7 @@ class Xml implements ComponentInterface
                 if (!$node) {
                     continue;
                 }
-                $xmlObject = simplexml_load_string($node);
+                $xmlObject = simplexml_load_string($node, null, LIBXML_NOCDATA);
                 $item = [
                     $xmlObject->getName() => json_decode(json_encode($xmlObject), true),
                 ];
