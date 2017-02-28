@@ -12,10 +12,9 @@ class Event implements ComponentInterface
     protected $useCallback = false;
     protected $callback;
 
-    public function __construct($idOrCallable, $id = null)
+    public function __construct($idOrCallable)
     {
-        $args = func_get_args();
-
+        $args   = func_get_args();
         $argOne = array_shift($args);
 
         if (is_callable($argOne)) {
@@ -23,7 +22,7 @@ class Event implements ComponentInterface
             $this->useCallback  = true;
             $name               = array_shift($args);
         } else {
-            $name = $argOne;
+            $name               = $argOne;
         }
 
         $this->id       = 'event';
