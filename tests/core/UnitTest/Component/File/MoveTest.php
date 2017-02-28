@@ -13,7 +13,9 @@ class MoveTest
 
     public static function processTest($test)
     {
-        mkdir(self::TEST_DIR);
+        if (!file_exists(self::TEST_DIR)) {
+            mkdir(self::TEST_DIR);
+        }
 
         /**
          * @testCase Moves a.txt to b.txt.
@@ -27,8 +29,12 @@ class MoveTest
         $test->newInstance($moveFunction)
             ->testThatArgs([$from])
             ->returnsGenerator()
-            ->returnsValue([$to])
-            ->assertCallback(function() use ($from, $to) {
+            ->returnsArray()
+            ->assertCallback(function($value) use ($from, $to) {
+                if ($value[0] !== $to) {
+                    return "Expected yielded value to be '{$to}'";
+                }
+
                 if (file_exists($from)) {
                     return "Expected {$from} to not exist (since it should have been moved).";
                 }
@@ -51,8 +57,12 @@ class MoveTest
         $test->newInstance($moveFunction, ['copy' => true])
             ->testThatArgs([$from])
             ->returnsGenerator()
-            ->returnsValue([$to])
-            ->assertCallback(function() use ($from, $to) {
+            ->returnsArray()
+            ->assertCallback(function($value) use ($from, $to) {
+                if ($value[0] !== $to) {
+                    return "Expected yielded value to be '{$to}'";
+                }
+
                 if (!file_exists($from)) {
                     return "Expected {$from} to exist (since it should have been copied).";
                 }

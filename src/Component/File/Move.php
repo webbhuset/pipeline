@@ -5,6 +5,7 @@ namespace Webbhuset\Bifrost\Core\Component\File;
 use Webbhuset\Bifrost\Core\BifrostException;
 use Webbhuset\Bifrost\Core\Component\ComponentInterface;
 use Webbhuset\Bifrost\Core\Helper\ReflectionHelper;
+use Webbhuset\Bifrost\Core\Data;
 
 class Move implements ComponentInterface
 {
@@ -34,9 +35,18 @@ class Move implements ComponentInterface
                 continue;
             }
 
-            $newPath = call_user_func($this->callback, $item);
+            if (!is_string($item)) {
+                throw new BifrostException('Item is not a string.');
+            }
 
-            $dir = dirname($newPath);
+            $oldPath = $item;
+
+            if (!file_exists($oldPath)) {
+                throw new BifrostException("'{$oldPath}' does not exist.");
+            }
+
+            $newPath    = call_user_func($this->callback, $oldPath);
+            $dir        = dirname($newPath);
 
             if (!file_exists($dir)) {
                 if (!mkdir($dir, 0777, true)) {
@@ -44,17 +54,21 @@ class Move implements ComponentInterface
                 }
             }
 
+            $transportData = ['from' => $oldPath, 'to' => $newPath];
 
             if ($this->copy) {
-                if (!copy($item, $newPath)) {
-                    throw new BifrostException("Could not copy '{$item}' to '{$newPath}'.");
+                if (!copy($oldPath, $newPath)) {
+                    throw new BifrostException("Could not copy '{$oldPath}' to '{$newPath}'.");
                 }
+                $transport = new Data\Reference($transportData, 'copy_file');
             } else {
-                if (!rename($item, $newPath)) {
-                    throw new BifrostException("Could not move '{$item}' to '{$newPath}'.");
+                if (!rename($oldPath, $newPath)) {
+                    throw new BifrostException("Could not move '{$oldPath}' to '{$newPath}'.");
                 }
+                $transport = new Data\Reference($transportData, 'move_file');
             }
 
+            yield 'event' => $transport;
             yield $newPath;
         }
     }
