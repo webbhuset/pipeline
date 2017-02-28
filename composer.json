@@ -19,14 +19,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Webbhuset\\Bifrost\\Core\\": "src/",
-            "Webbhuset\\Bifrost\\MageOne\\": "impl/mageone/"
+            "Webbhuset\\Bifrost\\Core\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Webbhuset\\Bifrost\\Core\\Test\\": "tests/core/",
-            "Webbhuset\\Bifrost\\MageOne\\Test\\": "tests/mageone/"
+            "Webbhuset\\Bifrost\\Core\\Test\\": "tests/core/"
         }
     },
     "repositories": [
@@ -45,14 +43,6 @@
     ],
     "extra": {
         "map": [
-            [
-                "impl/mageone/app/code/community/Webbhuset/Bifrost/",
-                "app/code/community/Webbhuset/Bifrost/"
-            ],
-            [
-                "impl/mageone/app/etc/modules/Webbhuset_Bifrost.xml",
-                "app/etc/modules/Webbhuset_Bifrost.xml"
-            ],
             [
                 "src/",
                 "lib/Webbhuset/Bifrost"
