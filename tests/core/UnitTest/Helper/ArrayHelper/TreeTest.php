@@ -3,6 +3,7 @@
 namespace Webbhuset\Bifrost\Core\Test\UnitTest\Helper\ArrayHelper;
 
 use Webbhuset\Bifrost\Core\Helper\ArrayHelper\KeyMapper;
+use Webbhuset\Bifrost\Core\Type\IntType;
 
 class TreeTest
 {
@@ -143,4 +144,24 @@ class TreeTest
         ;
     }
 
+    public static function getLeavesTest($test)
+    {
+        $test->testThatArgs([1, 2, [3, [4, 5], 6, [7, [8]], 9, [10]], [11]])
+            ->returnsValue([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]);
+
+        $test->testThatArgs([new IntType(), [new IntType(), new IntType()]])
+            ->returnsArray()
+            ->assertCallback(function($array) {
+                if (count($array) != 3) {
+                    return "Expected array to contain 3 values.";
+                }
+
+                foreach ($array as $value) {
+                    if (!$value instanceof IntType) {
+                        return "Expected array to contain 3 instances of IntType";
+                    }
+                }
+            });
+
+    }
 }

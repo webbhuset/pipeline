@@ -38,49 +38,53 @@ class Move implements ComponentInterface
             }
 
             if (!is_string($item)) {
-                $msg    = 'Item is not a string.';
+                $msg = 'Item is not a string.';
                 yield new ErrorData($item, $msg);
+                yield false;
                 continue;
             }
 
             $oldPath = $item;
 
             if (!file_exists($oldPath)) {
-                $msg    = "'{$oldPath}' does not exist.";
+                $msg = "'{$oldPath}' does not exist.";
                 yield new ErrorData($item, $msg);
+                yield false;
                 continue;
             }
 
             $newPath    = call_user_func($this->callback, $oldPath);
             $dir        = dirname($newPath);
 
-            if (!file_exists($dir)) {
-                if (!mkdir($dir, 0777, true)) {
-                    $msg    = "Could not create directory '{$dir}'.";
+            if (!is_dir($dir)) {
+                if (is_file($dir)) {
+                    $msg = "Could not create directory '{$dir}', file exists with same path.";
                     yield new ErrorData($item, $msg);
+                    yield false;
+                    continue;
+                } elseif (!mkdir($dir, 0777, true)) {
+                    $msg = "Could not create directory '{$dir}'.";
+                    yield new ErrorData($item, $msg);
+                    yield false;
                     continue;
                 }
             }
 
-
-            if ($this->copy) {
-                if (!copy($oldPath, $newPath)) {
-                    $msg    = "Could not copy '{$oldPath}' to '{$newPath}'.";
-                    yield new ErrorData($item, $msg);
-                    continue;
-                }
-                $eventName = 'copy_file';
-            } else {
-                if (!rename($oldPath, $newPath)) {
-                    $msg    = "Could not move '{$oldPath}' to '{$newPath}'.";
-                    yield new ErrorData($item, $msg);
-                    continue;
-                }
-                $eventName = 'move_file';
+            if (!copy($oldPath, $newPath)) {
+                $msg = "Could not copy '{$oldPath}' to '{$newPath}'.";
+                yield new ErrorData($item, $msg);
+                yield false;
+                continue;
             }
 
+            $eventName = $this->copy ? 'fileCopied' : 'fileMoved';
             $data = ['from' => $oldPath, 'to' => $newPath];
             yield new EventData($eventName, $item, $data);
+
+            if (!$this->copy && !unlink($oldPath)) {
+                $msg = "Could not unlink '{$oldPath}' after copying.";
+                yield new ErrorData($item, $msg);
+            }
 
             yield $newPath;
         }

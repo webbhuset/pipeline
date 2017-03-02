@@ -8,6 +8,7 @@ use Webbhuset\Bifrost\Core\Component\Flow\Pipeline;
 use Webbhuset\Bifrost\Core\Component\Monad\AppendContext;
 use Webbhuset\Bifrost\Core\Data\ActionData\ActionDataInterface;
 use Webbhuset\Bifrost\Core\Data\ActionData\EventData;
+use Webbhuset\Bifrost\Core\Data\ActionData\ErrorData;
 
 class TaskList implements ComponentInterface
 {
@@ -28,7 +29,7 @@ class TaskList implements ComponentInterface
         }
         $pipelines = [];
         foreach ($processors as $taskName => $processor) {
-            $pipelines[] = new Pipeline([
+            $pipelines[$taskName] = new Pipeline([
                 $processor,
                 new AppendContext($taskName),
             ]);
@@ -41,27 +42,32 @@ class TaskList implements ComponentInterface
     public function process($items, $finalize = true)
     {
         foreach ($items as $item) {
-            if ($item instanceof ActionDataInterface) {
-                yield $item;
-                continue;
-            }
-
-            foreach ($this->tasks as $taskName => $task) {
-                if (in_array($taskName, $this->disabledTasks)) {
+            try {
+                if ($item instanceof ActionDataInterface) {
+                    yield $item;
                     continue;
                 }
-                $this->currentTask = $taskName;
 
-                yield new EventData('task_start', $item);
+                foreach ($this->tasks as $taskName => $task) {
+                    if (in_array($taskName, $this->disabledTasks)) {
+                        continue;
+                    }
+                    $this->currentTask = $taskName;
 
-                $results = $task->process([$item], true);
-                foreach ($results as $res) {
-                    yield $res;
+                    yield new EventData('taskStart', $item, ['code' => $taskName]);
+
+                    $results = $task->process([$item], true);
+                    foreach ($results as $res) {
+                        yield $res;
+                    }
+
+                    yield new EventData('taskDone', $item);
                 }
-
-                yield new EventData('task_done', $item);
+                $this->currentTask = null;
+            } catch (BifrostException $e) {
+                yield new ErrorData($item, $e->__toString());
+                yield new EventData('taskDone', $item);
             }
-            $this->currentTask = null;
         }
     }
 
@@ -76,7 +82,7 @@ class TaskList implements ComponentInterface
     }
 
     /**
-     * Gets array of tasks.
+     * Get array of tasks.
      *
      * @return array
      */

@@ -2,6 +2,7 @@
 
 namespace Webbhuset\Bifrost\Core\Component\Action;
 
+use Generator;
 use Webbhuset\Bifrost\Core\Component\ComponentInterface;
 use Webbhuset\Bifrost\Core\Data\ActionData\ActionDataInterface;
 use Webbhuset\Bifrost\Core\Data\ActionData\SideEffectData;
@@ -40,7 +41,14 @@ class SideEffect implements ComponentInterface
             if (!$this->useCallback || call_user_func($this->callback, $item)) {
                 $data = new SideEffectData($this->id, $item, $this->bind);
                 yield $data;
-                yield $data->getItem();
+
+                if ($data->getItem() instanceof Generator) {
+                    foreach ($data->getItem() as $dataItem) {
+                        yield $dataItem;
+                    }
+                } else {
+                    yield $data->getItem();
+                }
             } else {
                 yield $item;
             }

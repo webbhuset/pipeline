@@ -2,8 +2,9 @@
 
 namespace Webbhuset\Bifrost\Core\Component\Monad;
 
-use Webbhuset\Bifrost\Core\Component\ComponentInterface;
 use Webbhuset\Bifrost\Core\BifrostException;
+use Webbhuset\Bifrost\Core\Component\ComponentInterface;
+use Webbhuset\Bifrost\Core\Data\ActionData\SideEffectData;
 
 class Standard implements ComponentInterface
 {
@@ -29,7 +30,7 @@ class Standard implements ComponentInterface
             if ($item instanceof SideEffectData) {
                 $action = $this->getAction($item->getName());
                 if ($action) {
-                    $result = call_user_func($action, $item->getItem(), $item->getData());
+                    $result = call_user_func_array($action, array_merge([$item->getItem()], $item->getData()));
                     if ($result) {
                         $item->setItem($result);
                     }

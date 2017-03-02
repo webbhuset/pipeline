@@ -13,6 +13,10 @@ class Fork implements ComponentInterface
     public function __construct(array $processors)
     {
         foreach ($processors as $idx => $processor) {
+            if ($processor === false) {
+                unset($processors[$idx]);
+                continue;
+            }
             if (!is_object($processor)) {
                 throw new BifrostException("Component is not an object.");
             }

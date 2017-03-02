@@ -24,6 +24,7 @@ class Entity implements Component\ComponentInterface
             'setFieldName'  => 'attribute_set_id',
             'batchSize'     => 500,
             'defaultScope'  => 0,
+            'skipCreate'    => false,
         ];
         $config = array_merge($default, $config);
 
@@ -58,6 +59,7 @@ class Entity implements Component\ComponentInterface
                 'setFieldName' => T::String($required),
                 'batchSize'    => T::Int(['min_value' => 2, 'required' => true]),
                 'defaultScope' => T::Union(['types' => [T::String(), T::Int()]]),
+                'skipCreate'   => T::Bool(),
             ],
         ]);
         $errors = $configType->getErrors($config);
@@ -81,12 +83,13 @@ class Entity implements Component\ComponentInterface
     protected function makePipeline($config)
     {
         $batchSize = $config['batchSize'];
+        $skipCreate = $config['skipCreate'];
 
         return new Component\Flow\Pipeline([
             $this->batchAndMergeResult($batchSize, 'getEntityIds'),
             new Component\Flow\Fork([
-                $this->createNewEntities($config),
-                $this->updateExistsingEntities($config),
+                $skipCreate ? false : $this->createNewEntities($config),
+                $this->updateExistingEntities($config),
             ]),
         ]);
     }
@@ -115,16 +118,16 @@ class Entity implements Component\ComponentInterface
         $batchSize        = $config['batchSize'];
         $defaultScope     = $config['defaultScope'];
 
-        return new Component\Flow\Pipeline(array_filter([
+        return new Component\Flow\Pipeline([
             $this->filterByColumnValue($idFieldName, null),
             $this->batchAndMergeResult($batchSize, 'createEntities'),
             new Component\Action\Event('created'),
             $this->fillAttributeNullValues($sets, $setFieldName, $defaultScope),
             $this->handleAttributeValues($config),
-        ]));
+        ]);
     }
 
-    protected function updateExistsingEntities($config)
+    protected function updateExistingEntities($config)
     {
         $attributesByType = $config['attributesByType'];
         $sets             = $config['attributeSetsByName'];
@@ -133,10 +136,10 @@ class Entity implements Component\ComponentInterface
         $batchSize        = $config['batchSize'];
         $defaultScope     = $config['defaultScope'];
 
-        return new Component\Flow\Pipeline(array_filter([
+        return new Component\Flow\Pipeline([
             $this->filterByColumnValue($idFieldName, true),
             $this->handleAttributeValues($config, true),
-        ]));
+        ]);
     }
 
     protected function filterByColumnValue($field, $value)
@@ -172,15 +175,15 @@ class Entity implements Component\ComponentInterface
                 continue;
             }
 
-            $pipelines[] = new Component\Flow\Pipeline(array_filter([
+            $pipelines[] = new Component\Flow\Pipeline([
                 $this->prepareTree($idFieldName, $setFieldName, $filteredSets),
-                $compareWithOldValues ? $this->compareWithOldValues($config, $attributesForType, $type) : null,
+                $compareWithOldValues ? $this->compareWithOldValues($config, $attributesForType, $type) : false,
                 $this->dropEmptyItems(),
-                new Component\Action\Event('updated'),
+                $compareWithOldValues ? new Component\Action\Event('updated') : false,
                 $this->treeToTable($valueTableConfig),
                 new Component\Transform\Group($batchSize * 3),
                 new Component\Action\SideEffect('insertAttributeValues', $type),
-            ]));
+            ]);
         }
 
         switch (true) {

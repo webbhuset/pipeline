@@ -18,6 +18,6 @@ class ErrorData extends EventData
 
     public function getMessage()
     {
-        $this->data['message'];
+        return $this->data['message'];
     }
 }

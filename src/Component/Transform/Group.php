@@ -86,12 +86,12 @@ class Group implements ComponentInterface
         }
         if (count($params) > 3) {
             foreach ($params as $idx => $param) {
-                if ($idx == 0) {
+                if ($idx >= 3) {
                     continue;
                 }
                 if (!$param->isOptional()) {
                     $idx += 1;
-                    throw new BifrostException("Callback function param {$idx} is not optional. All params except first has to be optional.");
+                    throw new BifrostException("Callback function param {$idx} is not optional. All params except the first three has to be optional.");
                 }
             }
         }

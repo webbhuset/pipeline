@@ -7,19 +7,21 @@ use Webbhuset\Bifrost\Core\Data\ActionData\ActionDataInterface;
 
 class Dahbug implements ComponentInterface
 {
+    protected $events;
     protected $label;
-    protected $log = true;
+    protected $log;
 
-    public function __construct($label = 'dump', $log = true)
+    public function __construct($label = 'dump', $events = false, $log = true)
     {
-        $this->label = $label;
-        $this->log = $log;
+        $this->events   = $events;
+        $this->label    = $label;
+        $this->log      = $log;
     }
 
     public function process($items)
     {
         foreach ($items as $item) {
-            if ($item instanceof ActionDataInterface) {
+            if ($item instanceof ActionDataInterface && !$this->events) {
                 yield $item;
                 continue;
             }

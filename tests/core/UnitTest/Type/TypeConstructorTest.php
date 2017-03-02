@@ -16,10 +16,10 @@ class TypeConstructorTest
     public static function getClassNameTest($test)
     {
         $test
-            ->testThatArgs('StrDatetime')->dahbug()
-            ->testThatArgs('String')->dahbug()
-            ->testThatArgs('string')->dahbug()
-            ->testThatArgs('Map')->dahbug()
+            ->testThatArgs('StrDatetime')
+            ->testThatArgs('String')
+            ->testThatArgs('string')
+            ->testThatArgs('Map')
             ;
     }
 }

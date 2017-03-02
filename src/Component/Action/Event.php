@@ -13,7 +13,7 @@ class Event implements ComponentInterface
     protected $useCallback = false;
     protected $callback;
 
-    public function __construct($idOrCallable, $id = null)
+    public function __construct($idOrCallable, $idOrBind = null, $bind = null)
     {
         $args   = func_get_args();
         $argOne = array_shift($args);
@@ -22,14 +22,17 @@ class Event implements ComponentInterface
             $this->callback     = $argOne;
             $this->useCallback  = true;
             $name               = array_shift($args);
+            $bind               = array_shift($args);
         } else {
             $name               = $argOne;
+            $bind               = array_shift($args);
         }
 
         $this->name = $name;
+        $this->bind = $bind;
     }
 
-    public function process($items, $finalize = true)
+    public function process($items)
     {
         foreach ($items as $item) {
             if ($item instanceof ActionDataInterface) {
@@ -37,7 +40,7 @@ class Event implements ComponentInterface
                 continue;
             }
             if (!$this->useCallback || call_user_func($this->callback, $item)) {
-                yield new EventData($this->name, $item);
+                yield new EventData($this->name, $item, $this->bind);
             }
             yield $item;
         }

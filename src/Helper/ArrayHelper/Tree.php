@@ -2,6 +2,9 @@
 
 namespace Webbhuset\Bifrost\Core\Helper\ArrayHelper;
 
+use RecursiveIteratorIterator;
+use RecursiveArrayIterator;
+
 class Tree
 {
     /**
@@ -53,5 +56,18 @@ class Tree
         }
 
         return $root->addChildren($children, $wildcard);
+    }
+
+    public static function getLeaves($tree)
+    {
+        return iterator_to_array(
+            new RecursiveIteratorIterator(
+                new RecursiveArrayIterator(
+                    $tree,
+                    RecursiveArrayIterator::CHILD_ARRAYS_ONLY
+                )
+            ),
+            false
+        );
     }
 }

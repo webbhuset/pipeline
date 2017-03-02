@@ -1,7 +1,7 @@
 <?php
 namespace Webbhuset\Bifrost\Core\Test\UnitTest\Component\Dev\Mock;
 
-use Webbhuset\Bifrost\Core\Component\Read\Mock;
+use Webbhuset\Bifrost\Core\Component\Dev\Mock;
 
 class ProductTest
 {

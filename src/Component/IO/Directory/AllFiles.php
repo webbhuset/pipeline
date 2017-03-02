@@ -42,7 +42,7 @@ class AllFiles implements ComponentInterface
             }
 
             if (!is_dir($item)) {
-                $msg = "Directory '{$item}' does not exists.";
+                $msg = "Directory '{$item}' does not exist.";
                 yield new ErrorData($item, $msg);
                 continue;
             }

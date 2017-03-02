@@ -17,11 +17,12 @@ class AppendContext implements ComponentInterface
     public function process($items)
     {
         foreach ($items as $item) {
-            if (!$item instanceof EventData) {
+            if ($item instanceof EventData) {
+                yield $item->appendContext($this->context);
+            } else {
                 yield $item;
             }
 
-            yield $item->appendContext($this->context);
         }
     }
 }
