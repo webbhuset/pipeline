@@ -3,6 +3,7 @@
 namespace Webbhuset\Bifrost\Core\Component\Transform;
 
 use Webbhuset\Bifrost\Core\Component\ComponentInterface;
+use Webbhuset\Bifrost\Core\Data\ActionData\ActionDataInterface;
 use Generator;
 use Webbhuset\Bifrost\Core\BifrostException;
 use Webbhuset\Bifrost\Core\Helper\ReflectionHelper;
@@ -15,7 +16,7 @@ class Expand implements ComponentInterface
     public function __construct($callback)
     {
         if (!is_callable($callback)) {
-            throw new BifrostException('Callback parameter is not callable');
+            throw new BifrostException('Callback parameter is not callable.');
         }
 
         $this->validateCallback($callback);
@@ -24,9 +25,9 @@ class Expand implements ComponentInterface
 
     public function process($items)
     {
-        foreach ($items as $key => $item) {
-            if (is_string($key)) {
-                yield $key => $item;
+        foreach ($items as $item) {
+            if ($item instanceof ActionDataInterface) {
+                yield $item;
                 continue;
             }
             $generator = call_user_func($this->callback, $item);
@@ -44,7 +45,7 @@ class Expand implements ComponentInterface
         $reflection = ReflectionHelper::getReflectionFromCallback($callback);
 
         if (!$reflection) {
-            throw new BifrostException('Could not create reflection from callback parameter');
+            throw new BifrostException('Could not create reflection from callback parameter.');
         }
 
         $params = $reflection->getParameters();

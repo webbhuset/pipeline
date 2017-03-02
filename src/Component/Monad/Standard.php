@@ -25,22 +25,20 @@ class Standard implements ComponentInterface
 
     public function process($items, $finalize = true)
     {
-        foreach ($items as $key => $item) {
-            if (is_string($key)) {
-                $action = $this->getAction($key);
+        foreach ($items as $item) {
+            if ($item instanceof SideEffectData) {
+                $action = $this->getAction($item->getName());
                 if ($action) {
-                    $result = call_user_func_array($action, array_merge([$item->data[0]], $item->data[1]));
+                    $result = call_user_func($action, $item->getItem(), $item->getData());
                     if ($result) {
-                        $item->data[0] = $result;
+                        $item->setItem($result);
                     }
-                    continue;
-                } else {
-                    yield $key => $item;
+                    if (!$this->passthru) {
+                        continue;
+                    }
                 }
             }
-            if ($this->passthru) {
-                yield $key => $item;
-            }
+            yield $item;
         }
     }
 

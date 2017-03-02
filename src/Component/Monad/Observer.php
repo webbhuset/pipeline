@@ -2,8 +2,9 @@
 
 namespace Webbhuset\Bifrost\Core\Component\Monad;
 
-use Webbhuset\Bifrost\Core\Component\ComponentInterface;
 use Webbhuset\Bifrost\Core\BifrostException;
+use Webbhuset\Bifrost\Core\Component\ComponentInterface;
+use Webbhuset\Bifrost\Core\Data\ActionData\EventData;
 
 class Observer implements ComponentInterface
 {
@@ -24,17 +25,17 @@ class Observer implements ComponentInterface
 
     public function process($items, $finalize = true)
     {
-        foreach ($items as $key => $item) {
-            if (is_string($key) && $key == 'event') {
-                $name       = $item->data[1];
+        foreach ($items as $item) {
+            if ($item instanceof EventData) {
+                $name       = $item->getName();
                 $observers  = $this->getObservers($name);
                 if ($observers) {
                     foreach ($observers as $observer) {
-                        call_user_func_array($observer, $item->data);
+                        call_user_func($observer, $item->getItem(), $item->getData(), $item->getContexts());
                     }
                 }
             }
-            yield $key => $item;
+            yield $item;
         }
     }
 

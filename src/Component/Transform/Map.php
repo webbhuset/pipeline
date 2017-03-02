@@ -2,11 +2,11 @@
 
 namespace Webbhuset\Bifrost\Core\Component\Transform;
 
-use Webbhuset\Bifrost\Core\Component\ComponentInterface;
 use Generator;
 use Webbhuset\Bifrost\Core\BifrostException;
+use Webbhuset\Bifrost\Core\Component\ComponentInterface;
+use Webbhuset\Bifrost\Core\Data\ActionData\ActionDataInterface;
 use Webbhuset\Bifrost\Core\Helper\ReflectionHelper;
-use Webbhuset\Bifrost\Core\Monad\Action;
 
 class Map implements ComponentInterface
 {
@@ -25,9 +25,9 @@ class Map implements ComponentInterface
 
     public function process($items)
     {
-        foreach ($items as $key => $item) {
-            if (is_string($key)) {
-                yield $key => $item;
+        foreach ($items as $item) {
+            if ($item instanceof ActionDataInterface) {
+                yield $item;
                 continue;
             }
             $results = call_user_func($this->callback, $item);

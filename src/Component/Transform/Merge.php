@@ -2,9 +2,9 @@
 
 namespace Webbhuset\Bifrost\Core\Component\Transform;
 
-use Webbhuset\Bifrost\Core\Component\ComponentInterface;
 use Webbhuset\Bifrost\Core\BifrostException;
-use Webbhuset\Bifrost\Core\Monad\Action;
+use Webbhuset\Bifrost\Core\Component\ComponentInterface;
+use Webbhuset\Bifrost\Core\Data\ActionData\ActionDataInterface;
 
 class Merge implements ComponentInterface
 {
@@ -18,21 +18,21 @@ class Merge implements ComponentInterface
 
     public function process($items, $finalize = true)
     {
-        foreach ($items as $key => $item) {
-            if (is_string($key)) {
-                yield $key => $item;
+        foreach ($items as $item) {
+            if ($item instanceof ActionDataInterface) {
+                yield $item;
                 continue;
             }
-            $this->batch = array_merge($this->batch, [$item]);
-            $newItems = $this->processor->process([$item], false);
-            $idx = 0;
-            foreach ($newItems as $key => $newItem) {
-                if (is_string($key)) {
-                    yield $key => $newItem;
+            $this->batch    = array_merge($this->batch, [$item]);
+            $newItems       = $this->processor->process([$item], false);
+            $idx            = 0;
+            foreach ($newItems as $newItem) {
+                if ($newItem instanceof ActionDataInterface) {
+                    yield $newItem;
                     continue;
                 }
                 if (!isset($this->batch[$idx])) {
-                    throw new BifrostException('Merge processor items missmatch. To many items were generated.');
+                    throw new BifrostException('Merge processor items mismatch. Too many items were generated.');
                 }
                 yield $this->merge($this->batch[$idx], $newItem);
                 unset($this->batch[$idx]);
@@ -41,27 +41,25 @@ class Merge implements ComponentInterface
         }
 
         if ($finalize && count($this->batch)) {
-            $this->batch = array_values($this->batch);
-            $newItems = $this->processor->process([], true);
-            $idx = 0;
-            foreach ($newItems as $key => $newItem) {
-                if (is_string($key)) {
-                    yield $key => $newItem;
+            $this->batch    = array_values($this->batch);
+            $newItems       = $this->processor->process([], true);
+            $idx            = 0;
+            foreach ($newItems as $newItem) {
+                if ($newItem instanceof ActionDataInterface) {
+                    yield $newItem;
                     continue;
                 }
                 if (!isset($this->batch[$idx])) {
-                    throw new BifrostException('Merge processor items missmatch. To many items were generated.');
+                    throw new BifrostException('Merge processor items mismatch. Too many items were generated.');
                 }
                 yield $this->merge($this->batch[$idx], $newItem);
                 unset($this->batch[$idx]);
                 $idx++;
             }
             if (count($this->batch)) {
-                throw new BifrostException('Merge processor items missmatch. To few items were generated.');
+                throw new BifrostException('Merge processor items mismatch. Too few items were generated.');
             }
         }
-
-        return;
     }
 
     protected function merge($a, $b)

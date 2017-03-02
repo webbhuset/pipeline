@@ -3,9 +3,9 @@
 namespace Webbhuset\Bifrost\Core\Component\IO\File\Write;
 
 use Webbhuset\Bifrost\Core\BifrostException;
-use Webbhuset\Bifrost\Core;
 use Webbhuset\Bifrost\Core\Component\ComponentInterface;
-use Webbhuset\Bifrost\Core\Data;
+use Webbhuset\Bifrost\Core\Data\ActionData\ActionDataInterface;
+use Webbhuset\Bifrost\Core\Data\ActionData\ErrorData;
 
 class Csv implements ComponentInterface
 {
@@ -41,9 +41,9 @@ class Csv implements ComponentInterface
 
     public function process($items)
     {
-        foreach ($items as $key => $item) {
-            if (is_string($key)) {
-                yield $key => $item;
+        foreach ($items as $item) {
+            if ($item instanceof ActionDataInterface) {
+                yield $item;
                 continue;
             }
             if (!$this->headersWritten) {
@@ -54,11 +54,11 @@ class Csv implements ComponentInterface
             $bytes = $this->putRow($item);
 
             if ($bytes == false) {
-                $item = new Data\Error("Could not write to '{$this->filename}'", $item);
-                yield 'event' => new Data\Reference($item, 'error');
-            } else {
-                yield $bytes;
+                $msg = "Could not write to '{$this->filename}'.";
+                yield new ErrorData($item, $msg);
             }
+
+            yield $item;
         }
     }
 

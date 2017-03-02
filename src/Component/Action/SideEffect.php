@@ -3,7 +3,8 @@
 namespace Webbhuset\Bifrost\Core\Component\Action;
 
 use Webbhuset\Bifrost\Core\Component\ComponentInterface;
-use Webbhuset\Bifrost\Core\Data;
+use Webbhuset\Bifrost\Core\Data\ActionData\ActionDataInterface;
+use Webbhuset\Bifrost\Core\Data\ActionData\SideEffectData;
 
 class SideEffect implements ComponentInterface
 {
@@ -14,8 +15,7 @@ class SideEffect implements ComponentInterface
 
     public function __construct($idOrCallable, $id = null)
     {
-        $args = func_get_args();
-
+        $args   = func_get_args();
         $argOne = array_shift($args);
 
         if (is_callable($argOne)) {
@@ -23,7 +23,7 @@ class SideEffect implements ComponentInterface
             $this->useCallback  = true;
             $id                 = array_shift($args);
         } else {
-            $id = $argOne;
+            $id                 = $argOne;
         }
 
         $this->id       = $id;
@@ -33,14 +33,14 @@ class SideEffect implements ComponentInterface
     public function process($items, $finalize = true)
     {
         foreach ($items as $key => $item) {
-            if (is_string($key)) {
-                yield $key => $item;
+            if ($item instanceof ActionDataInterface) {
+                yield $item;
                 continue;
             }
             if (!$this->useCallback || call_user_func($this->callback, $item)) {
-                $transport = new Data\Reference($item, $this->bind);
-                yield $this->id => $transport;
-                yield $transport->data[0];
+                $data = new SideEffectData($this->id, $item, $this->bind);
+                yield $data;
+                yield $data->getItem();
             } else {
                 yield $item;
             }

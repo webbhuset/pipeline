@@ -3,16 +3,17 @@
 namespace Webbhuset\Bifrost\Core\Component\Action;
 
 use Webbhuset\Bifrost\Core\Component\ComponentInterface;
-use Webbhuset\Bifrost\Core\Data;
+use Webbhuset\Bifrost\Core\Data\ActionData\ActionDataInterface;
+use Webbhuset\Bifrost\Core\Data\ActionData\EventData;
 
 class Event implements ComponentInterface
 {
-    protected $id;
+    protected $name;
     protected $bind;
     protected $useCallback = false;
     protected $callback;
 
-    public function __construct($idOrCallable)
+    public function __construct($idOrCallable, $id = null)
     {
         $args   = func_get_args();
         $argOne = array_shift($args);
@@ -25,24 +26,20 @@ class Event implements ComponentInterface
             $name               = $argOne;
         }
 
-        $this->id       = 'event';
-        $this->bind     = $name;
+        $this->name = $name;
     }
 
     public function process($items, $finalize = true)
     {
-        foreach ($items as $key => $item) {
-            if (is_string($key)) {
-                yield $key => $item;
+        foreach ($items as $item) {
+            if ($item instanceof ActionDataInterface) {
+                yield $item;
                 continue;
             }
             if (!$this->useCallback || call_user_func($this->callback, $item)) {
-                $transport = new Data\Reference($item, $this->bind);
-                yield $this->id => $transport;
-                yield $item;
-            } else {
-                yield $item;
+                yield new EventData($this->name, $item);
             }
+            yield $item;
         }
     }
 }

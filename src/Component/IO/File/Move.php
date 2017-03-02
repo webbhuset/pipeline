@@ -5,7 +5,9 @@ namespace Webbhuset\Bifrost\Core\Component\IO\File;
 use Webbhuset\Bifrost\Core\BifrostException;
 use Webbhuset\Bifrost\Core\Component\ComponentInterface;
 use Webbhuset\Bifrost\Core\Helper\ReflectionHelper;
-use Webbhuset\Bifrost\Core\Data;
+use Webbhuset\Bifrost\Core\Data\ActionData\ActionDataInterface;
+use Webbhuset\Bifrost\Core\Data\ActionData\EventData;
+use Webbhuset\Bifrost\Core\Data\ActionData\ErrorData;
 
 class Move implements ComponentInterface
 {
@@ -29,20 +31,24 @@ class Move implements ComponentInterface
 
     public function process($items)
     {
-        foreach ($items as $key => $item) {
-            if (is_string($key)) {
-                yield $key => $item;
+        foreach ($items as $item) {
+            if ($item instanceof ActionDataInterface) {
+                yield $item;
                 continue;
             }
 
             if (!is_string($item)) {
-                throw new BifrostException('Item is not a string.');
+                $msg    = 'Item is not a string.';
+                yield new ErrorData($item, $msg);
+                continue;
             }
 
             $oldPath = $item;
 
             if (!file_exists($oldPath)) {
-                throw new BifrostException("'{$oldPath}' does not exist.");
+                $msg    = "'{$oldPath}' does not exist.";
+                yield new ErrorData($item, $msg);
+                continue;
             }
 
             $newPath    = call_user_func($this->callback, $oldPath);
@@ -50,25 +56,32 @@ class Move implements ComponentInterface
 
             if (!file_exists($dir)) {
                 if (!mkdir($dir, 0777, true)) {
-                    throw new BifrostException("Could not create directory '{$dir}'.");
+                    $msg    = "Could not create directory '{$dir}'.";
+                    yield new ErrorData($item, $msg);
+                    continue;
                 }
             }
 
-            $transportData = ['from' => $oldPath, 'to' => $newPath];
 
             if ($this->copy) {
                 if (!copy($oldPath, $newPath)) {
-                    throw new BifrostException("Could not copy '{$oldPath}' to '{$newPath}'.");
+                    $msg    = "Could not copy '{$oldPath}' to '{$newPath}'.";
+                    yield new ErrorData($item, $msg);
+                    continue;
                 }
-                $transport = new Data\Reference($transportData, 'copy_file');
+                $eventName = 'copy_file';
             } else {
                 if (!rename($oldPath, $newPath)) {
-                    throw new BifrostException("Could not move '{$oldPath}' to '{$newPath}'.");
+                    $msg    = "Could not move '{$oldPath}' to '{$newPath}'.";
+                    yield new ErrorData($item, $msg);
+                    continue;
                 }
-                $transport = new Data\Reference($transportData, 'move_file');
+                $eventName = 'move_file';
             }
 
-            yield 'event' => $transport;
+            $data = ['from' => $oldPath, 'to' => $newPath];
+            yield new EventData($eventName, $item, $data);
+
             yield $newPath;
         }
     }

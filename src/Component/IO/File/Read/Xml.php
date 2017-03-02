@@ -4,6 +4,8 @@ namespace Webbhuset\Bifrost\Core\Component\IO\File\Read;
 
 use Webbhuset\Bifrost\Core\BifrostException;
 use Webbhuset\Bifrost\Core\Component\ComponentInterface;
+use Webbhuset\Bifrost\Core\Data\ActionData\ActionDataInterface;
+use Webbhuset\Bifrost\Core\Data\ActionData\ErrorData;
 use XMLReader;
 
 class Xml implements ComponentInterface
@@ -18,14 +20,13 @@ class Xml implements ComponentInterface
     public function process($files)
     {
         foreach ($files as $key => $filename) {
-            if (is_string($key)) {
-                yield $key => $filename;
+            if ($filename instanceof ActionDataInterface) {
+                yield $filename;
                 continue;
             }
             if (!is_file($filename)) {
-                $msg = "File not found {$filename}";
-                $item = new Data\Error($msg, $filename);
-                yield 'event' => new Data\Reference($item, 'error');
+                $msg = "File not found '{$filename}'.";
+                yield new ErrorData($filename, $msg);
                 continue;
             }
 

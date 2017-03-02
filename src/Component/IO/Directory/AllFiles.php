@@ -1,14 +1,16 @@
 <?php
 
-namespace Webbhuset\Bifrost\Core\Component\IO\File\Fetch;
+namespace Webbhuset\Bifrost\Core\Component\IO\Directory;
 
 use Webbhuset\Bifrost\Core\BifrostException;
 use Webbhuset\Bifrost\Core\Component\ComponentInterface;
+use Webbhuset\Bifrost\Core\Data\ActionData\ActionDataInterface;
+use Webbhuset\Bifrost\Core\Data\ActionData\ErrorData;
 use DirectoryIterator;
 use RecursiveIteratorIterator;
 use RecursiveDirectoryIterator;
 
-class Directory implements ComponentInterface
+class AllFiles implements ComponentInterface
 {
     protected $recursive        = false;
     protected $onlyFiles        = true;
@@ -33,14 +35,16 @@ class Directory implements ComponentInterface
 
     public function process($items)
     {
-        foreach ($items as $key => $item) {
-            if (is_string($key)) {
-                yield $key => $item;
+        foreach ($items as $item) {
+            if ($item instanceof ActionDataInterface) {
+                yield $item;
                 continue;
             }
 
             if (!is_dir($item)) {
-                throw new BifrostException("Dir {$item} does not exists.");
+                $msg = "Directory '{$item}' does not exists.";
+                yield new ErrorData($item, $msg);
+                continue;
             }
             $iterator = $this->getIterator($item);
 

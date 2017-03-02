@@ -2,10 +2,10 @@
 
 namespace Webbhuset\Bifrost\Core\Component\Transform;
 
-use Webbhuset\Bifrost\Core\Component\ComponentInterface;
 use Webbhuset\Bifrost\Core\BifrostException;
+use Webbhuset\Bifrost\Core\Component\ComponentInterface;
+use Webbhuset\Bifrost\Core\Data\ActionData\ActionDataInterface;
 use Webbhuset\Bifrost\Core\Helper\ReflectionHelper;
-use Webbhuset\Bifrost\Core\Monad\Action;
 
 class Reduce implements ComponentInterface
 {
@@ -30,9 +30,9 @@ class Reduce implements ComponentInterface
     {
         $newItems = [];
 
-        foreach ($items as $key => $item) {
-            if (is_string($key)) {
-                yield $key => $item;
+        foreach ($items as $item) {
+            if ($item instanceof ActionDataInterface) {
+                yield $item;
                 continue;
             }
             $this->carry = call_user_func_array($this->callback, [$this->carry, $item]);

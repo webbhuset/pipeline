@@ -2,11 +2,11 @@
 
 namespace Webbhuset\Bifrost\Core\Component\Transform;
 
-use Webbhuset\Bifrost\Core\Component\ComponentInterface;
 use Generator;
 use Webbhuset\Bifrost\Core\BifrostException;
+use Webbhuset\Bifrost\Core\Component\ComponentInterface;
+use Webbhuset\Bifrost\Core\Data\ActionData\ActionDataInterface;
 use Webbhuset\Bifrost\Core\Helper\ReflectionHelper;
-use Webbhuset\Bifrost\Core\Monad\Action;
 
 class Group implements ComponentInterface
 {
@@ -33,9 +33,9 @@ class Group implements ComponentInterface
 
     public function process($items, $shouldFinalize = true)
     {
-        foreach ($items as $key => $item) {
-            if (is_string($key)) {
-                yield $key => $item;
+        foreach ($items as $item) {
+            if ($item instanceof ActionDataInterface) {
+                yield $item;
                 continue;
             }
             if (empty($this->batch)) {

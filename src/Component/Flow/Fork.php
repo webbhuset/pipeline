@@ -2,9 +2,9 @@
 
 namespace Webbhuset\Bifrost\Core\Component\Flow;
 
-use Webbhuset\Bifrost\Core\Component\ComponentInterface;
 use Webbhuset\Bifrost\Core\BifrostException;
-use Webbhuset\Bifrost\Core\Monad\Action;
+use Webbhuset\Bifrost\Core\Component\ComponentInterface;
+use Webbhuset\Bifrost\Core\Data\ActionData\ActionDataInterface;
 
 class Fork implements ComponentInterface
 {
@@ -26,18 +26,15 @@ class Fork implements ComponentInterface
 
     public function process($items, $finalize = true)
     {
-        foreach ($items as $key => $item) {
-            if (is_string($key)) {
-                yield $key => $item;
+        foreach ($items as $item) {
+            if ($item instanceof ActionDataInterface) {
+                yield $item;
                 continue;
             }
+
             foreach ($this->forks as $fork) {
                 $results = $fork->process([$item], false);
-                foreach ($results as $key => $res) {
-                    if (is_string($key)) {
-                        yield $key => $res;
-                        continue;
-                    }
+                foreach ($results as $res) {
                     yield $res;
                 }
             }
@@ -46,11 +43,7 @@ class Fork implements ComponentInterface
         if ($finalize) {
             foreach ($this->forks as $fork) {
                 $results = $fork->process([], true);
-                foreach ($results as $key => $res) {
-                    if (is_string($key)) {
-                        yield $key => $res;
-                        continue;
-                    }
+                foreach ($results as $res) {
                     yield $res;
                 }
             }

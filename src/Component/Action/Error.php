@@ -1,42 +1,39 @@
 <?php
 
-namespace Webbhuset\Bifrost\Core\Component\Transform;
+namespace Webbhuset\Bifrost\Core\Component\Action;
 
-use Generator;
 use Webbhuset\Bifrost\Core\BifrostException;
 use Webbhuset\Bifrost\Core\Component\ComponentInterface;
 use Webbhuset\Bifrost\Core\Data\ActionData\ActionDataInterface;
+use Webbhuset\Bifrost\Core\Data\ActionData\ErrorData;
 use Webbhuset\Bifrost\Core\Helper\ReflectionHelper;
 
-class Filter implements ComponentInterface
+class Error implements ComponentInterface
 {
     protected $callback;
 
     public function __construct($callback)
     {
         if (!is_callable($callback)) {
-            throw new BifrostException('Callback parameter is not callable');
+            throw new BifrostException('Callback parameter is not callable.');
         }
 
         $this->validateCallback($callback);
-
         $this->callback = $callback;
     }
 
-    public function process($items)
+    public function process($items, $finalize = true)
     {
         foreach ($items as $item) {
             if ($item instanceof ActionDataInterface) {
                 yield $item;
                 continue;
             }
-            $results = call_user_func($this->callback, $item);
 
-            if ($results instanceof Generator) {
-                throw new BifrostException('Yield is not allowed in a filter. Only bool values may be returned.');
-            }
-
-            if ($results) {
+            $result = call_user_func($this->callback, $item);
+            if (is_string($result)) {
+                yield new ErrorData($item, $result);
+            } else {
                 yield $item;
             }
         }
@@ -47,7 +44,7 @@ class Filter implements ComponentInterface
         $reflection = ReflectionHelper::getReflectionFromCallback($callback);
 
         if (!$reflection) {
-            throw new BifrostException('Could not create reflection from callback parameter');
+            throw new BifrostException('Could not create reflection from callback parameter.');
         }
 
         $params = $reflection->getParameters();
@@ -68,3 +65,4 @@ class Filter implements ComponentInterface
         }
     }
 }
+

@@ -2,16 +2,20 @@
 
 namespace Webbhuset\Bifrost\Core\Component\Flow;
 
-use Webbhuset\Bifrost\Core\Component\ComponentInterface;
 use Webbhuset\Bifrost\Core\BifrostException;
-use Webbhuset\Bifrost\Core\Data;
+use Webbhuset\Bifrost\Core\Component\ComponentInterface;
+use Webbhuset\Bifrost\Core\Component\Flow\Pipeline;
+use Webbhuset\Bifrost\Core\Component\Monad\AppendContext;
+use Webbhuset\Bifrost\Core\Data\ActionData\ActionDataInterface;
+use Webbhuset\Bifrost\Core\Data\ActionData\EventData;
 
 class TaskList implements ComponentInterface
 {
     protected $id;
-    protected $forks;
+    protected $tasks;
+    protected $currentTask;
 
-    public function __construct(array $processors, $id, $disabledTasks = [])
+    public function __construct(array $processors, $disabledTasks = [])
     {
         foreach ($processors as $idx => $processor) {
             if (!is_object($processor)) {
@@ -22,36 +26,62 @@ class TaskList implements ComponentInterface
                 throw new BifrostException("Component {$class} does not implement 'ComponentInterface'");
             }
         }
-        $this->forks            = $processors;
-        $this->id               = $id;
+        $pipelines = [];
+        foreach ($processors as $taskName => $processor) {
+            $pipelines[] = new Pipeline([
+                $processor,
+                new AppendContext($taskName),
+            ]);
+        }
+        $this->tasks            = $pipelines;
         $this->disabledTasks    = $disabledTasks;
+        $this->currentTask      = null;
     }
 
     public function process($items, $finalize = true)
     {
-        foreach ($items as $key => $item) {
-            if (is_string($key)) {
-                yield $key => $item;
+        foreach ($items as $item) {
+            if ($item instanceof ActionDataInterface) {
+                yield $item;
                 continue;
             }
-            foreach ($this->forks as $taskName => $fork) {
+
+            foreach ($this->tasks as $taskName => $task) {
                 if (in_array($taskName, $this->disabledTasks)) {
                     continue;
                 }
-                $eventData = ['job' => $this->id, 'task' => $taskName];
-                $transport = new Data\Reference($item, 'task_start', $eventData);
-                yield 'event' => $transport;
-                $results = $fork->process([$item], true);
-                foreach ($results as $key => $res) {
-                    if (is_string($key)) {
-                        yield $key => $res;
-                        continue;
-                    }
+                $this->currentTask = $taskName;
+
+                yield new EventData('task_start', $item);
+
+                $results = $task->process([$item], true);
+                foreach ($results as $res) {
                     yield $res;
                 }
-                $transport = new Data\Reference($item, 'task_done', $eventData);
-                yield 'event' => $transport;
+
+                yield new EventData('task_done', $item);
             }
+            $this->currentTask = null;
         }
+    }
+
+    /**
+     * Get current task.
+     *
+     * @return string
+     */
+    public function getCurrentTask()
+    {
+        return $this->currentTask;
+    }
+
+    /**
+     * Gets array of tasks.
+     *
+     * @return array
+     */
+    public function getTasks()
+    {
+        return array_keys($this->tasks);
     }
 }

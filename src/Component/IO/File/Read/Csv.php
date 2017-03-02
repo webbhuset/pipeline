@@ -4,7 +4,8 @@ namespace Webbhuset\Bifrost\Core\Component\IO\File\Read;
 
 use Webbhuset\Bifrost\Core\BifrostException;
 use Webbhuset\Bifrost\Core\Component\ComponentInterface;
-use Webbhuset\Bifrost\Core\Data;
+use Webbhuset\Bifrost\Core\Data\ActionData\ActionDataInterface;
+use Webbhuset\Bifrost\Core\Data\ActionData\ErrorData;
 
 class Csv implements ComponentInterface
 {
@@ -31,15 +32,14 @@ class Csv implements ComponentInterface
 
     public function process($files)
     {
-        foreach ($files as $key => $filename) {
-            if (is_string($key)) {
-                yield $key => $filename;
+        foreach ($files as $filename) {
+            if ($filename instanceof ActionDataInterface) {
+                yield $filename;
                 continue;
             }
             if (!is_file($filename)) {
                 $msg = "File not found {$filename}";
-                $item = new Data\Error($msg, $filename);
-                yield 'event' => new Data\Reference($item, 'error');
+                yield new ErrorData($filename, $msg);
                 continue;
             }
 
@@ -50,8 +50,7 @@ class Csv implements ComponentInterface
             if ($this->columnCount) {
                 if (count($headers) != $this->columnCount) {
                     $msg = "Column count mismatch in {$filename}";
-                    $item = new Data\Error($msg, $filename);
-                    yield 'event' => new Data\Reference($item, 'error');
+                    yield new ErrorData($filename, $msg);
                     continue;
                 }
             }
@@ -71,8 +70,7 @@ class Csv implements ComponentInterface
                     } else {
                         $msg = "Header-row column missmatch in file {$filename}:{$rowNumber}";
                     }
-                    $item = new Data\Error($msg, $item);
-                    yield 'event' => new Data\Reference($item, 'error');
+                    yield new ErrorData($filename, $msg);
                     continue;
                 }
 

@@ -3,6 +3,7 @@
 namespace Webbhuset\Bifrost\Core\Component\Db;
 
 use Webbhuset\Bifrost\Core\Component\ComponentInterface;
+use Webbhuset\Bifrost\Core\Data\ActionData\ActionDataInterface;
 use Webbhuset\Bifrost\Core\BifrostException;
 
 class TreeToTable implements ComponentInterface
@@ -42,9 +43,9 @@ class TreeToTable implements ComponentInterface
 
     public function process($items)
     {
-        foreach ($items as $key => $tree) {
-            if (is_string($key)) {
-                yield $key => $tree;
+        foreach ($items as $tree) {
+            if ($tree instanceof ActionDataInterface) {
+                yield $tree;
                 continue;
             }
 
