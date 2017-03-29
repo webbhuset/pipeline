@@ -12,11 +12,13 @@ class IdsFromEntities
     protected $queryHeader;
     protected $queryFooter;
     protected $keys;
+    protected $entityTable;
 
-    public function __construct(array $keys, array $attributes, $adapter, $useStoreId = true)
+    public function __construct(array $keys, $entityTable, array $attributes, $adapter, $useStoreId = true)
     {
         $this->adapter      = $adapter;
         $this->keys         = $keys;
+        $this->entityTable  = $entityTable;
         $this->userStoreId  = $useStoreId;
         $attributesByCode   = [];
 
@@ -74,10 +76,14 @@ class IdsFromEntities
         list ($staticKeys, $eavKeys) = $this->sortKeyAttributes($keys, $attributesByCode);
         list ($entityJoins, $column) = $this->assembleStaticKeys($staticKeys);
         list ($eavJoins, $column) = $this->assembleEavKeys($eavKeys, $column);
-
-        $queryHeader = "SELECT MAX({$column}) AS `entity_id` FROM\n";
+        $staticJoin = '';
+        if (!$staticKeys) {
+            $staticJoin = $this->joinStaticTable($column);
+        }
+        $queryHeader = "SELECT MAX({$column}) AS `entity_id`, `e`.`attribute_set_id` FROM\n";
         $queryFooter = $entityJoins
                      . $eavJoins
+                     . $staticJoin
                      . "GROUP BY `_k`.`pos`\n"
                      . "ORDER BY `_k`.`pos` ASC";
 
@@ -104,6 +110,11 @@ class IdsFromEntities
         }
 
         return [$queryFooter, $column];
+    }
+
+    protected function joinStaticTable($column)
+    {
+        return $this->formatLeftJoin($this->entityTable, 'e', "{$column} = `e`.`entity_id`");
     }
 
     protected function assembleEavKeys($eavKeys, $column)

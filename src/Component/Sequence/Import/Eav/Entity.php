@@ -86,7 +86,7 @@ class Entity implements Component\ComponentInterface
         $skipCreate = $config['skipCreate'];
 
         return new Component\Flow\Pipeline([
-            $this->batchAndMergeResult($batchSize, 'getEntityIds'),
+            //$this->batchAndMergeResult($batchSize, 'getEntityIds'),
             new Component\Flow\Fork([
                 $skipCreate ? false : $this->createNewEntities($config),
                 $this->updateExistingEntities($config),
@@ -102,6 +102,9 @@ class Entity implements Component\ComponentInterface
                 new Component\Action\SideEffect($method),
                 new Component\Transform\Expand(function($entities) {
                     foreach ($entities as $entity) {
+                        if ($entity['attribute_set_id']) {
+                            $entity['attribute_set_id'] = (int)$entity['attribute_set_id'];
+                        }
                         yield $entity;
                     }
                 }),
