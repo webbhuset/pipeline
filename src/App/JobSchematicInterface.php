@@ -16,6 +16,15 @@ interface JobSchematicInterface
     public function createInput(array $options = []);
 
     /**
+     * Create preprocessing.
+     *
+     * @param array $options
+     *
+     * @return array
+     */
+    public function createPreprocessing(array $options = []);
+
+    /**
      * Create tasks.
      *
      * @param array $options

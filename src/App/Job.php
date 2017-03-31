@@ -36,6 +36,7 @@ class Job
     {
         $options        = $this->replaceAliases($schematic, $options);
         $input          = $schematic->createInput($options);
+        $preprocessing  = $schematic->createPreprocessing($options);
         $tasks          = $schematic->createTasks($options);
         $observer       = $schematic->createObserver($options);
 
@@ -64,6 +65,7 @@ class Job
         $pipelineArray = [
             new Action\Event('jobStart', ['code' => $code]),
             new Action\SideEffect('jobBefore'),
+            new Flow\Pipeline($preprocessing),
             new Flow\Fork([
                 $this->taskList,
                 new Flow\Pipeline([
