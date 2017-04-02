@@ -70,13 +70,13 @@ class StringType extends AbstractType
 
         foreach ($this->matches as $regex => $message) {
             if (!preg_match($regex, $value)) {
-                return $message;
+                return sprintf($message, $value);
             }
         }
 
         foreach ($this->notMatches as $regex => $message) {
             if (preg_match($regex, $value)) {
-                return $message;
+                return sprintf($message, $value);
             }
         }
 
