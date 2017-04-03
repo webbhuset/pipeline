@@ -21,6 +21,7 @@ class EntityTest implements ComponentInterface
             'setField'              => 'attribute_set_id',
             'updateOnly'            => false,
             'attributesToUpdate'    => [],
+            'batchSize'             => 200,
         ];
 
         $config = array_merge($default, $config);
@@ -42,15 +43,15 @@ class EntityTest implements ComponentInterface
         return new Flow\Fork([
             new Flow\Pipeline([
                 new Transform\Filter(function($item) use ($idField) {
-                    return $item[$idField] === null;
+                    return !isset($item[$idField]);
                 }),
-                $this->createEntities($updateOnly)
+                $this->createEntities($config)
             ]),
             new Flow\Pipeline([
                 new Transform\Filter(function($item) use ($idField) {
-                    return $item[$idField] !== null;
+                    return isset($item[$idField]);
                 }),
-                $this->updateEntities($idField, $setField, $entityTable, $attributesToUpdate, $attributesByTable, $dimensions, $attributeSets),
+                $this->updateEntities($config),
             ])
         ]);
     }
@@ -60,26 +61,38 @@ class EntityTest implements ComponentInterface
         return $this->component->process($items, $finalize);
     }
 
-    protected function createEntities($updateOnly)
+
+    protected function createEntities($config)
     {
+        $updateOnly = $config['updateOnly'];
+        $batchSize  = $config['batchSize'];
+
         if ($updateOnly) {
             return [
                 new Action\Event('notFound'),
             ];
         } else {
             return [
-                $this->insertNewEntities(),
+                $this->insertNewEntities($batchSize),
                 new Action\Event('created'),
-                $this->fillAttributeNull(),
-                $this->insertAttributes(),
+                $this->fillAttributeNull($config),
+                $this->insertAttributes($config),
             ];
         }
     }
 
-    protected function updateEntities($idField, $setField, $entityTable, $attributesToUpdate, $attributesByTable, $dimensions, $attributeSets)
+    protected function updateEntities($config)
     {
+        $idField            = $config['idField'];
+        $setField           = $config['setField'];
+        $entityTable        = $config['entityTable'];
+        $attributesToUpdate = $config['attributesToUpdate'];
+        $attributesByTable  = $config['attributesByTable'];
+        $dimensions         = $config['dimensions'];
+        $attributeSets      = $config['attributeSets'];
+
         return [
-            $this->getOldAttributeData(),
+            $this->getOldAttributeData($config),
             $this->diffNewAndOldData(),
             new Transform\Expand(function($items) {
                 foreach ($items['new'] as $idx => $item) {
@@ -108,8 +121,11 @@ class EntityTest implements ComponentInterface
                     new Flow\Pipeline([
                         new Action\Event('updated'),
                         new Flow\Fork([
-                            new Flow\Pipeline($this->insertAttributes($idField, $entityTable, $attributesByTable, $dimensions)),
-                            new Flow\Pipeline($this->updateUpdatedAt($idField)),
+                            new Flow\Pipeline([
+                                $this->mapDiff($idField),
+                                $this->insertAttributes($config)
+                            ]),
+                            new Flow\Pipeline($this->updateUpdatedAt($config)),
                         ])
                     ])
                 ]
@@ -117,10 +133,10 @@ class EntityTest implements ComponentInterface
         ];
     }
 
-    protected function insertNewEntities()
+    protected function insertNewEntities($batchSize)
     {
         return [
-            new Transform\Group(1000),
+            new Transform\Group($batchSize),
             new Transform\Merge(
                 new Action\SideEffect('insertNewEntities')
             ),
@@ -132,12 +148,21 @@ class EntityTest implements ComponentInterface
         ];
     }
 
-    protected function fillAttributeNull()
+    protected function fillAttributeNull($config)
     {
+        $sets               = $config['attributeSets'];
+        $idField            = $config['idField'];
+        $setField           = $config['setField'];
+
         return [
-            new Transform\Map(function($item) {
-                if (!isset($item['price'])) {
-                    $item['price'][0] = null;
+            new Transform\Map(function($item) use ($sets, $setField) {
+                $setId  = $item[$setField];
+                $set    = $sets[$setId];
+
+                foreach ($set as $code => $attribute) {
+                    if (!array_key_exists($code, $item)) {
+                        $item[$code] = [null];
+                    }
                 }
 
                 return $item;
@@ -145,19 +170,22 @@ class EntityTest implements ComponentInterface
         ];
     }
 
-    protected function getOldAttributeData()
+    protected function getOldAttributeData($config)
     {
+        $idField            = $config['idField'];
+        $batchSize          = $config['batchSize'];
+        $updateAttributes   = $config['attributesToUpdate'];
         return [
-            new Transform\Group(1000),
+            new Transform\Group($batchSize),
             new Transform\Map(function($items) {
                 return ['new' => $items];
             }),
             new Transform\Merge(
                 new Flow\Pipeline([
-                    new Transform\Map(function($items) {
+                    new Transform\Map(function($items) use ($idField) {
                         $ids = [];
                         foreach ($items['new'] as $item) {
-                            $ids[] = $item['entity_id'];
+                            $ids[] = $item[$idField];
                         }
 
                         return $ids;
@@ -209,13 +237,22 @@ class EntityTest implements ComponentInterface
         });
     }
 
-    protected function insertAttributes($idField, $entityTable, $attributesByTable, $dimensions)
+    protected function insertAttributes($config)
     {
+        $idField            = $config['idField'];
+        $entityTable        = $config['entityTable'];
+        $attributesByTable  = $config['attributesByTable'];
+        $dimensions         = $config['dimensions'];
+        $batchSize          = $config['batchSize'];
+        $codeToIdMapper     = $config['codeToIdMapper'];
+        $staticColumns      = $config['staticColumns'];
+        $valueTableColumns  = $config['valueTableColumns'];
+
         $pipelines = [];
 
-        foreach ($attributesByTable as $table => $attribute) {
+        foreach ($attributesByTable as $table => $attributes) {
             $pipelineArray = [
-                $this->filterAttributesByTable($idField, $attributesByTable[$table]),
+                $this->filterAttributesByTable($idField, $attributes),
             ];
             if ($table == $entityTable) {
                 $pipelineArray = array_merge($pipelineArray, [
@@ -223,10 +260,9 @@ class EntityTest implements ComponentInterface
                 ]);
             } else {
                 $pipelineArray = array_merge($pipelineArray, [
-                    $this->filterAttributesByTable($idField, $attributesByTable[$table]),
-                    $this->expandEavAttributes($idField),
-                    new Db\TreeToTable($dimensions, $dimensions),
-                    new Transform\Group(1000),
+                    $this->mapToAttributeIds($idField, $codeToIdMapper),
+                    new Db\TreeToTable($valueTableColumns, $dimensions, $staticColumns),
+                    new Transform\Group($batchSize),
                     new Action\SideEffect('insertAttributeRows', $table),
                 ]);
             }
@@ -235,7 +271,6 @@ class EntityTest implements ComponentInterface
         }
 
         return [
-            $this->mapDiff($idField),
             new Flow\Fork($pipelines)
         ];
     }
@@ -259,12 +294,15 @@ class EntityTest implements ComponentInterface
     {
         return [
             new Transform\Map(function($item) use ($idField, $attributes) {
+                if (!isset($item[$idField])) {
+                    return [];
+                }
                 $newItem = [
                     $idField => $item[$idField]
                 ];
 
                 foreach ($attributes as $attribute) {
-                    if (isset($item[$attribute])) {
+                    if (array_key_exists($attribute, $item)) {
                         $newItem[$attribute] = $item[$attribute];
                     }
                 }
@@ -277,30 +315,26 @@ class EntityTest implements ComponentInterface
         ];
     }
 
-    protected function expandEavAttributes($idField)
+    protected function mapToAttributeIds($idField, $mapper)
     {
-        return new Transform\Expand(function($item) use ($idField) {
-            $attributes = array_keys($item);
-            foreach ($attributes as $attribute) {
-                if ($attribute == $idField) {
-                    continue;
-                }
-                yield [
-                    $item[$idField] => [
-                        $attribute => $item[$attribute],
-                    ],
-                ];
-            }
+        return new Transform\Map(function($item) use ($idField, $mapper) {
+            $id = $item[$idField];
+            unset($item[$idField]);
+
+            return [$id => $mapper->map($item)];
         });
     }
 
-    protected function updateUpdatedAt($idField)
+    protected function updateUpdatedAt($config)
     {
+        $idField            = $config['idField'];
+        $batchSize          = $config['batchSize'];
+
         return [
             new Transform\Map(function($item) use ($idField) {
                 return $item['new'][$idField];
             }),
-            new Transform\Group(1000),
+            new Transform\Group($batchSize),
             new Action\SideEffect('updateUpdatedAt'),
         ];
     }

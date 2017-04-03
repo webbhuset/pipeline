@@ -51,7 +51,11 @@ class IdsFromEntities
                 if (!array_key_exists($key, $entity)) {
                     throw new BifrostException("Key '{$key}' does not exist in entity.");
                 }
-                $value = $adapter->quote((string)$entity[$key]);
+                $value = $entity[$key];
+                if (is_array($value)) {
+                    $value = reset($value);
+                }
+                $value = $adapter->quote((string)$value);
                 if ($pos == 0) {
                     $alias = $adapter->quoteIdentifier($key);
                     $row[] = "{$value} AS {$alias}";

@@ -25,6 +25,7 @@ class Entity implements Component\ComponentInterface
             'batchSize'     => 500,
             'defaultScope'  => 0,
             'skipCreate'    => false,
+            'updateAttributes' => [],
         ];
         $config = array_merge($default, $config);
 
@@ -60,6 +61,7 @@ class Entity implements Component\ComponentInterface
                 'batchSize'    => T::Int(['min_value' => 2, 'required' => true]),
                 'defaultScope' => T::Union(['types' => [T::String(), T::Int()]]),
                 'skipCreate'   => T::Bool(),
+                'updateAttributes' => T::Set(['type' => T::String()]),
             ],
         ]);
         $errors = $configType->getErrors($config);
