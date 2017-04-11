@@ -1,314 +1,329 @@
 <?php
 
-/**
- * Pre Req:
- *      Attribute Set field must exist (attribute_set_id)
- *      Attribute Set id must exist in $sets
- */
 namespace Webbhuset\Bifrost\Core\Component\Sequence\Import\Eav;
 
-use Webbhuset\Bifrost\Core\Component;
+use Webbhuset\Bifrost\Core\Component\ComponentInterface;
+use Webbhuset\Bifrost\Core\Component\Action;
+use Webbhuset\Bifrost\Core\Component\Db;
+use Webbhuset\Bifrost\Core\Component\Dev;
+use Webbhuset\Bifrost\Core\Component\Flow;
+use Webbhuset\Bifrost\Core\Component\Transform;
 use Webbhuset\Bifrost\Core\Helper;
-use Webbhuset\Bifrost\Core\Type;
-use Webbhuset\Bifrost\Core\Type\TypeConstructor AS T;
 
-class Entity implements Component\ComponentInterface
+class Entity implements ComponentInterface
 {
-    protected $pipeline;
-    protected $config;
+    protected $component;
 
     public function __construct(array $config)
     {
         $default = [
-            'idFieldName'   => 'entity_id',
-            'setFieldName'  => 'attribute_set_id',
-            'batchSize'     => 500,
-            'defaultScope'  => 0,
-            'skipCreate'    => false,
-            'updateAttributes' => [],
+            'idField'               => 'entity_id',
+            'setField'              => 'attribute_set_id',
+            'updateOnly'            => false,
+            'attributesToUpdate'    => [],
+            'batchSize'             => 200,
         ];
+
         $config = array_merge($default, $config);
 
-        $required = ['required' => true];
+        $this->component = $this->createComponent($config);
+    }
 
-        $stringOrIntUnion = T::Union([
-            'required'  => true,
-            'types'     => [T::String($required), T::Int($required)],
-        ]);
+    protected function createComponent($config)
+    {
+        $updateOnly         = $config['updateOnly'];
+        $idField            = $config['idField'];
+        $setField           = $config['setField'];
+        $entityTable        = $config['entityTable'];
+        $attributesToUpdate = $config['attributesToUpdate'];
+        $attributesByTable  = $config['attributesByTable'];
+        $dimensions         = $config['dimensions'];
+        $attributeSets      = $config['attributeSets'];
 
-        $configType = T::Struct([
-            'fields' => [
-                'attributesByType' => T::Map([
-                    'key_type'      => $stringOrIntUnion,
-                    'value_type'    => T::Set(['type' => $stringOrIntUnion, 'required' => true]),
-                ]),
-                'attributeSetsByName' => T::Map([
-                    'key_type'      => $stringOrIntUnion,
-                    'value_type'    => T::Set(['type' => $stringOrIntUnion, 'required' => true]),
-                ]),
-                'valueTableConfig' => T::Struct([
-                    'fields' => [
-                        'columns'       => T::Set(['type' => T::String(), 'required' => true]),
-                        'dimensions'    => T::Set(['type' => T::String(), 'required' => true]),
-                        'static'        => T::Map([
-                            'key_type'      => T::String(),
-                            'value_type'    => T::Any(),
-                        ])
-                    ],
-                ]),
-                'idFieldName'  => T::String($required),
-                'setFieldName' => T::String($required),
-                'batchSize'    => T::Int(['min_value' => 2, 'required' => true]),
-                'defaultScope' => T::Union(['types' => [T::String(), T::Int()]]),
-                'skipCreate'   => T::Bool(),
-                'updateAttributes' => T::Set(['type' => T::String()]),
-            ],
-        ]);
-        $errors = $configType->getErrors($config);
-
-        if ($errors !== false) {
-            throw new Type\TypeException("Constructor param is not correct.", 0, null, $errors);
-        }
-
-        $this->config = $config;
+        return new Flow\Multiplex(
+            function($item) use ($idField) {
+                return isset($item[$idField]) ? 'update' : 'create';
+            },
+            [
+                'create' => $this->createEntities($config),
+                'update' => $this->updateEntities($config),
+            ]
+        );
     }
 
     public function process($items, $finalize = true)
     {
-        if (!$this->pipeline) {
-            $this->pipeline = $this->makePipeline($this->config);
+        return $this->component->process($items, $finalize);
+    }
+
+
+    protected function createEntities($config)
+    {
+        $updateOnly = $config['updateOnly'];
+        $batchSize  = $config['batchSize'];
+
+        if ($updateOnly) {
+            return [
+                new Action\Event('notFound'),
+            ];
+        } else {
+            return [
+                $this->insertNewEntities($batchSize),
+                new Action\Event('created'),
+                $this->fillAttributeNull($config),
+                $this->insertAttributes($config),
+            ];
         }
-
-        return $this->pipeline->process($items, $finalize);
     }
 
-    protected function makePipeline($config)
+    protected function updateEntities($config)
     {
-        $batchSize = $config['batchSize'];
-        $skipCreate = $config['skipCreate'];
+        $idField            = $config['idField'];
+        $setField           = $config['setField'];
+        $entityTable        = $config['entityTable'];
+        $attributesToUpdate = $config['attributesToUpdate'];
+        $attributesByTable  = $config['attributesByTable'];
+        $dimensions         = $config['dimensions'];
+        $attributeSets      = $config['attributeSets'];
 
-        return new Component\Flow\Pipeline([
-            //$this->batchAndMergeResult($batchSize, 'getEntityIds'),
-            new Component\Flow\Fork([
-                $skipCreate ? false : $this->createNewEntities($config),
-                $this->updateExistingEntities($config),
-            ]),
-        ]);
+        return [
+            $this->getOldAttributeData($config),
+            $this->diffNewAndOldData(),
+            new Transform\Expand(function($items) {
+                foreach ($items['new'] as $idx => $item) {
+                    yield [
+                        'new'   => $items['new'][$idx],
+                        'old'   => $items['old'][$idx],
+                        'diff'  => $items['diff'][$idx],
+                    ];
+                }
+            }),
+            $this->filterAttributesToUpdate($attributesToUpdate),
+            $this->filterAttributesBySet($setField, $attributeSets),
+            new Flow\Multiplex(
+                function($item) {
+                    return $item['diff'] ? 'updated' : 'skipped';
+                },
+                [
+                    'skipped' => new Action\Event('skipped'),
+                    'updated' => new Flow\Pipeline([
+                        new Action\Event('updated'),
+                        new Flow\Fork([
+                            new Flow\Pipeline([
+                                $this->mapDiff($idField),
+                                $this->insertAttributes($config)
+                            ]),
+                            new Flow\Pipeline($this->updateUpdatedAt($config)),
+                        ])
+                    ]),
+                ]
+            ),
+        ];
     }
 
-    public function batchAndMergeResult($batchSize, $method)
+    protected function insertNewEntities($batchSize)
     {
-        return new Component\Transform\Merge(
-            new Component\Flow\Pipeline([
-                new Component\Transform\Group($batchSize),
-                new Component\Action\SideEffect($method),
-                new Component\Transform\Expand(function($entities) {
-                    foreach ($entities as $entity) {
-                        if ($entity['attribute_set_id']) {
-                            $entity['attribute_set_id'] = (int)$entity['attribute_set_id'];
-                        }
-                        yield $entity;
+        return [
+            new Transform\Group($batchSize),
+            new Transform\Merge(
+                new Action\SideEffect('insertNewEntities')
+            ),
+            new Transform\Expand(function($items) {
+                foreach ($items as $item) {
+                    yield $item;
+                }
+            }),
+        ];
+    }
+
+    protected function fillAttributeNull($config)
+    {
+        $sets               = $config['attributeSets'];
+        $idField            = $config['idField'];
+        $setField           = $config['setField'];
+
+        return [
+            new Transform\Map(function($item) use ($sets, $setField) {
+                $setId  = $item[$setField];
+                $set    = $sets[$setId];
+
+                foreach ($set as $code => $attribute) {
+                    if (!array_key_exists($code, $item)) {
+                        $item[$code] = [null];
                     }
-                }),
-            ])
-        );
-    }
-
-    protected function createNewEntities($config)
-    {
-        $attributesByType = $config['attributesByType'];
-        $sets             = $config['attributeSetsByName'];
-        $idFieldName      = $config['idFieldName'];
-        $setFieldName     = $config['setFieldName'];
-        $batchSize        = $config['batchSize'];
-        $defaultScope     = $config['defaultScope'];
-
-        return new Component\Flow\Pipeline([
-            $this->filterByColumnValue($idFieldName, null),
-            $this->batchAndMergeResult($batchSize, 'createEntities'),
-            new Component\Action\Event('created'),
-            $this->fillAttributeNullValues($sets, $setFieldName, $defaultScope),
-            $this->handleAttributeValues($config),
-        ]);
-    }
-
-    protected function updateExistingEntities($config)
-    {
-        $attributesByType = $config['attributesByType'];
-        $sets             = $config['attributeSetsByName'];
-        $idFieldName      = $config['idFieldName'];
-        $setFieldName     = $config['setFieldName'];
-        $batchSize        = $config['batchSize'];
-        $defaultScope     = $config['defaultScope'];
-
-        return new Component\Flow\Pipeline([
-            $this->filterByColumnValue($idFieldName, true),
-            $this->handleAttributeValues($config, true),
-        ]);
-    }
-
-    protected function filterByColumnValue($field, $value)
-    {
-        return new Component\Transform\Filter(function($item) use ($field, $value) {
-            return $item[$field] == $value;
-        });
-    }
-
-    protected function handleAttributeValues($config, $compareWithOldValues = false)
-    {
-        $attributesByType = $config['attributesByType'];
-        $sets             = $config['attributeSetsByName'];
-        $valueTableConfig = $config['valueTableConfig'];
-        $idFieldName      = $config['idFieldName'];
-        $setFieldName     = $config['setFieldName'];
-        $batchSize        = $config['batchSize'];
-
-        $pipelines = [];
-
-        foreach ($attributesByType as $type => $attributesForType) {
-            if ($type == 'static') {
-                continue;
-            }
-
-            if (count($attributesForType) === 0) {
-                continue;
-            }
-
-            $filteredSets = $this->intersectSets($sets, $attributesForType);
-
-            if (!array_filter($filteredSets)) {
-                continue;
-            }
-
-            $pipelines[] = new Component\Flow\Pipeline([
-                $this->prepareTree($idFieldName, $setFieldName, $filteredSets),
-                $compareWithOldValues ? $this->compareWithOldValues($config, $attributesForType, $type) : false,
-                $this->dropEmptyItems(),
-                $compareWithOldValues ? new Component\Action\Event('updated') : false,
-                $this->treeToTable($valueTableConfig),
-                new Component\Transform\Group($batchSize * 3),
-                new Component\Action\SideEffect('insertAttributeValues', $type),
-            ]);
-        }
-
-        switch (true) {
-            case count($pipelines) > 1:  return new Component\Flow\Fork($pipelines);
-            case count($pipelines) == 1: return reset($pipelines);
-            case count($pipelines) < 1:  return null;
-        }
-    }
-
-    protected function compareWithOldValues($config, $attributes, $type)
-    {
-        $sets             = $config['attributeSetsByName'];
-        $valueTableConfig = $config['valueTableConfig'];
-        $idFieldName      = $config['idFieldName'];
-        $setFieldName     = $config['setFieldName'];
-        $batchSize        = $config['batchSize'];
-
-        return new Component\Flow\Pipeline([
-            new Component\Transform\Group($batchSize, true),
-            new Component\Transform\Map(function($item) {
-                $item = [
-                    'new' => $item,
-                ];
+                }
 
                 return $item;
             }),
-            $this->fetchAttributeValues($type, $attributes, $config),
-            $this->diffAttributeValues(),
-        ]);
+        ];
     }
 
-    protected function fetchAttributeValues($type, $attributes, $config)
+    protected function getOldAttributeData($config)
     {
-        $valueTableConfig = $config['valueTableConfig'];
-        $batchSize        = $config['batchSize'];
-        $dimensions       = $valueTableConfig['dimensions'];
+        $idField            = $config['idField'];
+        $batchSize          = $config['batchSize'];
+        $updateAttributes   = $config['attributesToUpdate'];
+        return [
+            new Transform\Group($batchSize),
+            new Transform\Map(function($items) {
+                return ['new' => $items];
+            }),
+            new Transform\Merge(
+                new Flow\Pipeline([
+                    new Transform\Map(function($items) use ($idField) {
+                        $ids = [];
+                        foreach ($items['new'] as $item) {
+                            $ids[] = $item[$idField];
+                        }
 
-        return new Component\Transform\Merge(
-            new Component\Flow\Pipeline([
-                new Component\Transform\Map(function($item) {
-                    return array_keys($item['new']);
-                }),
-                new Component\Action\SideEffect('fetchAttributeValues', $type, $attributes),
-                new Component\Db\TableToTree($dimensions),
-                new Component\Transform\Map(function($item) {
-                    return ['old' => $item];
-                }),
-            ])
-        );
+                        return $ids;
+                    }),
+                    new Action\SideEffect('getOldAttributeData'),
+                    new Transform\Map(function($items) {
+                        return ['old' => $items];
+                    }),
+                ])
+            ),
+        ];
     }
 
-    protected function diffAttributeValues()
+    protected function diffNewAndOldData()
     {
-        return new Component\Transform\Map(function ($item) {
-            $new = $item['new'];
-            $old = $item['old'];
-            $insertTree = Helper\ArrayHelper\Tree::diffRecursive($new, $old);
-
-            return $insertTree;
-        });
-    }
-
-    protected function fillAttributeNullValues($sets, $setField, $defaultScope = 0)
-    {
-        $usesScope      = $defaultScope !== null;
-        $defaultScope   = $usesScope
-                        ? [$defaultScope => null]
-                        : null;
-
-        return new Component\Transform\Map(function($item) use ($sets, $setField, $defaultScope) {
-            $setName    = $item[$setField];
-            $set        = $sets[$setName];
-
-            return array_replace(array_fill_keys($set, $defaultScope), $item);
-        });
-    }
-
-    protected function prepareTree($rootField, $setField, $sets)
-    {
-        return new Component\Transform\Map(function($item) use ($rootField, $setField, $sets) {
-            $rootValue          = $item[$rootField];
-            $setName            = $item[$setField];
-            $attributes         = $sets[$setName];
-            $filteredItem       = array_intersect_key($item, $attributes);
-
-            if (empty($filteredItem)) {
-                return $filteredItem;
+        return new Transform\Map(function($items) {
+            foreach ($items['new'] as $idx => $item) {
+                $new = $items['new'][$idx];
+                $old = $items['old'][$idx];
+                $items['diff'][$idx] = Helper\ArrayHelper\Tree::diffRecursive($new, $old);
             }
 
-            $treeItem = [$rootValue => $filteredItem];
-
-            return $treeItem;
+            return $items;
         });
     }
 
-    protected function intersectSets($sets, $attributes)
+    protected function filterAttributesToUpdate($attributes)
     {
-        $intersectedSets = [];
+        return new Transform\Map(function($item) use ($attributes) {
+            foreach ($item['diff'] as $attribute => $diff) {
+                if (!in_array($attribute, $attributes)) {
+                    unset($item['diff'][$attribute]);
+                }
+            }
+            return $item;
+        });
+    }
 
-        foreach ($sets as $name => $attributesInSet) {
-            $validAttributes        = array_intersect($attributes, $attributesInSet);
-            $intersectedSets[$name] = array_flip(array_values($validAttributes));
+    protected function filterAttributesBySet($setField, $attributeSets)
+    {
+        return new Transform\Map(function($item) use ($setField, $attributeSets) {
+            $attributes = $attributeSets[$item['new'][$setField]];
+            foreach ($item['diff'] as $attribute => $diff) {
+                if (!array_key_exists($attribute, $attributes)) {
+                    unset($item['diff'][$attribute]);
+                }
+            }
+            return $item;
+        });
+    }
+
+    protected function insertAttributes($config)
+    {
+        $idField            = $config['idField'];
+        $entityTable        = $config['entityTable'];
+        $attributesByTable  = $config['attributesByTable'];
+        $dimensions         = $config['dimensions'];
+        $batchSize          = $config['batchSize'];
+        $codeToIdMapper     = $config['codeToIdMapper'];
+        $staticColumns      = $config['staticColumns'];
+        $valueTableColumns  = $config['valueTableColumns'];
+
+        $pipelines = [];
+
+        foreach ($attributesByTable as $table => $attributes) {
+            $pipelineArray = [
+                $this->filterAttributesByTable($idField, $attributes),
+            ];
+            if ($table == $entityTable) {
+                $pipelineArray = array_merge($pipelineArray, [
+                    new Action\SideEffect('updateEntityRow', $table),
+                ]);
+            } else {
+                $pipelineArray = array_merge($pipelineArray, [
+                    $this->mapToAttributeIds($idField, $codeToIdMapper),
+                    new Db\TreeToTable($valueTableColumns, $dimensions, $staticColumns),
+                    new Transform\Group($batchSize),
+                    new Action\SideEffect('insertAttributeRows', $table),
+                ]);
+            }
+
+            $pipelines[] = new Flow\Pipeline($pipelineArray);
         }
 
-        return $intersectedSets;
+        return [
+            new Flow\Fork($pipelines)
+        ];
     }
 
-    protected function dropEmptyItems()
+    protected function mapDiff($idField)
     {
-        return new Component\Transform\Filter(function($item) {
-            return !empty($item);
+        return new Transform\Map(function($item) use ($idField) {
+            $newItem = [
+                $idField => $item['new'][$idField]
+            ];
+
+            foreach ($item['diff'] as $attribute => $value) {
+                $newItem[$attribute] = $value;
+            }
+
+            return $newItem;
         });
     }
 
-    protected function treeToTable($config)
+    protected function filterAttributesByTable($idField, $attributes)
     {
-        $columns    = $config['columns'];
-        $dimensions = $config['dimensions'];
-        $static     = $config['static'];
+        return [
+            new Transform\Map(function($item) use ($idField, $attributes) {
+                if (!isset($item[$idField])) {
+                    return [];
+                }
+                $newItem = [
+                    $idField => $item[$idField]
+                ];
 
-        return new Component\Db\TreeToTable($columns, $dimensions, $static);
+                foreach ($attributes as $attribute) {
+                    if (array_key_exists($attribute, $item)) {
+                        $newItem[$attribute] = $item[$attribute];
+                    }
+                }
+
+                return $newItem;
+            }),
+            new Transform\Filter(function($item) {
+                return count($item) > 1;
+            })
+        ];
+    }
+
+    protected function mapToAttributeIds($idField, $mapper)
+    {
+        return new Transform\Map(function($item) use ($idField, $mapper) {
+            $id = $item[$idField];
+            unset($item[$idField]);
+
+            return [$id => $mapper->map($item)];
+        });
+    }
+
+    protected function updateUpdatedAt($config)
+    {
+        $idField            = $config['idField'];
+        $batchSize          = $config['batchSize'];
+
+        return [
+            new Transform\Map(function($item) use ($idField) {
+                return $item['new'][$idField];
+            }),
+            new Transform\Group($batchSize),
+            new Action\SideEffect('updateUpdatedAt'),
+        ];
     }
 }
