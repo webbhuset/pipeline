@@ -7,58 +7,41 @@ use Webbhuset\Bifrost\Core\Component\ComponentInterface;
 use Webbhuset\Bifrost\Core\Data\ActionData\ActionDataInterface;
 use Webbhuset\Bifrost\Core\Helper\ReflectionHelper;
 
-class CaseSwitch implements ComponentInterface
+class Multiplex implements ComponentInterface
 {
-    protected $cases;
+    protected $conditionCallback;
+    protected $components;
 
     /**
      * Construct.
      *
-     * Example $cases format:
-     *  [
-     *      [
-     *          Condition1Callback,
-     *          Component1
-     *      ],
-     *      [
-     *          ConditionCallback,
-     *          Component2
-     *      ],
-     *  ]
-     *
-     * @param array $cases
+     * @param callable $conditionCallback
+     * @param array $components
      *
      * @return void
      */
-    public function __construct(array $cases)
+    public function __construct(callable $conditionCallback, array $components)
     {
-        foreach ($cases as $idx => $case) {
-            if ($case === false) {
-                unset($cases[$idx]);
+        $this->validateCallback($conditionCallback);
+
+        foreach ($components as $key => $component) {
+            if ($component === false) {
+                unset($components[$key]);
                 continue;
             }
 
-            if (count($case) !== 2) {
-                throw new BifrostException('Each case must contain a condition callback and a component');
-            }
-
-            if (!is_callable($case[0])) {
-                throw new BifrostException('Condition must be a callable.');
-            }
-
-            $this->validateCallback($case[0]);
-
-            if (!is_object($case[1])) {
+            if (!is_object($component)) {
                 throw new BifrostException("Component is not an object.");
             }
 
-            if (!$case[1] instanceof ComponentInterface) {
-                $class = get_class($case[1]);
+            if (!$component instanceof ComponentInterface) {
+                $class = get_class($ccomponent);
                 throw new BifrostException("Component {$class} does not implement 'ComponentInterface'");
             }
         }
 
-        $this->cases = $cases;
+        $this->conditionCallback    = $conditionCallback;
+        $this->components           = $components;
     }
 
     public function process($items, $finalize = true)
@@ -69,26 +52,19 @@ class CaseSwitch implements ComponentInterface
                 continue;
             }
 
-            foreach ($this->cases as $case) {
-                $condition = $case[0];
-                $component = $case[1];
+            $key = call_user_func($this->conditionCallback, $item);
 
-                if (!$condition($item)) {
-                    continue;
-                }
-
-                $results = $component->process([$item], false);
+            if (isset($this->components[$key])) {
+                $results = $this->components[$key]->process([$item], false);
                 foreach ($results as $result) {
                     yield $result;
                 }
-                continue 2;
             }
         }
 
         if ($finalize) {
-            foreach ($this->cases as $case) {
-                $component  = $case[1];
-                $results    = $component->process([], true);
+            foreach ($this->components as $component) {
+                $results = $component->process([], true);
                 foreach ($results as $result) {
                     yield $result;
                 }
