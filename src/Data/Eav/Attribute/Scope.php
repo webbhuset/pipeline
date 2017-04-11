@@ -1,6 +1,6 @@
 <?php
 
-namespace Webbhuset\Bifrost\Core\Data\Eav\Attribute;
+namespace Webbhuset\Bifrost\Data\Eav\Attribute;
 
 class Scope implements ScopeInterface
 {

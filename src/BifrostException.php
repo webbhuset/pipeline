@@ -1,5 +1,5 @@
 <?php
-namespace Webbhuset\Bifrost\Core;
+namespace Webbhuset\Bifrost;
 /**
  * Exception class used for Bifrost-specific exceptions.
  *

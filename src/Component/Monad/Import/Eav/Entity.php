@@ -1,9 +1,9 @@
 <?php
 
-namespace Webbhuset\Bifrost\Core\Component\Monad\Import\Eav;
+namespace Webbhuset\Bifrost\Component\Monad\Import\Eav;
 
-use Webbhuset\Bifrost\Core\Component\Monad;
-use Webbhuset\Bifrost\Core\Component\Sequence\Import\Eav\Entity\ActionsInterface;
+use Webbhuset\Bifrost\Component\Monad;
+use Webbhuset\Bifrost\Component\Sequence\Import\Eav\Entity\ActionsInterface;
 
 class Entity extends Monad\Standard
 {

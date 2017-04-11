@@ -1,8 +1,8 @@
 <?php
 
-namespace Webbhuset\Bifrost\Core\Test\Helper\Component;
+namespace Webbhuset\Bifrost\Test\Helper\Component;
 
-use Webbhuset\Bifrost\Core\Component;
+use Webbhuset\Bifrost\Component;
 use Exception;
 
 class AssertComponent

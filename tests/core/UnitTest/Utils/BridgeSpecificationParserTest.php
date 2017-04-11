@@ -1,5 +1,5 @@
 <?php
-namespace Webbhuset\Bifrost\Core\Test\UnitTest\Utils;
+namespace Webbhuset\Bifrost\Test\UnitTest\Utils;
 
 class BridgeSpecificationParserTest
 {

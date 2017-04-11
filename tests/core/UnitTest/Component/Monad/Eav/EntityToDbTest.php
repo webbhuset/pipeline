@@ -1,10 +1,10 @@
 <?php
 
-namespace Webbhuset\Bifrost\Core\Test\UnitTest\Component\Monad\Eav;
+namespace Webbhuset\Bifrost\Test\UnitTest\Component\Monad\Eav;
 
-use Webbhuset\Bifrost\Core\Component;
-use Webbhuset\Bifrost\Core\Component\Sequence\Eav\EntityToDb\ActionsInterface;
-use Webbhuset\Bifrost\Core\Data\Eav;
+use Webbhuset\Bifrost\Component;
+use Webbhuset\Bifrost\Component\Sequence\Eav\EntityToDb\ActionsInterface;
+use Webbhuset\Bifrost\Data\Eav;
 
 class EntityToDbTest
 {

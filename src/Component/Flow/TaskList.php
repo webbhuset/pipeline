@@ -1,14 +1,14 @@
 <?php
 
-namespace Webbhuset\Bifrost\Core\Component\Flow;
+namespace Webbhuset\Bifrost\Component\Flow;
 
-use Webbhuset\Bifrost\Core\BifrostException;
-use Webbhuset\Bifrost\Core\Component\ComponentInterface;
-use Webbhuset\Bifrost\Core\Component\Flow\Pipeline;
-use Webbhuset\Bifrost\Core\Component\Monad\AppendContext;
-use Webbhuset\Bifrost\Core\Data\ActionData\ActionDataInterface;
-use Webbhuset\Bifrost\Core\Data\ActionData\EventData;
-use Webbhuset\Bifrost\Core\Data\ActionData\ErrorData;
+use Webbhuset\Bifrost\BifrostException;
+use Webbhuset\Bifrost\Component\ComponentInterface;
+use Webbhuset\Bifrost\Component\Flow\Pipeline;
+use Webbhuset\Bifrost\Component\Monad\AppendContext;
+use Webbhuset\Bifrost\Data\ActionData\ActionDataInterface;
+use Webbhuset\Bifrost\Data\ActionData\EventData;
+use Webbhuset\Bifrost\Data\ActionData\ErrorData;
 
 class TaskList implements ComponentInterface
 {

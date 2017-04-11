@@ -1,6 +1,6 @@
 <?php
 
-namespace Webbhuset\Bifrost\Core\Helper\ArrayHelper;
+namespace Webbhuset\Bifrost\Helper\ArrayHelper;
 
 use RecursiveIteratorIterator;
 use RecursiveArrayIterator;

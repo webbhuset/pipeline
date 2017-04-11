@@ -1,6 +1,6 @@
 <?php
-namespace Webbhuset\Bifrost\Core\Utils\ValueConverter;
-use \Webbhuset\Bifrost\Core\BifrostException;
+namespace Webbhuset\Bifrost\Utils\ValueConverter;
+use \Webbhuset\Bifrost\BifrostException;
 
 class StringToFloat implements ValueConverterInterface
 {

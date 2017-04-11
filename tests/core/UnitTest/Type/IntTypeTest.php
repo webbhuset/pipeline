@@ -1,5 +1,5 @@
 <?php
-namespace Webbhuset\Bifrost\Core\Test\UnitTest\Type;
+namespace Webbhuset\Bifrost\Test\UnitTest\Type;
 
 class IntTypeTest
 {
@@ -15,7 +15,7 @@ class IntTypeTest
 
         $params = ['required' => 'apa'];
         $test->testThatArgs($params)
-            ->throws('Webbhuset\Bifrost\Core\BifrostException');
+            ->throws('Webbhuset\Bifrost\BifrostException');
     }
 
     public static function isEqualTest($test)
@@ -76,6 +76,6 @@ class IntTypeTest
     public static function diffTest($test)
     {
         $test->newInstance()
-            ->testThatArgs(null, null)->throws('Webbhuset\Bifrost\Core\BifrostException');
+            ->testThatArgs(null, null)->throws('Webbhuset\Bifrost\BifrostException');
     }
 }

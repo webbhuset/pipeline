@@ -1,8 +1,8 @@
 <?php
 
-namespace Webbhuset\Bifrost\Core\Helper;
+namespace Webbhuset\Bifrost\Helper;
 
-use Webbhuset\Bifrost\Core\BifrostException;
+use Webbhuset\Bifrost\BifrostException;
 
 /**
  * Argument parser.

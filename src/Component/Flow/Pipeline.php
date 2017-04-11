@@ -1,10 +1,10 @@
 <?php
 
-namespace Webbhuset\Bifrost\Core\Component\Flow;
+namespace Webbhuset\Bifrost\Component\Flow;
 
-use Webbhuset\Bifrost\Core\BifrostException;
-use Webbhuset\Bifrost\Core\Component\ComponentInterface;
-use Webbhuset\Bifrost\Core\Helper\ArrayHelper\Tree;
+use Webbhuset\Bifrost\BifrostException;
+use Webbhuset\Bifrost\Component\ComponentInterface;
+use Webbhuset\Bifrost\Helper\ArrayHelper\Tree;
 
 class Pipeline implements ComponentInterface
 {

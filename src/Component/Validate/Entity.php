@@ -1,12 +1,12 @@
 <?php
 
-namespace Webbhuset\Bifrost\Core\Component\Validate;
+namespace Webbhuset\Bifrost\Component\Validate;
 
-use Webbhuset\Bifrost\Core\BifrostException;
-use Webbhuset\Bifrost\Core\Component\ComponentInterface;
-use Webbhuset\Bifrost\Core\Data\ActionData\ActionDataInterface;
-use Webbhuset\Bifrost\Core\Data\ActionData\ErrorData;
-use Webbhuset\Bifrost\Core\Type\TypeInterface;
+use Webbhuset\Bifrost\BifrostException;
+use Webbhuset\Bifrost\Component\ComponentInterface;
+use Webbhuset\Bifrost\Data\ActionData\ActionDataInterface;
+use Webbhuset\Bifrost\Data\ActionData\ErrorData;
+use Webbhuset\Bifrost\Type\TypeInterface;
 
 class Entity implements ComponentInterface
 {

@@ -1,14 +1,14 @@
 <?php
-namespace  Webbhuset\Bifrost\Core\Test\FuncTest\ProcessorsTest;
-use Webbhuset\Bifrost\Core\Job\Task\BridgeFactory;
-use Webbhuset\Bifrost\Core\Utils\Writer\WriterFactory;
-use Webbhuset\Bifrost\Core\Utils\Processor\ProcessorFactory;
-use Webbhuset\Bifrost\Core\Utils\Reader\ReaderFactory;
-use Webbhuset\Bifrost\Core\Utils\ValueConverter\StringToInt;
-use Webbhuset\Bifrost\Core\Utils\ValueConverter\StringToFloat;
-use Webbhuset\Bifrost\Core\Utils\Processor\Filler\Backend\DefaultValues;
-use Webbhuset\Bifrost\Core\Utils\Processor\Filler\Backend\Mock\Repeater;
-use Webbhuset\Bifrost\Core\Utils\Type as Type;
+namespace  Webbhuset\Bifrost\Test\FuncTest\ProcessorsTest;
+use Webbhuset\Bifrost\Job\Task\BridgeFactory;
+use Webbhuset\Bifrost\Utils\Writer\WriterFactory;
+use Webbhuset\Bifrost\Utils\Processor\ProcessorFactory;
+use Webbhuset\Bifrost\Utils\Reader\ReaderFactory;
+use Webbhuset\Bifrost\Utils\ValueConverter\StringToInt;
+use Webbhuset\Bifrost\Utils\ValueConverter\StringToFloat;
+use Webbhuset\Bifrost\Utils\Processor\Filler\Backend\DefaultValues;
+use Webbhuset\Bifrost\Utils\Processor\Filler\Backend\Mock\Repeater;
+use Webbhuset\Bifrost\Utils\Type as Type;
 
 class TestBridgeFactory extends BridgeFactory
 {
@@ -47,7 +47,7 @@ BRIDGE;
 
     public function reader()
     {
-        return new ReaderFactory('Webbhuset\Bifrost\Core\Utils\Reader\Mock\UserDefined', []);
+        return new ReaderFactory('Webbhuset\Bifrost\Utils\Reader\Mock\UserDefined', []);
     }
 
     public function mapper()
@@ -63,7 +63,7 @@ BRIDGE;
         $params = [
             "fields" => $fields,
         ];
-        return new ProcessorFactory('Webbhuset\Bifrost\Core\Utils\Processor\Mapper', $params);
+        return new ProcessorFactory('Webbhuset\Bifrost\Utils\Processor\Mapper', $params);
     }
 
     public function converter()
@@ -79,7 +79,7 @@ BRIDGE;
         $params = [
             "fields" => $fields,
         ];
-        return new ProcessorFactory('Webbhuset\Bifrost\Core\Utils\Processor\Converter', $params);
+        return new ProcessorFactory('Webbhuset\Bifrost\Utils\Processor\Converter', $params);
     }
 
     public function defaultFiller()
@@ -94,7 +94,7 @@ BRIDGE;
             'backend'           => new DefaultValues($backendParams),
             'key_specification' => ['sku'],
         ];
-        return new ProcessorFactory('Webbhuset\Bifrost\Core\Utils\Processor\Filler', $params);
+        return new ProcessorFactory('Webbhuset\Bifrost\Utils\Processor\Filler', $params);
     }
 
     public function entityValidator()
@@ -102,7 +102,7 @@ BRIDGE;
         $params = [
             'type' => $this->getType(),
         ];
-        return new ProcessorFactory('Webbhuset\Bifrost\Core\Utils\Processor\EntityValidator', $params);
+        return new ProcessorFactory('Webbhuset\Bifrost\Utils\Processor\EntityValidator', $params);
     }
 
     public function batcher()
@@ -110,7 +110,7 @@ BRIDGE;
         $params = [
             'batch_size'   => 1,
         ];
-        return new ProcessorFactory('Webbhuset\Bifrost\Core\Utils\Processor\Batcher', $params);
+        return new ProcessorFactory('Webbhuset\Bifrost\Utils\Processor\Batcher', $params);
     }
 
     public function oldDataFiller()
@@ -119,7 +119,7 @@ BRIDGE;
         $mapperParams = [
             "fields"            => $fields,
         ];
-        $mapper  = new ProcessorFactory('Webbhuset\Bifrost\Core\Utils\Processor\Mapper', $mapperParams);
+        $mapper  = new ProcessorFactory('Webbhuset\Bifrost\Utils\Processor\Mapper', $mapperParams);
 
         $fillerParams = [
             'key_specification' => [$this, 'getOldDataFillerKey'],
@@ -129,7 +129,7 @@ BRIDGE;
                 ]
             )
         ];
-        $filler = new ProcessorFactory('Webbhuset\Bifrost\Core\Utils\Processor\Filler', $fillerParams);
+        $filler = new ProcessorFactory('Webbhuset\Bifrost\Utils\Processor\Filler', $fillerParams);
 
         return [$mapper, $filler];
     }
@@ -154,7 +154,7 @@ BRIDGE;
         $params = [
             'type' => $this->getType()
         ];
-        return new ProcessorFactory('Webbhuset\Bifrost\Core\Utils\Processor\Differ', $params);
+        return new ProcessorFactory('Webbhuset\Bifrost\Utils\Processor\Differ', $params);
     }
 
     public function createFilter()
@@ -162,7 +162,7 @@ BRIDGE;
         $mapperParams = [
             "fields" => [$this, "filterItemsToCreate"]
         ];
-        return new ProcessorFactory('Webbhuset\Bifrost\Core\Utils\Processor\Mapper', $mapperParams);
+        return new ProcessorFactory('Webbhuset\Bifrost\Utils\Processor\Mapper', $mapperParams);
     }
 
     public function filterItemsToCreate($data)
@@ -179,7 +179,7 @@ BRIDGE;
         $mapperParams = [
             "fields" => [$this, "filterItemsToUpdate"]
         ];
-        return new ProcessorFactory('Webbhuset\Bifrost\Core\Utils\Processor\Mapper', $mapperParams);
+        return new ProcessorFactory('Webbhuset\Bifrost\Utils\Processor\Mapper', $mapperParams);
     }
 
     public function filterItemsToUpdate($data)
@@ -198,17 +198,17 @@ BRIDGE;
                 'name' => 1
             ],
         ];
-        $class   = 'Webbhuset\Bifrost\Core\Test\FuncTest\ProcessorsTest\EntityToRowProcessor';
+        $class   = 'Webbhuset\Bifrost\Test\FuncTest\ProcessorsTest\EntityToRowProcessor';
         return new ProcessorFactory($class, $params);
     }
 
     public function varcharInserter1()
     {
-        return new WriterFactory('Webbhuset\Bifrost\Core\Utils\Writer\Mock\Collector', ['id' => 'varchar1']);
+        return new WriterFactory('Webbhuset\Bifrost\Utils\Writer\Mock\Collector', ['id' => 'varchar1']);
     }
     public function varcharInserter2()
     {
-        return new WriterFactory('Webbhuset\Bifrost\Core\Utils\Writer\Mock\Collector', ['id' => 'varchar2']);
+        return new WriterFactory('Webbhuset\Bifrost\Utils\Writer\Mock\Collector', ['id' => 'varchar2']);
     }
 
     public function intMapper()
@@ -218,17 +218,17 @@ BRIDGE;
                 'status' => 2
             ],
         ];
-        $class   = 'Webbhuset\Bifrost\Core\Test\FuncTest\ProcessorsTest\EntityToRowProcessor';
+        $class   = 'Webbhuset\Bifrost\Test\FuncTest\ProcessorsTest\EntityToRowProcessor';
         return new ProcessorFactory($class, $params);
     }
 
     public function intInserter1()
     {
-        return new WriterFactory('Webbhuset\Bifrost\Core\Utils\Writer\Mock\Collector', ['id' => 'int1']);
+        return new WriterFactory('Webbhuset\Bifrost\Utils\Writer\Mock\Collector', ['id' => 'int1']);
     }
     public function intInserter2()
     {
-        return new WriterFactory('Webbhuset\Bifrost\Core\Utils\Writer\Mock\Collector', ['id' => 'int2']);
+        return new WriterFactory('Webbhuset\Bifrost\Utils\Writer\Mock\Collector', ['id' => 'int2']);
     }
 
     public function decimalMapper()
@@ -238,17 +238,17 @@ BRIDGE;
                 'price' => 3
             ],
         ];
-        $class   = 'Webbhuset\Bifrost\Core\Test\FuncTest\ProcessorsTest\EntityToRowProcessor';
+        $class   = 'Webbhuset\Bifrost\Test\FuncTest\ProcessorsTest\EntityToRowProcessor';
         return new ProcessorFactory($class, $params);
     }
 
     public function decimalInserter1()
     {
-        return new WriterFactory('Webbhuset\Bifrost\Core\Utils\Writer\Mock\Collector', ['id' => 'decimal1']);
+        return new WriterFactory('Webbhuset\Bifrost\Utils\Writer\Mock\Collector', ['id' => 'decimal1']);
     }
     public function decimalInserter2()
     {
-        return new WriterFactory('Webbhuset\Bifrost\Core\Utils\Writer\Mock\Collector', ['id' => 'decimal2']);
+        return new WriterFactory('Webbhuset\Bifrost\Utils\Writer\Mock\Collector', ['id' => 'decimal2']);
     }
 
     public function textMapper()
@@ -258,17 +258,17 @@ BRIDGE;
                 'description' => 4
             ],
         ];
-        $class   = 'Webbhuset\Bifrost\Core\Test\FuncTest\ProcessorsTest\EntityToRowProcessor';
+        $class   = 'Webbhuset\Bifrost\Test\FuncTest\ProcessorsTest\EntityToRowProcessor';
         return new ProcessorFactory($class, $params);
     }
 
     public function textInserter1()
     {
-        return new WriterFactory('Webbhuset\Bifrost\Core\Utils\Writer\Mock\Collector', ['id' => 'text1']);
+        return new WriterFactory('Webbhuset\Bifrost\Utils\Writer\Mock\Collector', ['id' => 'text1']);
     }
     public function textInserter2()
     {
-        return new WriterFactory('Webbhuset\Bifrost\Core\Utils\Writer\Mock\Collector', ['id' => 'text2']);
+        return new WriterFactory('Webbhuset\Bifrost\Utils\Writer\Mock\Collector', ['id' => 'text2']);
     }
 
     public function datetimeMapper()
@@ -278,16 +278,16 @@ BRIDGE;
                 'news_from_date' => 5
             ],
         ];
-        $class   = 'Webbhuset\Bifrost\Core\Test\FuncTest\ProcessorsTest\EntityToRowProcessor';
+        $class   = 'Webbhuset\Bifrost\Test\FuncTest\ProcessorsTest\EntityToRowProcessor';
         return new ProcessorFactory($class, $params);
     }
 
     public function datetimeInserter1()
     {
-        return new WriterFactory('Webbhuset\Bifrost\Core\Utils\Writer\Mock\Collector', ['id' => 'datetime1']);
+        return new WriterFactory('Webbhuset\Bifrost\Utils\Writer\Mock\Collector', ['id' => 'datetime1']);
     }
     public function datetimeInserter2()
     {
-        return new WriterFactory('Webbhuset\Bifrost\Core\Utils\Writer\Mock\Collector', ['id' => 'datetime2']);
+        return new WriterFactory('Webbhuset\Bifrost\Utils\Writer\Mock\Collector', ['id' => 'datetime2']);
     }
 }

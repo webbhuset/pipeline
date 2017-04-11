@@ -1,7 +1,7 @@
 <?php
 require_once './vendor/autoload.php';
 
-use Webbhuset\Bifrost\Core\Processor;
+use Webbhuset\Bifrost\Processor;
 
 $chain = new Processor\Chain([
     new Processor\Map(function($item) {

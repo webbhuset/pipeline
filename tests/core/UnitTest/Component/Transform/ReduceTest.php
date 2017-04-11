@@ -1,6 +1,6 @@
 <?php
 
-namespace Webbhuset\Bifrost\Core\Test\UnitTest\Component\Transform;
+namespace Webbhuset\Bifrost\Test\UnitTest\Component\Transform;
 
 class ReduceTest
 {

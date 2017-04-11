@@ -1,6 +1,6 @@
 <?php
 
-namespace Webbhuset\Bifrost\Core\App;
+namespace Webbhuset\Bifrost\App;
 
 interface JobManagerInterface
 {
@@ -17,7 +17,7 @@ interface JobManagerInterface
      * @param $string $code
      * @param array $options
      *
-     * @return Webbhuset\Bifrost\Core\App\Job
+     * @return Webbhuset\Bifrost\App\Job
      */
     public function getJob($code, $options);
 

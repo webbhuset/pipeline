@@ -1,8 +1,8 @@
 <?php
 
-namespace Webbhuset\Bifrost\Core\Helper\ArrayHelper;
+namespace Webbhuset\Bifrost\Helper\ArrayHelper;
 
-use Webbhuset\Bifrost\Core\Type;
+use Webbhuset\Bifrost\Type;
 
 class KeyMapper
 {

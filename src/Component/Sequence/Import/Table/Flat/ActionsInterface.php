@@ -1,6 +1,6 @@
 <?php
 
-namespace Webbhuset\Bifrost\Core\Component\Sequence\Import\Table\Flat;
+namespace Webbhuset\Bifrost\Component\Sequence\Import\Table\Flat;
 
 interface ActionsInterface
 {

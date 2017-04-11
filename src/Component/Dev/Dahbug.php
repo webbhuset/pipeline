@@ -1,9 +1,9 @@
 <?php
 
-namespace Webbhuset\Bifrost\Core\Component\Dev;
+namespace Webbhuset\Bifrost\Component\Dev;
 
-use Webbhuset\Bifrost\Core\Component\ComponentInterface;
-use Webbhuset\Bifrost\Core\Data\ActionData\ActionDataInterface;
+use Webbhuset\Bifrost\Component\ComponentInterface;
+use Webbhuset\Bifrost\Data\ActionData\ActionDataInterface;
 
 class Dahbug implements ComponentInterface
 {

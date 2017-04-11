@@ -1,12 +1,12 @@
 <?php
 
-namespace Webbhuset\Bifrost\Core\Component\Transform;
+namespace Webbhuset\Bifrost\Component\Transform;
 
 use Generator;
-use Webbhuset\Bifrost\Core\BifrostException;
-use Webbhuset\Bifrost\Core\Component\ComponentInterface;
-use Webbhuset\Bifrost\Core\Data\ActionData\ActionDataInterface;
-use Webbhuset\Bifrost\Core\Helper\ReflectionHelper;
+use Webbhuset\Bifrost\BifrostException;
+use Webbhuset\Bifrost\Component\ComponentInterface;
+use Webbhuset\Bifrost\Data\ActionData\ActionDataInterface;
+use Webbhuset\Bifrost\Helper\ReflectionHelper;
 
 class Group implements ComponentInterface
 {

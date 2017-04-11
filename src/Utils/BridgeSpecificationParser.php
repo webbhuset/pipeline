@@ -1,6 +1,6 @@
 <?php
-namespace Webbhuset\Bifrost\Core\Utils;
-use \Webbhuset\Bifrost\Core\BifrostException;
+namespace Webbhuset\Bifrost\Utils;
+use \Webbhuset\Bifrost\BifrostException;
 
 /**
  * Parses bridge specifications.

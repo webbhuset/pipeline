@@ -1,5 +1,5 @@
 <?php
-namespace Webbhuset\Bifrost\Core\Test\UnitTest\Type;
+namespace Webbhuset\Bifrost\Test\UnitTest\Type;
 
 class StringTypeTest
 {
@@ -15,7 +15,7 @@ class StringTypeTest
 
         $params = ['required' => 'apa'];
         $test->testThatArgs($params)
-            ->throws('Webbhuset\Bifrost\Core\BifrostException');
+            ->throws('Webbhuset\Bifrost\BifrostException');
     }
 
     public static function isEqualTest($test)
@@ -27,8 +27,8 @@ class StringTypeTest
             ->testThatArgs('apa', 'apa123')->returnsValue(false)
             ->testThatArgs(null, '')->returnsValue(false)
             ->testThatArgs('', null)->returnsValue(false)
-            ->testThatArgs(0, '')->throws('Webbhuset\Bifrost\Core\BifrostException')
-            ->testThatArgs(0, [])->throws('Webbhuset\Bifrost\Core\BifrostException');
+            ->testThatArgs(0, '')->throws('Webbhuset\Bifrost\BifrostException')
+            ->testThatArgs(0, [])->throws('Webbhuset\Bifrost\BifrostException');
     }
 
     public static function getErrorsTest($test)
@@ -102,6 +102,6 @@ class StringTypeTest
     public static function diffTest($test)
     {
         $test->newInstance()
-            ->testThatArgs(null, null)->throws('Webbhuset\Bifrost\Core\BifrostException');
+            ->testThatArgs(null, null)->throws('Webbhuset\Bifrost\BifrostException');
     }
 }

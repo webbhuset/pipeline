@@ -1,9 +1,9 @@
 <?php
-namespace Webbhuset\Bifrost\Core\Test\UnitTest\Utils\Processor;
-use Webbhuset\Bifrost\Core\Utils\Logger\NullLogger;
-use Webbhuset\Bifrost\Core\Utils\Writer\Mock\Collector;
-use Webbhuset\Bifrost\Core\Utils\ValueConverter\StringToInt;
-use Webbhuset\Bifrost\Core\Utils\ValueConverter\StringToFloat;
+namespace Webbhuset\Bifrost\Test\UnitTest\Utils\Processor;
+use Webbhuset\Bifrost\Utils\Logger\NullLogger;
+use Webbhuset\Bifrost\Utils\Writer\Mock\Collector;
+use Webbhuset\Bifrost\Utils\ValueConverter\StringToInt;
+use Webbhuset\Bifrost\Utils\ValueConverter\StringToFloat;
 
 class ConverterTest
 {

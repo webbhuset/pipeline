@@ -1,11 +1,11 @@
 <?php
 
-namespace Webbhuset\Bifrost\Core\Component\Action;
+namespace Webbhuset\Bifrost\Component\Action;
 
 use Generator;
-use Webbhuset\Bifrost\Core\Component\ComponentInterface;
-use Webbhuset\Bifrost\Core\Data\ActionData\ActionDataInterface;
-use Webbhuset\Bifrost\Core\Data\ActionData\SideEffectData;
+use Webbhuset\Bifrost\Component\ComponentInterface;
+use Webbhuset\Bifrost\Data\ActionData\ActionDataInterface;
+use Webbhuset\Bifrost\Data\ActionData\SideEffectData;
 
 class SideEffect implements ComponentInterface
 {

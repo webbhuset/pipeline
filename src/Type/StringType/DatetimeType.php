@@ -1,8 +1,8 @@
 <?php
-namespace Webbhuset\Bifrost\Core\Type\StringType;
+namespace Webbhuset\Bifrost\Type\StringType;
 
-use Webbhuset\Bifrost\Core\BifrostException;
-use Webbhuset\Bifrost\Core\Type;
+use Webbhuset\Bifrost\BifrostException;
+use Webbhuset\Bifrost\Type;
 
 class DatetimeType extends Type\StringType
 {

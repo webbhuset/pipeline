@@ -1,5 +1,5 @@
 <?php
-namespace Webbhuset\Bifrost\Core\App;
+namespace Webbhuset\Bifrost\App;
 
 interface AppInterface
 {

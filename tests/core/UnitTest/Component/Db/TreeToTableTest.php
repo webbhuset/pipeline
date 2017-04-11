@@ -1,6 +1,6 @@
 <?php
 
-namespace Webbhuset\Bifrost\Core\Test\UnitTest\Component\Db;
+namespace Webbhuset\Bifrost\Test\UnitTest\Component\Db;
 
 class TreeToTableTest
 {

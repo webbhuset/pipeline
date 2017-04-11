@@ -1,8 +1,8 @@
 <?php
-namespace Webbhuset\Bifrost\Core\Test\UnitTest\Utils\Processor;
-use Webbhuset\Bifrost\Core\Utils\Logger\NullLogger;
-use Webbhuset\Bifrost\Core\Utils\Writer\Mock\Collector;
-use Webbhuset\Bifrost\Core\Utils\Type as Type;
+namespace Webbhuset\Bifrost\Test\UnitTest\Utils\Processor;
+use Webbhuset\Bifrost\Utils\Logger\NullLogger;
+use Webbhuset\Bifrost\Utils\Writer\Mock\Collector;
+use Webbhuset\Bifrost\Utils\Type as Type;
 
 class EntityValidatorTest
 {
@@ -14,11 +14,11 @@ class EntityValidatorTest
             'type' => new \stdClass
         ];
         $test->testThatArgs($nullLogger, $mockProcessor, $params)
-            ->throws('Webbhuset\Bifrost\Core\BifrostException');
+            ->throws('Webbhuset\Bifrost\BifrostException');
 
         $params = [];
         $test->testThatArgs($nullLogger, $mockProcessor, $params)
-            ->throws('Webbhuset\Bifrost\Core\BifrostException');
+            ->throws('Webbhuset\Bifrost\BifrostException');
     }
 
     public static function processDataTest($test)

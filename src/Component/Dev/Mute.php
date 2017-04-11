@@ -1,8 +1,8 @@
 <?php
 
-namespace Webbhuset\Bifrost\Core\Component\Dev;
+namespace Webbhuset\Bifrost\Component\Dev;
 
-use Webbhuset\Bifrost\Core\Component\ComponentInterface;
+use Webbhuset\Bifrost\Component\ComponentInterface;
 
 class Mute implements ComponentInterface
 {

@@ -1,8 +1,8 @@
 <?php
-namespace Webbhuset\Bifrost\Core\Type\FloatType;
+namespace Webbhuset\Bifrost\Type\FloatType;
 
-use Webbhuset\Bifrost\Core\BifrostException;
-use Webbhuset\Bifrost\Core\Type;
+use Webbhuset\Bifrost\BifrostException;
+use Webbhuset\Bifrost\Type;
 
 class DecimalType extends Type\FloatType
 {

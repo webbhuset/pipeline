@@ -1,9 +1,9 @@
 <?php
 
-namespace Webbhuset\Bifrost\Core\Test\UnitTest\Helper\ArrayHelper;
+namespace Webbhuset\Bifrost\Test\UnitTest\Helper\ArrayHelper;
 
 use stdClass;
-use Webbhuset\Bifrost\Core\Helper\ArrayHelper\KeyMapper;
+use Webbhuset\Bifrost\Helper\ArrayHelper\KeyMapper;
 
 class KeyMapperTest
 {

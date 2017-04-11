@@ -1,10 +1,10 @@
 <?php
 
-namespace Webbhuset\Bifrost\Core\Component\Db;
+namespace Webbhuset\Bifrost\Component\Db;
 
-use Webbhuset\Bifrost\Core\Component\ComponentInterface;
-use Webbhuset\Bifrost\Core\Data\ActionData\ActionDataInterface;
-use Webbhuset\Bifrost\Core\BifrostException;
+use Webbhuset\Bifrost\Component\ComponentInterface;
+use Webbhuset\Bifrost\Data\ActionData\ActionDataInterface;
+use Webbhuset\Bifrost\BifrostException;
 
 class TableToTree implements ComponentInterface
 {

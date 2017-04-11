@@ -1,8 +1,8 @@
 <?php
 
-namespace Webbhuset\Bifrost\Core\Test\UnitTest\Component\Db;
+namespace Webbhuset\Bifrost\Test\UnitTest\Component\Db;
 
-use Webbhuset\Bifrost\Core\Component\Db;
+use Webbhuset\Bifrost\Component\Db;
 
 class TableToTreeTest
 {

@@ -1,9 +1,9 @@
 <?php
 
-namespace Webbhuset\Bifrost\Core\Helper\ArrayHelper;
+namespace Webbhuset\Bifrost\Helper\ArrayHelper;
 
 use ArrayAccess;
-use Webbhuset\Bifrost\Core\BifrostException;
+use Webbhuset\Bifrost\BifrostException;
 
 class DataAccess implements ArrayAccess
 {

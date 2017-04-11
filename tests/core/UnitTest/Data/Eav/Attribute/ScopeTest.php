@@ -1,6 +1,6 @@
 <?php
 
-namespace Webbhuset\Bifrost\Core\Test\UnitTest\Data\Eav\Attribute;
+namespace Webbhuset\Bifrost\Test\UnitTest\Data\Eav\Attribute;
 
 class ScopeTest
 {

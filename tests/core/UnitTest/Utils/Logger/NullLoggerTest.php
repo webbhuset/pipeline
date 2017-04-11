@@ -1,5 +1,5 @@
 <?php
-namespace Webbhuset\Bifrost\Core\Test\UnitTest\Utils\Logger;
+namespace Webbhuset\Bifrost\Test\UnitTest\Utils\Logger;
 
 class NullLoggerTest
 {

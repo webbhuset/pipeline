@@ -1,6 +1,6 @@
 <?php
-namespace Webbhuset\Bifrost\Core\Test\UnitTest\Utils\Writer;
-use Webbhuset\Bifrost\Core\Utils\Writer\AbstractWriter;
+namespace Webbhuset\Bifrost\Test\UnitTest\Utils\Writer;
+use Webbhuset\Bifrost\Utils\Writer\AbstractWriter;
 
 
 abstract class AbstractWriterTest extends AbstractWriter

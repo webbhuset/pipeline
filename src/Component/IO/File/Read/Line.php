@@ -1,11 +1,11 @@
 <?php
 
-namespace Webbhuset\Bifrost\Core\Component\IO\File\Read;
+namespace Webbhuset\Bifrost\Component\IO\File\Read;
 
-use Webbhuset\Bifrost\Core\BifrostException;
-use Webbhuset\Bifrost\Core\Component\ComponentInterface;
-use Webbhuset\Bifrost\Core\Data\ActionData\ActionDataInterface;
-use Webbhuset\Bifrost\Core\Data\ActionData\ErrorData;
+use Webbhuset\Bifrost\BifrostException;
+use Webbhuset\Bifrost\Component\ComponentInterface;
+use Webbhuset\Bifrost\Data\ActionData\ActionDataInterface;
+use Webbhuset\Bifrost\Data\ActionData\ErrorData;
 
 class Line implements ComponentInterface
 {

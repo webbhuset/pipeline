@@ -1,12 +1,12 @@
 <?php
 
-namespace Webbhuset\Bifrost\Core\Component\Action;
+namespace Webbhuset\Bifrost\Component\Action;
 
-use Webbhuset\Bifrost\Core\BifrostException;
-use Webbhuset\Bifrost\Core\Component\ComponentInterface;
-use Webbhuset\Bifrost\Core\Data\ActionData\ActionDataInterface;
-use Webbhuset\Bifrost\Core\Data\ActionData\ErrorData;
-use Webbhuset\Bifrost\Core\Helper\ReflectionHelper;
+use Webbhuset\Bifrost\BifrostException;
+use Webbhuset\Bifrost\Component\ComponentInterface;
+use Webbhuset\Bifrost\Data\ActionData\ActionDataInterface;
+use Webbhuset\Bifrost\Data\ActionData\ErrorData;
+use Webbhuset\Bifrost\Helper\ReflectionHelper;
 
 class Error implements ComponentInterface
 {

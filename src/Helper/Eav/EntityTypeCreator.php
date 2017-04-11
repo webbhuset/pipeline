@@ -1,9 +1,9 @@
 <?php
 
-namespace Webbhuset\Bifrost\Core\Helper\Eav;
+namespace Webbhuset\Bifrost\Helper\Eav;
 
-use Webbhuset\Bifrost\Core\Type;
-use Webbhuset\Bifrost\Core\TypeConstructor as T;
+use Webbhuset\Bifrost\Type;
+use Webbhuset\Bifrost\TypeConstructor as T;
 
 class EntityTypeCreator
 {

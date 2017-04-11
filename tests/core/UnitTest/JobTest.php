@@ -1,7 +1,7 @@
 <?php
-namespace Webbhuset\Bifrost\Core\Test\UnitTest;
+namespace Webbhuset\Bifrost\Test\UnitTest;
 
-use Webbhuset\Bifrost\Core as Bifrost;
+use Webbhuset\Bifrost as Bifrost;
 
 class JobTest
 {

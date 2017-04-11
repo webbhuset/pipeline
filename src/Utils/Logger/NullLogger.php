@@ -1,5 +1,5 @@
 <?php
-namespace Webbhuset\Bifrost\Core\Utils\Logger;
+namespace Webbhuset\Bifrost\Utils\Logger;
 
 class NullLogger implements LoggerInterface
 {

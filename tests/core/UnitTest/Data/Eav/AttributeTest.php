@@ -1,9 +1,9 @@
 <?php
 
-namespace Webbhuset\Bifrost\Core\Test\UnitTest\Data\Eav;
+namespace Webbhuset\Bifrost\Test\UnitTest\Data\Eav;
 
-use Webbhuset\Bifrost\Core\Data\Eav\Attribute\Scope;
-use Webbhuset\Bifrost\Core\Type;
+use Webbhuset\Bifrost\Data\Eav\Attribute\Scope;
+use Webbhuset\Bifrost\Type;
 
 class AttributeTest
 {

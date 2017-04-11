@@ -1,8 +1,8 @@
 <?php
 
-namespace Webbhuset\Bifrost\Core;
+namespace Webbhuset\Bifrost;
 
-use Webbhuset\Bifrost\Core\App\JobManagerInterface;
+use Webbhuset\Bifrost\App\JobManagerInterface;
 
 class App
 {

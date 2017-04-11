@@ -1,6 +1,6 @@
 <?php
 
-namespace Webbhuset\Bifrost\Core\Test\UnitTest\Helper\ArrayHelper;
+namespace Webbhuset\Bifrost\Test\UnitTest\Helper\ArrayHelper;
 
 class DataAccessTest
 {

@@ -1,23 +1,23 @@
 <?php
-namespace Webbhuset\Bifrost\Core\Test\UnitTest\Utils\Processor;
-use Webbhuset\Bifrost\Core\Utils\Logger\NullLogger;
+namespace Webbhuset\Bifrost\Test\UnitTest\Utils\Processor;
+use Webbhuset\Bifrost\Utils\Logger\NullLogger;
 
 
 class ProcessorFactoryTest
 {
     public static function __constructTest($test)
     {
-        $test->testThatArgs('Webbhuset\Bifrost\Core\Utils\Writer\Mock\Collector', [])
+        $test->testThatArgs('Webbhuset\Bifrost\Utils\Writer\Mock\Collector', [])
             ->notThrows('Exception');
 
         $test->testThatArgs('stdClass', [])
-            ->throws('Webbhuset\Bifrost\Core\BifrostException');
+            ->throws('Webbhuset\Bifrost\BifrostException');
     }
 
     public static function createTest($test)
     {
         $nullLogger = new NullLogger;
-        $test->newInstance('Webbhuset\Bifrost\Core\Utils\Writer\Mock\Collector',[])
-            ->testThatArgs($nullLogger, [])->returnsInstanceOf('Webbhuset\Bifrost\Core\Utils\Writer\Mock\Collector');
+        $test->newInstance('Webbhuset\Bifrost\Utils\Writer\Mock\Collector',[])
+            ->testThatArgs($nullLogger, [])->returnsInstanceOf('Webbhuset\Bifrost\Utils\Writer\Mock\Collector');
     }
 }

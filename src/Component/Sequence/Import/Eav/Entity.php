@@ -1,14 +1,14 @@
 <?php
 
-namespace Webbhuset\Bifrost\Core\Component\Sequence\Import\Eav;
+namespace Webbhuset\Bifrost\Component\Sequence\Import\Eav;
 
-use Webbhuset\Bifrost\Core\Component\ComponentInterface;
-use Webbhuset\Bifrost\Core\Component\Action;
-use Webbhuset\Bifrost\Core\Component\Db;
-use Webbhuset\Bifrost\Core\Component\Dev;
-use Webbhuset\Bifrost\Core\Component\Flow;
-use Webbhuset\Bifrost\Core\Component\Transform;
-use Webbhuset\Bifrost\Core\Helper;
+use Webbhuset\Bifrost\Component\ComponentInterface;
+use Webbhuset\Bifrost\Component\Action;
+use Webbhuset\Bifrost\Component\Db;
+use Webbhuset\Bifrost\Component\Dev;
+use Webbhuset\Bifrost\Component\Flow;
+use Webbhuset\Bifrost\Component\Transform;
+use Webbhuset\Bifrost\Helper;
 
 class Entity implements ComponentInterface
 {

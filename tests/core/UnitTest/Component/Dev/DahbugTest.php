@@ -1,5 +1,5 @@
 <?php
-namespace Webbhuset\Bifrost\Core\Test\UnitTest\Component\Dev;
+namespace Webbhuset\Bifrost\Test\UnitTest\Component\Dev;
 
 class DahbugTest
 {

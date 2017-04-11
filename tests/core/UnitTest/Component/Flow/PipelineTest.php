@@ -1,8 +1,8 @@
 <?php
 
-namespace Webbhuset\Bifrost\Core\Test\UnitTest\Component\Flow;
+namespace Webbhuset\Bifrost\Test\UnitTest\Component\Flow;
 
-use Webbhuset\Bifrost\Core\Component\Transform;
+use Webbhuset\Bifrost\Component\Transform;
 
 class PipelineTest
 {

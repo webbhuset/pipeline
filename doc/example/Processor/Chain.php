@@ -1,6 +1,6 @@
 <?php
 
-namespace Webbhuset\Bifrost\Core\Processor;
+namespace Webbhuset\Bifrost\Processor;
 
 class Chain
 {

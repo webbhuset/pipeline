@@ -1,10 +1,10 @@
 <?php
-namespace Webbhuset\Bifrost\Core\Test\UnitTest\Utils\Processor;
+namespace Webbhuset\Bifrost\Test\UnitTest\Utils\Processor;
 
-use Webbhuset\Bifrost\Core\Utils\Processor\ProcessorInterface;
-use Webbhuset\Bifrost\Core\Utils\Processor\AbstractProcessor;
-use Webbhuset\Bifrost\Core\Utils\Logger\NullLogger;
-use Webbhuset\Bifrost\Core\Utils\Writer\Mock\Collector;
+use Webbhuset\Bifrost\Utils\Processor\ProcessorInterface;
+use Webbhuset\Bifrost\Utils\Processor\AbstractProcessor;
+use Webbhuset\Bifrost\Utils\Logger\NullLogger;
+use Webbhuset\Bifrost\Utils\Writer\Mock\Collector;
 
 
 class AbstractProcessorTest extends AbstractProcessor

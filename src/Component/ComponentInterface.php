@@ -1,6 +1,6 @@
 <?php
 
-namespace Webbhuset\Bifrost\Core\Component;
+namespace Webbhuset\Bifrost\Component;
 
 interface ComponentInterface
 {

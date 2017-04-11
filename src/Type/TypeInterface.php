@@ -1,5 +1,5 @@
 <?php
-namespace Webbhuset\Bifrost\Core\Type;
+namespace Webbhuset\Bifrost\Type;
 
 interface TypeInterface
 {

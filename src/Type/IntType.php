@@ -1,6 +1,6 @@
 <?php
-namespace Webbhuset\Bifrost\Core\Type;
-use Webbhuset\Bifrost\Core\BifrostException;
+namespace Webbhuset\Bifrost\Type;
+use Webbhuset\Bifrost\BifrostException;
 
 class IntType extends AbstractType
 {

@@ -1,8 +1,8 @@
 <?php
 
-namespace Webbhuset\Bifrost\Core\App;
+namespace Webbhuset\Bifrost\App;
 
-use Webbhuset\Bifrost\Core\App\Job;
+use Webbhuset\Bifrost\App\Job;
 
 interface JobSchematicInterface
 {

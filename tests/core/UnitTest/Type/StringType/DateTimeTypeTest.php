@@ -1,5 +1,5 @@
 <?php
-namespace Webbhuset\Bifrost\Core\Test\UnitTest\Type\StringType;
+namespace Webbhuset\Bifrost\Test\UnitTest\Type\StringType;
 
 class DateTimeTypeTest
 {

@@ -1,9 +1,9 @@
 <?php
 
-namespace Webbhuset\Bifrost\Core\Data\Eav;
+namespace Webbhuset\Bifrost\Data\Eav;
 
-use Webbhuset\Bifrost\Core\BifrostException;
-use Webbhuset\Bifrost\Core\Type;
+use Webbhuset\Bifrost\BifrostException;
+use Webbhuset\Bifrost\Type;
 
 class Attribute implements AttributeInterface
 {

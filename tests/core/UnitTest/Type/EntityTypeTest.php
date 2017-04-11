@@ -1,6 +1,6 @@
 <?php
-namespace Webbhuset\Bifrost\Core\Test\UnitTest\Type;
-use Webbhuset\Bifrost\Core\Type as Core;
+namespace Webbhuset\Bifrost\Test\UnitTest\Type;
+use Webbhuset\Bifrost\Type as Core;
 
 class EntityTypeTest
 {
@@ -14,7 +14,7 @@ class EntityTypeTest
             ]
         ];
         $test->testThatArgs($params)
-            ->throws('Webbhuset\Bifrost\Core\BifrostException');
+            ->throws('Webbhuset\Bifrost\BifrostException');
 
         $params = [
             'entity_id_field' => 'string_test',
@@ -24,7 +24,7 @@ class EntityTypeTest
             ]
         ];
         $test->testThatArgs($params)
-            ->notThrows('Webbhuset\Bifrost\Core\BifrostException');
+            ->notThrows('Webbhuset\Bifrost\BifrostException');
     }
 
     public static function diffTest($test)

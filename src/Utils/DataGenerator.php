@@ -1,5 +1,5 @@
 <?php
-namespace Webbhuset\Bifrost\Core\Utils;
+namespace Webbhuset\Bifrost\Utils;
 
 class DataGenerator
 {

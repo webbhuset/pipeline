@@ -1,5 +1,5 @@
 <?php
-namespace Webbhuset\Bifrost\Core\Test\UnitTest\Utils\Processor\Filler\Backend;
+namespace Webbhuset\Bifrost\Test\UnitTest\Utils\Processor\Filler\Backend;
 
 class DefaultValuesTest
 {
@@ -26,7 +26,7 @@ class DefaultValuesTest
                 [
                     ['price'=>[]]
                 ]
-            )->returnsInstanceOf('Webbhuset\Bifrost\Core\Utils\Processor\Filler\Backend\DefaultValues');
+            )->returnsInstanceOf('Webbhuset\Bifrost\Utils\Processor\Filler\Backend\DefaultValues');
     }
 
     public static function offsetExistsTest()

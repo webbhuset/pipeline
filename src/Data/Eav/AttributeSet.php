@@ -1,8 +1,8 @@
 <?php
 
-namespace Webbhuset\Bifrost\Core\Data\Eav;
+namespace Webbhuset\Bifrost\Data\Eav;
 
-use Webbhuset\Bifrost\Core\BifrostException;
+use Webbhuset\Bifrost\BifrostException;
 
 class AttributeSet implements AttributeSetInterface
 {

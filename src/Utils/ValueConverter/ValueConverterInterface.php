@@ -1,5 +1,5 @@
 <?php
-namespace Webbhuset\Bifrost\Core\Utils\ValueConverter;
+namespace Webbhuset\Bifrost\Utils\ValueConverter;
 
 interface ValueConverterInterface
 {

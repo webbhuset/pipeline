@@ -1,6 +1,6 @@
 <?php
 
-namespace Webbhuset\Bifrost\Core\Test\UnitTest\Type;
+namespace Webbhuset\Bifrost\Test\UnitTest\Type;
 
 class TypeConstructorTest
 {

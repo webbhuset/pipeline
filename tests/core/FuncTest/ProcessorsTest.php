@@ -1,7 +1,7 @@
 <?php
-namespace Webbhuset\Bifrost\Core\Test\FuncTest;
-use Webbhuset\Bifrost\Core\Utils\Logger\NullLogger;
-use Webbhuset\Bifrost\Core\Test\FuncTest\ProcessorsTest\TestBridgeFactory;
+namespace Webbhuset\Bifrost\Test\FuncTest;
+use Webbhuset\Bifrost\Utils\Logger\NullLogger;
+use Webbhuset\Bifrost\Test\FuncTest\ProcessorsTest\TestBridgeFactory;
 require_once "../../../vendor/autoload.php";
 
 class ProcessorsTest

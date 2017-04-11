@@ -1,6 +1,6 @@
 <?php
-namespace Webbhuset\Bifrost\Core\Test\UnitTest\Utils;
-use \Webbhuset\Bifrost\Core\Utils\DataGenerator;
+namespace Webbhuset\Bifrost\Test\UnitTest\Utils;
+use \Webbhuset\Bifrost\Utils\DataGenerator;
 
 class DataGeneratorTest
 {

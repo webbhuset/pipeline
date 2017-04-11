@@ -1,9 +1,9 @@
 <?php
 
-namespace Webbhuset\Bifrost\Core\Helper\Eav\QueryBuilder;
+namespace Webbhuset\Bifrost\Helper\Eav\QueryBuilder;
 
-use Webbhuset\Bifrost\Core\Helper\Db;
-use Webbhuset\Bifrost\Core\BifrostException;
+use Webbhuset\Bifrost\Helper\Db;
+use Webbhuset\Bifrost\BifrostException;
 
 class IdsFromEntities
 {

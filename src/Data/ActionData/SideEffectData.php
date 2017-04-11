@@ -1,6 +1,6 @@
 <?php
 
-namespace Webbhuset\Bifrost\Core\Data\ActionData;
+namespace Webbhuset\Bifrost\Data\ActionData;
 
 class SideEffectData implements ActionDataInterface
 {

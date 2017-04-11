@@ -1,11 +1,11 @@
 <?php
 
-namespace Webbhuset\Bifrost\Core\App;
+namespace Webbhuset\Bifrost\App;
 
-use Webbhuset\Bifrost\Core\App;
-use Webbhuset\Bifrost\Core\App\JobManagerInterface;
-use Webbhuset\Bifrost\Core\Helper\ArgsParser;
-use Webbhuset\Bifrost\Core\BifrostException;
+use Webbhuset\Bifrost\App;
+use Webbhuset\Bifrost\App\JobManagerInterface;
+use Webbhuset\Bifrost\Helper\ArgsParser;
+use Webbhuset\Bifrost\BifrostException;
 
 class Cli
 {
@@ -40,7 +40,7 @@ class Cli
     /**
      * Bifrost application.
      *
-     * @var Webbhuset\Bifrost\Core\App
+     * @var Webbhuset\Bifrost\App
      */
     protected $app;
 

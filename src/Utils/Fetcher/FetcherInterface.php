@@ -1,5 +1,5 @@
 <?php
-namespace Webbhuset\Bifrost\Core\Utils\Fetcher;
+namespace Webbhuset\Bifrost\Utils\Fetcher;
 
 interface FetcherInterface
 {

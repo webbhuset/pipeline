@@ -1,6 +1,6 @@
 <?php
 
-namespace Webbhuset\Bifrost\Core\Helper\Db;
+namespace Webbhuset\Bifrost\Helper\Db;
 
 interface AdapterInterface
 {

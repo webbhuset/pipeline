@@ -1,10 +1,10 @@
 <?php
 
-namespace Webbhuset\Bifrost\Core\Test\UnitTest\Helper\Eav;
+namespace Webbhuset\Bifrost\Test\UnitTest\Helper\Eav;
 
-use Webbhuset\Bifrost\Core\Component;
-use Webbhuset\Bifrost\Core\Component\Sequence\Import\Eav\Entity\ActionsInterface;
-use Webbhuset\Bifrost\Core\Data\Eav;
+use Webbhuset\Bifrost\Component;
+use Webbhuset\Bifrost\Component\Sequence\Import\Eav\Entity\ActionsInterface;
+use Webbhuset\Bifrost\Data\Eav;
 
 class EntityTypeCreatorTest
 {

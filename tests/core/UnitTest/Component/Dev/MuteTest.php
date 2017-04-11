@@ -1,5 +1,5 @@
 <?php
-namespace Webbhuset\Bifrost\Core\Test\UnitTestComponent;
+namespace Webbhuset\Bifrost\Test\UnitTestComponent;
 
 class MuteTest
 {

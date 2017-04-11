@@ -1,9 +1,9 @@
 <?php
 
-namespace Webbhuset\Bifrost\Core\Test\UnitTest\Component\Transform;
+namespace Webbhuset\Bifrost\Test\UnitTest\Component\Transform;
 
-use Webbhuset\Bifrost\Core\Component\Transform;
-use Webbhuset\Bifrost\Core\Component\Flow;
+use Webbhuset\Bifrost\Component\Transform;
+use Webbhuset\Bifrost\Component\Flow;
 
 class MergeTest
 {

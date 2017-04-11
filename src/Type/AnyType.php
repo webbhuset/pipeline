@@ -1,7 +1,7 @@
 <?php
-namespace Webbhuset\Bifrost\Core\Type;
+namespace Webbhuset\Bifrost\Type;
 
-use Webbhuset\Bifrost\Core\BifrostException;
+use Webbhuset\Bifrost\BifrostException;
 
 class AnyType extends AbstractType
 {

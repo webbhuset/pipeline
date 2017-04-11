@@ -1,14 +1,14 @@
 <?php
-namespace Webbhuset\Bifrost\Core\Test\UnitTest\Job;
-use Webbhuset\Bifrost\Core\Utils\Logger\NullLogger;
-use Webbhuset\Bifrost\Core\Utils\Reader\Mock\Product;
+namespace Webbhuset\Bifrost\Test\UnitTest\Job;
+use Webbhuset\Bifrost\Utils\Logger\NullLogger;
+use Webbhuset\Bifrost\Utils\Reader\Mock\Product;
 
 class TaskListTest
 {
     public static function __constructTest($test)
     {
         $test->testThatArgs(['apa'])
-            ->throws('Webbhuset\Bifrost\Core\BifrostException');
+            ->throws('Webbhuset\Bifrost\BifrostException');
     }
 
     public static function initTest()

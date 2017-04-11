@@ -1,9 +1,9 @@
 <?php
 
-namespace Webbhuset\Bifrost\Core\Test\UnitTest\Component\Sequence\Import\Table;
+namespace Webbhuset\Bifrost\Test\UnitTest\Component\Sequence\Import\Table;
 
-use Webbhuset\Bifrost\Core\Component;
-use Webbhuset\Bifrost\Core\Test\Helper\Component\AssertComponent;
+use Webbhuset\Bifrost\Component;
+use Webbhuset\Bifrost\Test\Helper\Component\AssertComponent;
 use Exception;
 
 class FlatTest

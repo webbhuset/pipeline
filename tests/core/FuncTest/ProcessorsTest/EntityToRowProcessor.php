@@ -1,8 +1,8 @@
 <?php
-namespace Webbhuset\Bifrost\Core\Test\FuncTest\ProcessorsTest;
-use Webbhuset\Bifrost\Core\Utils\Logger\LoggerInterface;
-use Webbhuset\Bifrost\Core\BifrostException;
-use Webbhuset\Bifrost\Core\Utils\Processor\AbstractProcessor;
+namespace Webbhuset\Bifrost\Test\FuncTest\ProcessorsTest;
+use Webbhuset\Bifrost\Utils\Logger\LoggerInterface;
+use Webbhuset\Bifrost\BifrostException;
+use Webbhuset\Bifrost\Utils\Processor\AbstractProcessor;
 
 class EntityToRowProcessor extends AbstractProcessor
 {

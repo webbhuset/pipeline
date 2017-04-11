@@ -1,5 +1,5 @@
 <?php
-namespace Webbhuset\Bifrost\Core\Test\UnitTest;
+namespace Webbhuset\Bifrost\Test\UnitTest;
 
 class BifrostExceptionTest
 {

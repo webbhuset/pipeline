@@ -1,6 +1,6 @@
 <?php
 
-namespace Webbhuset\Bifrost\Core\Helper;
+namespace Webbhuset\Bifrost\Helper;
 
 use ReflectionMethod;
 use ReflectionFunction;

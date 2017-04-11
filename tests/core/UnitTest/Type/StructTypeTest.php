@@ -1,6 +1,6 @@
 <?php
-namespace Webbhuset\Bifrost\Core\Test\UnitTest\Type;
-use Webbhuset\Bifrost\Core\Type as Core;
+namespace Webbhuset\Bifrost\Test\UnitTest\Type;
+use Webbhuset\Bifrost\Type as Core;
 
 class StructTypeTest
 {
@@ -17,11 +17,11 @@ class StructTypeTest
 
         $params = ['fields' => 'apa'];
         $test->testThatArgs($params)
-            ->throws('Webbhuset\Bifrost\Core\BifrostException');
+            ->throws('Webbhuset\Bifrost\BifrostException');
 
         $params = [];
         $test->testThatArgs($params)
-            ->throws('Webbhuset\Bifrost\Core\BifrostException');
+            ->throws('Webbhuset\Bifrost\BifrostException');
     }
 
     public static function diffTest($test)

@@ -1,9 +1,9 @@
 <?php
 
-namespace Webbhuset\Bifrost\Core\Test\UnitTest\Helper\Eav\QueryBuilder;
+namespace Webbhuset\Bifrost\Test\UnitTest\Helper\Eav\QueryBuilder;
 
-use Webbhuset\Bifrost\Core\Helper\Db;
-use Webbhuset\Bifrost\Core\Data\Eav;
+use Webbhuset\Bifrost\Helper\Db;
+use Webbhuset\Bifrost\Data\Eav;
 
 class IdsFromEntitiesTest
 {

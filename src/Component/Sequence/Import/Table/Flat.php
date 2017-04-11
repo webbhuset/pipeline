@@ -5,11 +5,11 @@
  *      Attribute Set field must exist (attribute_set_id)
  *      Attribute Set id must exist in $sets
  */
-namespace Webbhuset\Bifrost\Core\Component\Sequence\Import\Table;
+namespace Webbhuset\Bifrost\Component\Sequence\Import\Table;
 
-use Webbhuset\Bifrost\Core\Component;
-use Webbhuset\Bifrost\Core\BifrostException;
-use Webbhuset\Bifrost\Core\Type;
+use Webbhuset\Bifrost\Component;
+use Webbhuset\Bifrost\BifrostException;
+use Webbhuset\Bifrost\Type;
 
 class Flat implements Component\ComponentInterface
 {

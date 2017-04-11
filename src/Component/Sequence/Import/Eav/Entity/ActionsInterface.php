@@ -1,6 +1,6 @@
 <?php
 
-namespace Webbhuset\Bifrost\Core\Component\Sequence\Import\Eav\Entity;
+namespace Webbhuset\Bifrost\Component\Sequence\Import\Eav\Entity;
 
 interface ActionsInterface
 {

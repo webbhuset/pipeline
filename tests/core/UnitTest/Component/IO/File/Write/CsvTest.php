@@ -1,6 +1,6 @@
 <?php
 
-namespace Webbhuset\Bifrost\Core\Test\UnitTest\Component\IO\File\Write;
+namespace Webbhuset\Bifrost\Test\UnitTest\Component\IO\File\Write;
 
 class CsvTest
 {

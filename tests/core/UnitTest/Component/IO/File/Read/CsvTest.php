@@ -1,5 +1,5 @@
 <?php
-namespace Webbhuset\Bifrost\Core\Test\UnitTest\Component\IO\File\Read;
+namespace Webbhuset\Bifrost\Test\UnitTest\Component\IO\File\Read;
 
 class CsvTest
 {

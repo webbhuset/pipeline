@@ -1,9 +1,9 @@
 <?php
 
-namespace Webbhuset\Bifrost\Core\Component\Dev\Mock;
+namespace Webbhuset\Bifrost\Component\Dev\Mock;
 
-use Webbhuset\Bifrost\Core\Utils\DataGenerator;
-use Webbhuset\Bifrost\Core\Component\ComponentInterface;
+use Webbhuset\Bifrost\Utils\DataGenerator;
+use Webbhuset\Bifrost\Component\ComponentInterface;
 
 class Customer implements ComponentInterface
 {

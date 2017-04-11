@@ -1,6 +1,6 @@
 <?php
 
-namespace Webbhuset\Bifrost\Core\Type;
+namespace Webbhuset\Bifrost\Type;
 
 use Exception;
 

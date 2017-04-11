@@ -1,15 +1,15 @@
 <?php
 
-namespace Webbhuset\Bifrost\Core\App;
+namespace Webbhuset\Bifrost\App;
 
 use Traversable;
-use Webbhuset\Bifrost\Core\BifrostException;
-use Webbhuset\Bifrost\Core\App\JobSchematicInterface;
-use Webbhuset\Bifrost\Core\Component\ComponentInterface;
-use Webbhuset\Bifrost\Core\Component\Action;
-use Webbhuset\Bifrost\Core\Component\Flow;
+use Webbhuset\Bifrost\BifrostException;
+use Webbhuset\Bifrost\App\JobSchematicInterface;
+use Webbhuset\Bifrost\Component\ComponentInterface;
+use Webbhuset\Bifrost\Component\Action;
+use Webbhuset\Bifrost\Component\Flow;
 
-use Webbhuset\Bifrost\Core\Component\Dev;
+use Webbhuset\Bifrost\Component\Dev;
 
 /**
  * Job.
@@ -26,7 +26,7 @@ class Job
     /**
      * Constructor.
      *
-     * @param Webbhuset\Bifrost\Core\Component\ComponentInterface $component
+     * @param Webbhuset\Bifrost\Component\ComponentInterface $component
      * @param string $code
      * @param array|Traversable $input
      *
