@@ -24,7 +24,7 @@ class Entity implements ComponentInterface
             'batchSize'             => 200,
         ];
 
-        $config = array_merge($default, $config);
+        $config = array_replace($default, $config);
 
         $this->component = $this->createComponent($config);
     }
@@ -45,8 +45,8 @@ class Entity implements ComponentInterface
                 return isset($item[$idField]) ? 'update' : 'create';
             },
             [
-                'create' => $this->createEntities($config),
-                'update' => $this->updateEntities($config),
+                'create' => new Flow\Pipeline($this->createEntities($config)),
+                'update' => new Flow\Pipeline($this->updateEntities($config)),
             ]
         );
     }
@@ -55,7 +55,6 @@ class Entity implements ComponentInterface
     {
         return $this->component->process($items, $finalize);
     }
-
 
     protected function createEntities($config)
     {
@@ -111,10 +110,10 @@ class Entity implements ComponentInterface
                         new Flow\Fork([
                             new Flow\Pipeline([
                                 $this->mapDiff($idField),
-                                $this->insertAttributes($config)
+                                $this->insertAttributes($config),
                             ]),
                             new Flow\Pipeline($this->updateUpdatedAt($config)),
-                        ])
+                        ]),
                     ]),
                 ]
             ),
