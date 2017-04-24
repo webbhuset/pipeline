@@ -3,6 +3,7 @@
 namespace Webbhuset\Bifrost\Component\Dev;
 
 use Webbhuset\Bifrost\Component\ComponentInterface;
+use Webbhuset\Bifrost\Data\ActionData\ActionDataInterface;
 
 class Mute implements ComponentInterface
 {
@@ -17,7 +18,6 @@ class Mute implements ComponentInterface
         foreach ($items as $item) {
             if ($item instanceof ActionDataInterface && !$this->muteActions) {
                 yield $item;
-                continue;
             }
         }
     }

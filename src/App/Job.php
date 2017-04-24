@@ -2,14 +2,15 @@
 
 namespace Webbhuset\Bifrost\App;
 
+use Exception;
 use Traversable;
 use Webbhuset\Bifrost\BifrostException;
 use Webbhuset\Bifrost\App\JobSchematicInterface;
 use Webbhuset\Bifrost\Component\ComponentInterface;
 use Webbhuset\Bifrost\Component\Action;
-use Webbhuset\Bifrost\Component\Flow;
-
 use Webbhuset\Bifrost\Component\Dev;
+use Webbhuset\Bifrost\Component\Flow;
+use Webbhuset\Bifrost\Data;
 
 /**
  * Job.
@@ -20,8 +21,9 @@ use Webbhuset\Bifrost\Component\Dev;
 class Job
 {
     protected $taskList;
+    protected $observer;
     protected $generator;
-    protected $isDone       = false;
+    protected $isDone = false;
 
     /**
      * Constructor.
@@ -35,52 +37,37 @@ class Job
     public function __construct(JobSchematicInterface $schematic, $code, array $options = [])
     {
         $options        = $this->replaceAliases($schematic, $options);
-        $input          = $schematic->createInput($options);
         $preprocessing  = $schematic->createPreprocessing($options);
+        $postprocessing = $schematic->createPostprocessing($options);
         $tasks          = $schematic->createTasks($options);
         $observer       = $schematic->createObserver($options);
+        $tasksToSkip    = $this->getTasksToSkip($tasks, $options);
 
         if (!is_array($input) && !$input instanceof Traversable) {
             $input = [$input];
         }
 
-        if (isset($options['task'])) {
-            $runTask = $options['task'];
-            if (!is_array($runTask)) {
-                $runTask = [$runTask];
-            }
-            $tasksToSkip = array_diff(array_keys($tasks), $runTask);
-        } elseif (isset($options['skip-task'])) {
-            $skipTask = $options['skip-task'];
-            if (!is_array($skipTask)) {
-                $skipTask = [$skipTask];
-            }
-            $tasksToSkip = $skipTask;
-        } else {
-            $tasksToSkip = [];
-        }
-
         $this->taskList = new Flow\TaskList($tasks, $tasksToSkip);
+        $this->observer = new Flow\Pipeline($observer);
 
-        $pipelineArray = [
-            new Action\Event('jobStart', ['code' => $code]),
-            new Action\SideEffect('jobBefore'),
+        $pipeline = new Flow\Pipeline([
             new Flow\Pipeline($preprocessing),
             new Flow\Fork([
                 $this->taskList,
-                new Flow\Pipeline([
-                    new Action\SideEffect('jobAfter'),
-                    new Action\Event('jobDone'),
-                ])
+                new Flow\Pipeline($postprocessing),
             ]),
-        ];
+            $this->observer,
+        ]);
 
-        if ($observer) {
-            $pipelineArray[] = $observer;
-        }
+        $jobStartEvent = new Data\ActionData\EventData(
+            'jobStart',
+            [],
+            ['code' => $code, 'options' => $options]
+        );
+        iterator_to_array($this->observer->process([$jobStartEvent]));
 
-        $pipeline = new Flow\Pipeline($pipelineArray);
-        $this->generator = $pipeline->process($input);
+        $input              = $schematic->createInput($options);
+        $this->generator    = $pipeline->process($input);
     }
 
     /**
@@ -153,6 +140,35 @@ class Job
     }
 
     /**
+     * Get tasks that should be skipped.
+     *
+     * @param array $tasks
+     * @param array $options
+     *
+     * @return array
+     */
+    protected function getTasksToSkip($tasks, $options)
+    {
+        if (isset($options['task'])) {
+            $runTask = $options['task'];
+            if (!is_array($runTask)) {
+                $runTask = [$runTask];
+            }
+            $tasksToSkip = array_diff(array_keys($tasks), $runTask);
+        } elseif (isset($options['skip-task'])) {
+            $skipTask = $options['skip-task'];
+            if (!is_array($skipTask)) {
+                $skipTask = [$skipTask];
+            }
+            $tasksToSkip = $skipTask;
+        } else {
+            $tasksToSkip = [];
+        }
+
+        return $tasksToSkip;
+    }
+
+    /**
      * Get current task.
      *
      * @return array
@@ -173,10 +189,22 @@ class Job
             return false;
         }
 
-        $this->generator->next();
+        try {
+            $this->generator->next();
+        } catch (Exception $e) {
+            $events = [
+                new Data\ActionData\ErrorData([], $e->__toString()),
+                new Data\ActionData\EventData('taskDone', []),
+                new Data\ActionData\EventData('jobDone', []),
+            ];
+            iterator_to_array($this->observer->process($events));
+            throw $e;
+        }
 
         if (!$this->generator->valid()) {
             $this->isDone = true;
+            $jobDoneEvent = new Data\ActionData\EventData('jobDone', []);
+            iterator_to_array($this->observer->process([$jobDoneEvent]));
         }
 
         return !$this->isDone;

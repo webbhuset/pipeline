@@ -53,6 +53,13 @@ class Json implements ComponentInterface, Listener
      */
     protected $currentDepth;
 
+    /**
+     * Is done.
+     *
+     * @var bool
+     */
+    protected $done;
+
 
     public function _construct(array $params)
     {
@@ -78,7 +85,7 @@ class Json implements ComponentInterface, Listener
 
             $this->initRead($file);
 
-            while (!feof($file)) {
+            while (!$this->done) {
                 $item = $this->getNextItem();
                 if ($item) {
                     yield $item;
@@ -99,6 +106,7 @@ class Json implements ComponentInterface, Listener
     protected function initRead($file)
     {
         try {
+            $this->done   = false;
             $this->parser = new Parser($file, $this);
         } catch(Exception $e) {
             throw new BifrostException(sprintf(
@@ -116,7 +124,7 @@ class Json implements ComponentInterface, Listener
     protected function getNextItem()
     {
         try {
-            $done = $this->parser->parse();
+            $this->done = $this->parser->parse();
         } catch (Exception $e) {
             throw new BifrostException(sprintf(
                 "Json parsing failed: %s",
@@ -124,11 +132,11 @@ class Json implements ComponentInterface, Listener
             );
         }
 
-        if ($done) {
+        if ($this->done) {
             return false;
         }
 
-        $item = $this->flattenItem($this->item);
+        $this->item = $this->flattenItem($this->item);
 
         return $this->item;
     }

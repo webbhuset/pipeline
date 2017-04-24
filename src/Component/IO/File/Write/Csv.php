@@ -39,7 +39,7 @@ class Csv implements ComponentInterface
         $this->filename = $target;
     }
 
-    public function process($items)
+    public function process($items, $finalize = true)
     {
         foreach ($items as $item) {
             if ($item instanceof ActionDataInterface) {
@@ -57,8 +57,11 @@ class Csv implements ComponentInterface
                 $msg = "Could not write to '{$this->filename}'.";
                 yield new ErrorData($item, $msg);
             }
+        }
 
-            yield $item;
+        if ($finalize) {
+            fclose($this->file);
+            yield $this->filename;
         }
     }
 

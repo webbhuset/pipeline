@@ -8,32 +8,32 @@ use Webbhuset\Bifrost\Helper\ArrayHelper\Tree;
 
 class Pipeline implements ComponentInterface
 {
-    protected $processors;
+    protected $components;
 
-    public function __construct(array $processors)
+    public function __construct(array $components)
     {
-        $processors = Tree::getLeaves($processors);
+        $components = Tree::getLeaves($components);
 
-        foreach ($processors as $idx => $processor) {
-            if ($processor === false) {
-                unset($processors[$idx]);
+        foreach ($components as $idx => $component) {
+            if ($component === false) {
+                unset($components[$idx]);
                 continue;
             }
-            if (!is_object($processor)) {
+            if (!is_object($component)) {
                 throw new BifrostException("Component is not an object.");
             }
-            if (!$processor instanceof ComponentInterface) {
-                $class = get_class($processor);
+            if (!$component instanceof ComponentInterface) {
+                $class = get_class($component);
                 throw new BifrostException("Component {$class} does not implement 'ComponentInterface'");
             }
         }
-        $this->processors = $processors;
+        $this->components = $components;
     }
 
     public function process($items, $finalize = true)
     {
-        foreach ($this->processors as $processor) {
-            $items = $processor->process($items, $finalize);
+        foreach ($this->components as $component) {
+            $items = $component->process($items, $finalize);
         }
 
         return $items;

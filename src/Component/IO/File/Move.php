@@ -77,9 +77,10 @@ class Move implements ComponentInterface
                 continue;
             }
 
-            $eventName = $this->copy ? 'fileCopied' : 'fileMoved';
-            $data = ['from' => $oldPath, 'to' => $newPath];
-            yield new EventData($eventName, $item, $data);
+
+            $type = $this->copy ? 'Copied' : 'Moved';
+            $msg = "{$type} '{$oldPath}' to '{$newPath}'.";
+            yield new EventData('info', $msg);
 
             if (!$this->copy && !unlink($oldPath)) {
                 $msg = "Could not unlink '{$oldPath}' after copying.";
