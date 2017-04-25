@@ -19,12 +19,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Webbhuset\\Bifrost\\Core\\": "src/"
+            "Webbhuset\\Bifrost\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Webbhuset\\Bifrost\\Core\\Test\\": "tests/core/"
+            "Webbhuset\\Bifrost\\Test\\": "tests/core/"
         }
     },
     "repositories": [
