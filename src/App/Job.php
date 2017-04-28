@@ -3,6 +3,7 @@
 namespace Webbhuset\Bifrost\App;
 
 use Exception;
+use Generator;
 use Traversable;
 use Webbhuset\Bifrost\BifrostException;
 use Webbhuset\Bifrost\App\JobSchematicInterface;
@@ -28,9 +29,9 @@ class Job
     /**
      * Constructor.
      *
-     * @param Webbhuset\Bifrost\Component\ComponentInterface $component
+     * @param Webbhuset\Bifrost\App\JobSchematicInterface $schematic
      * @param string $code
-     * @param array|Traversable $input
+     * @param array $options
      *
      * @return void
      */
@@ -43,9 +44,6 @@ class Job
         $observer       = $schematic->createObserver($options);
         $tasksToSkip    = $this->getTasksToSkip($tasks, $options);
 
-        if (!is_array($input) && !$input instanceof Traversable) {
-            $input = [$input];
-        }
 
         $this->taskList = new Flow\TaskList($tasks, $tasksToSkip);
         $this->observer = new Flow\Pipeline($observer);
@@ -64,10 +62,14 @@ class Job
             [],
             ['code' => $code, 'options' => $options]
         );
-        iterator_to_array($this->observer->process([$jobStartEvent]));
+        $this->processEvents([$jobStartEvent]);
 
-        $input              = $schematic->createInput($options);
-        $this->generator    = $pipeline->process($input);
+        $input = $schematic->createInput($options);
+        if (!is_array($input) && !$input instanceof Traversable) {
+            $input = [$input];
+        }
+
+        $this->generator = $pipeline->process($input);
     }
 
     /**
@@ -197,17 +199,32 @@ class Job
                 new Data\ActionData\EventData('taskDone', []),
                 new Data\ActionData\EventData('jobDone', []),
             ];
-            iterator_to_array($this->observer->process($events));
+            $this->processEvents($events);
             throw $e;
         }
 
         if (!$this->generator->valid()) {
             $this->isDone = true;
             $jobDoneEvent = new Data\ActionData\EventData('jobDone', []);
-            iterator_to_array($this->observer->process([$jobDoneEvent]));
+            $this->processEvents([$jobDoneEvent]);
         }
 
         return !$this->isDone;
+    }
+
+    /**
+     * Sends events through observer.
+     *
+     * @param array $events
+     *
+     * @return void
+     */
+    protected function processEvents($events)
+    {
+        $processed = $this->observer->process($events);
+        if ($processed instanceof Generator) {
+            iterator_to_array($processed);
+        }
     }
 
     /**
