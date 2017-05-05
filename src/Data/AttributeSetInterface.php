@@ -1,6 +1,6 @@
 <?php
 
-namespace Webbhuset\Bifrost\Data\Eav;
+namespace Webbhuset\Bifrost\Data;
 
 interface AttributeSetInterface
 {

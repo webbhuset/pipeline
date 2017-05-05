@@ -1,12 +1,10 @@
 <?php
 
-namespace Webbhuset\Bifrost\Data\Eav;
+namespace Webbhuset\Bifrost\Data;
 
 interface AttributeInterface
 {
-    public function getId();
     public function getCode();
     public function getTable();
     public function getType();
-    public function getScope();
 }

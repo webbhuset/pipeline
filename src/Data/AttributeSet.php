@@ -1,6 +1,6 @@
 <?php
 
-namespace Webbhuset\Bifrost\Data\Eav;
+namespace Webbhuset\Bifrost\Data;
 
 use Webbhuset\Bifrost\BifrostException;
 
@@ -18,6 +18,14 @@ class AttributeSet implements AttributeSetInterface
             }
         }
 
+        foreach ($data['attributes'] as $attribute) {
+            if (!$attribute instanceof AttributeInterface) {
+                throw new BifrostException("Attributes must implement 'Webbhuset\Bifrost\Data\AttributeInterface'.");
+            }
+            $attributes[$attribute->getCode()] = $attribute;
+        }
+        $data['attributes'] = $attributes;
+
         $this->data = $data;
     }
 
@@ -34,15 +42,5 @@ class AttributeSet implements AttributeSetInterface
     public function getAttributes()
     {
         return $this->data['attributes'];
-    }
-
-    public function getAttributesIds()
-    {
-        $ids = [];
-        foreach ($this->data['attributes'] as $attribute) {
-            $ids[] = $attribute->getId();
-        }
-
-        return $ids;
     }
 }
