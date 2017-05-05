@@ -45,11 +45,11 @@ class EntityWithSets implements ComponentInterface
         $setId  = $item[$this->setFieldName];
 
         if (!$setId) {
-            return "Attribute set is empty";
+            return "Attribute set field is empty.";
         }
 
         if (!array_key_exists($setId, $this->sets)) {
-            return "Attribute set '{$setId}' is not recognized";
+            return "Attribute set '{$setId}' is not recognized.";
         }
 
         $entity = $this->sets[$setId];

@@ -3,7 +3,6 @@
 namespace Webbhuset\Bifrost\Helper\Eav;
 
 use Webbhuset\Bifrost\Type;
-use Webbhuset\Bifrost\TypeConstructor as T;
 
 class EntityTypeCreator
 {
@@ -12,8 +11,8 @@ class EntityTypeCreator
         $fields = [];
         foreach ($attributes as $attribute) {
             $code           = $attribute->getCode();
-            $typeObject     = $attribute->getTypeObject();
-            $fields[$code]  = $typeObject;
+            $type           = $attribute->getType();
+            $fields[$code]  = $type;
         }
 
         $structType = new Type\StructType(['fields' => $fields]);

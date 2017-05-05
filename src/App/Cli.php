@@ -112,7 +112,7 @@ class Cli
             try {
                 $this->app->runJob($job, $args);
             } catch (BifrostException $e) {
-                echo $e->getMessage();
+                echo $e->__toString();
             }
         }
     }

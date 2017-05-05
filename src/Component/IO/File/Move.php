@@ -47,7 +47,7 @@ class Move implements ComponentInterface
             $oldPath = $item;
 
             if (!file_exists($oldPath)) {
-                $msg = "'{$oldPath}' does not exist.";
+                $msg = "File '{$oldPath}' does not exist.";
                 yield new ErrorData($item, $msg);
                 yield false;
                 continue;

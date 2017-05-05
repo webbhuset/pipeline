@@ -79,13 +79,13 @@ class StructType extends AbstractType
     public function diff($old, $new) {
         $result = [];
         foreach ($this->fields as $key => $type) {
-            if (!isset($old[$key]) && !isset($new[$key])){
+            if (!isset($old[$key]) && !isset($new[$key])) {
                 continue;
             }
-            if (!isset($old[$key])){
+            if (!isset($old[$key])) {
                 $old[$key] = null;
             }
-            if (!isset($new[$key])){
+            if (!isset($new[$key])) {
                  $new[$key] = null;
             }
 

@@ -19,9 +19,10 @@ class Entity implements ComponentInterface
     {
         $default = [
             'idField'               => 'entity_id',
-            'setField'              => 'attribute_set_id',
+            'setField'              => null,
             'updateOnly'            => false,
             'attributesToUpdate'    => [],
+            'attributeSets'         => [],
             'batchSize'             => 200,
         ];
 
@@ -34,15 +35,17 @@ class Entity implements ComponentInterface
     {
         $idField = $config['idField'];
 
-        return new Flow\Multiplex(
-            function($item) use ($idField) {
-                return isset($item[$idField]) ? 'update' : 'create';
-            },
-            [
-                'create' => new Flow\Pipeline($this->createEntities($config)),
-                'update' => new Flow\Pipeline($this->updateEntities($config)),
-            ]
-        );
+        return new Flow\Pipeline([
+            new Flow\Multiplex(
+                function($item) use ($idField) {
+                    return isset($item[$idField]) ? 'update' : 'create';
+                },
+                [
+                    'create' => new Flow\Pipeline($this->createEntities($config)),
+                    'update' => new Flow\Pipeline($this->updateEntities($config)),
+                ]
+            ),
+        ]);
     }
 
     public function process($items, $finalize = true)
@@ -239,6 +242,10 @@ class Entity implements ComponentInterface
 
     protected function filterAttributesBySet($setField, $attributeSets)
     {
+        if ($setField === null) {
+            return [];
+        }
+
         return new Transform\Map(function($item) use ($setField, $attributeSets) {
             $attributes = $attributeSets[$item['new'][$setField]];
             foreach ($item['diff'] as $attribute => $diff) {
