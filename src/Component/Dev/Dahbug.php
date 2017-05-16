@@ -28,7 +28,7 @@ class Dahbug implements ComponentInterface
                 continue;
             }
             if ($this->log) {
-                LocalDahbug::dump($this->backtrace, $item, $this->label, 10);
+                LocalDahbug::dumpWithBacktrace($this->backtrace, $item, $this->label, 10);
             }
             yield $item;
         }
@@ -38,10 +38,15 @@ class Dahbug implements ComponentInterface
 if (class_exists('\dahbug')) {
     class LocalDahbug extends \dahbug
     {
-        static public function dump($backtrace, $var, $label = null, $maxDepth = null)
+        static public function dumpWithBacktrace($backtrace, $var, $label = null, $maxDepth = null)
         {
             self::$_backtrace = $backtrace;
 
+            return self::dump($var, $label, $maxDepth);
+        }
+
+        static public function dump($var, $label = null, $maxDepth = null)
+        {
             if (!is_int($maxDepth)) {
                 $maxDepth = self::getData('max_depth');
             }
