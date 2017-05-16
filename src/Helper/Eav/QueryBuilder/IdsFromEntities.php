@@ -2,6 +2,7 @@
 
 namespace Webbhuset\Bifrost\Helper\Eav\QueryBuilder;
 
+use Webbhuset\Bifrost\Data;
 use Webbhuset\Bifrost\Helper\Db;
 use Webbhuset\Bifrost\BifrostException;
 
@@ -152,10 +153,10 @@ class IdsFromEntities
                 throw new BifrostException("Attribute {$key} is not found.");
             }
             $attribute = $attributesByCode[$key];
-            if ($attribute->getBackendType() == 'static') {
-                $staticKeys[] = $attribute;
-            } else {
+            if ($attribute instanceof Data\Eav\AttributeInterface) {
                 $eavKeys[] = $attribute;
+            } else {
+                $staticKeys[] = $attribute;
             }
         }
 
