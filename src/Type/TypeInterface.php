@@ -7,5 +7,5 @@ interface TypeInterface
     public function cast($value);
     public function getErrors($value);
     public function isEqual($a, $b);
-    public function diff($old, $new);
+    public function diff($a, $b);
 }

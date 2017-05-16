@@ -71,4 +71,16 @@ class IntType extends AbstractType
 
         return $a===$b;
     }
+
+    public function diff($a, $b)
+    {
+        if ($this->isEqual($a, $b)) {
+            return [];
+        } else {
+            return [
+                '+' => $a,
+                '-' => $b,
+            ];
+        }
+    }
 }

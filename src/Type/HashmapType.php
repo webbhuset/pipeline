@@ -59,6 +59,14 @@ class HashmapType extends AbstractType
 
     public function getErrors($dataArray)
     {
+        if ($error = parent::getErrors($dataArray)) {
+            return $error;
+        }
+
+        if (is_null($dataArray)) {
+            return false;
+        }
+
         if (!is_array($dataArray)) {
             $string = $this->getValueString($dataArray);
             return "Not a valid array: '{$string}'";
@@ -116,26 +124,27 @@ class HashmapType extends AbstractType
         return true;
     }
 
-    public function diff($old, $new) {
-        $result = [
-            '+' => [],
-            '-' => [],
-        ];
-        $keyDiff   = array_diff_key($old, $new);
-        if (!empty($keyDiff)) {
-            $result['-'] = $keyDiff;
-        }
+    public function diff($new, $old) {
+        $result = [];
 
         $keyDiff = array_diff_key($new, $old);
         if (!empty($keyDiff)) {
             $result['+'] = $keyDiff;
         }
 
+        $keyDiff = array_diff_key($old, $new);
+        if (!empty($keyDiff)) {
+            $result['-'] = $keyDiff;
+        }
+
         $keyIntersect = array_intersect_key($new, $old);
         foreach ($keyIntersect as $key => $newValue) {
-            if (!$this->valueType->isEqual($new[$key], $old[$key])) {
-                $result['+'][$key] = $new[$key];
-                $result['-'][$key] = $old[$key];
+            $diff = $this->valueType->diff($new[$key], $old[$key]);
+            if (isset($diff['+'])) {
+                $result['+'][$key] = $diff['+'];
+            }
+            if (isset($diff['-'])) {
+                $result['-'][$key] = $diff['-'];
             }
         }
 

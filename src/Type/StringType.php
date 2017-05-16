@@ -47,7 +47,7 @@ class StringType extends AbstractType
 
     public function getErrors($value)
     {
-        if ($error = parent::getErrors($value)){
+        if ($error = parent::getErrors($value)) {
             return $error;
         }
 
@@ -102,5 +102,17 @@ class StringType extends AbstractType
         }
 
         return $a===$b;
+    }
+
+    public function diff($a, $b)
+    {
+        if ($this->isEqual($a, $b)) {
+            return [];
+        } else {
+            return [
+                '+' => $a,
+                '-' => $b,
+            ];
+        }
     }
 }

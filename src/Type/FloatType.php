@@ -80,4 +80,16 @@ class FloatType extends AbstractType
 
         return (float) $value;
     }
+
+    public function diff($a, $b)
+    {
+        if ($this->isEqual($a, $b)) {
+            return [];
+        } else {
+            return [
+                '+' => $a,
+                '-' => $b,
+            ];
+        }
+    }
 }

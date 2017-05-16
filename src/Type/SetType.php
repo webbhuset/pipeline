@@ -109,7 +109,7 @@ class SetType extends AbstractType
         return true;
     }
 
-    public function diff($old, $new) {
+    public function diff($new, $old) {
 
         if (!is_array($old) || !is_array($new)) {
             throw new BifrostException("Values must be arrays to be compared.");
@@ -136,6 +136,13 @@ class SetType extends AbstractType
             if (array_search($element, $old) === false) {
                 $result['+'][] = $element;
             }
+        }
+
+        if (!$result['+']) {
+            unset($result['+']);
+        }
+        if (!$result['-']) {
+            unset($result['-']);
         }
 
         return $result;

@@ -47,7 +47,7 @@ abstract class AbstractType implements TypeInterface
         return (string) $value;
     }
 
-    public function diff($old, $new)
+    public function diff($a, $b)
     {
         throw new BifrostException("Diff method not implemented for this type.");
     }

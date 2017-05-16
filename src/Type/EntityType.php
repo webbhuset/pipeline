@@ -16,7 +16,7 @@ class EntityType extends StructType
         $this->entityId = $params['entity_id_field'];
     }
 
-    public function diff($old, $new) {
+    public function diff($new, $old) {
         $result = parent::diff($old, $new);
         if (!empty($result) && !isset($result[$this->entityId]) && isset($new[$this->entityId])) {
             $result[$this->entityId]['+'] = $new[$this->entityId];
