@@ -5,19 +5,10 @@ use Webbhuset\Bifrost\BifrostException;
 
 class AnyType extends AbstractType
 {
-    public function __construct($params = null)
-    {
-        parent::__construct($params);
-    }
-
     public function getErrors($value)
     {
         if ($error = parent::getErrors($value)){
             return $error;
-        }
-
-        if (is_null($value)) {
-            return false;
         }
 
         return false;

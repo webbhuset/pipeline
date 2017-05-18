@@ -1,5 +1,7 @@
 <?php
 namespace Webbhuset\Bifrost\Type;
+
+use Webbhuset\Bifrost\Type\TypeConstructor AS T;
 use Webbhuset\Bifrost\BifrostException;
 
 class HashmapType extends AbstractType
@@ -10,35 +12,43 @@ class HashmapType extends AbstractType
     protected $max;
     protected $min;
 
-    public function __construct($params)
+    protected function parseArg($arg)
     {
-        if (!isset($params['value_type'])) {
-            throw new BifrostException("Value type parameter not set.");
-        }
-        if (!$params['value_type'] instanceof TypeInterface) {
-            throw new BifrostException("Value type param must implement TypeInterface");
+        if (is_array($arg) && isset($arg[T::ARG_KEY_MIN])) {
+            $this->min  = is_int($arg[T::ARG_KEY_MIN])
+                        ? $arg[T::ARG_KEY_MIN]
+                        : null;
+            return;
         }
 
-        if (!isset($params['key_type'])) {
-            throw new BifrostException("Key type parameter not set.");
+        if (is_array($arg) && isset($arg[T::ARG_KEY_MAX])) {
+            $this->max  = is_int($arg[T::ARG_KEY_MAX])
+                        ? $arg[T::ARG_KEY_MAX]
+                        : null;
+            return;
         }
-        if (!$params['key_type'] instanceof TypeInterface) {
+
+        if ($arg instanceof TypeInterface && empty($this->keyType)) {
+            $this->keyType = $arg;
+            return;
+        }
+
+        if ($arg instanceof TypeInterface && empty($this->valueType)) {
+            $this->valueType = $arg;
+            return;
+        }
+
+        parent::parseArg($arg);
+    }
+
+    protected function afterConstruct()
+    {
+        if (!$this->keyType instanceof TypeInterface) {
             throw new BifrostException("Key type param must implement TypeInterface");
         }
-        $this->valueType = $params['value_type'];
-        $this->keyType   = $params['key_type'];
 
-        if (isset($params['max_size'])) {
-            if (!is_numeric($params['max_size'])) {
-                throw new BifrostException("Max size must be numeric");
-            }
-            $this->max = $params['max_size'];
-        }
-        if (isset($params['min_size'])) {
-            if (!is_numeric($params['min_size'])) {
-                throw new BifrostException("Min size must be numeric");
-            }
-            $this->min = $params['min_size'];
+        if (!$this->valueType instanceof TypeInterface) {
+            throw new BifrostException("Value type param must implement TypeInterface");
         }
     }
 
@@ -146,6 +156,14 @@ class HashmapType extends AbstractType
             if (isset($diff['-'])) {
                 $result['-'][$key] = $diff['-'];
             }
+        }
+
+        if (!isset($result['+'])) {
+            $result['+'] = [];
+        }
+
+        if (!isset($result['-'])) {
+            $result['-'] = [];
         }
 
         return $result;

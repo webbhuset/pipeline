@@ -1,16 +1,15 @@
 <?php
 namespace Webbhuset\Bifrost\Test\UnitTest\Type;
-use Webbhuset\Bifrost\Type as Core;
+
+use Webbhuset\Bifrost\Type\TypeConstructor AS T;
 
 class StructTypeTest
 {
     public static function __constructTest($test)
     {
         $params = [
-            'fields' => [
-                'string_test' =>  new Core\StringType(),
-                'int_test'    =>  new Core\IntType(),
-            ]
+            'string_test' =>  T::String(),
+            'int_test'    =>  T::Int(),
         ];
         $test->testThatArgs($params)
             ->notThrows('Exception');
@@ -27,10 +26,8 @@ class StructTypeTest
     public static function diffTest($test)
     {
         $params = [
-            'fields' => [
-                'string_test' =>  new Core\StringType(),
-                'int_test'    =>  new Core\IntType(),
-            ]
+            'string_test' =>  T::String(),
+            'int_test'    =>  T::Int(),
         ];
         $test->newInstance($params);
 
@@ -62,17 +59,16 @@ class StructTypeTest
                 '-' => 'gammal test'
             ],
         ];
-        $test->testThatArgs($old, $new)->returnsValue($expected);
+        $test->testThatArgs($new, $old)->returnsValue($expected);
     }
 
     public static function isEqualTest($test)
     {
         $params = [
-            'fields' => [
-                'string_test' =>  new Core\StringType(),
-                'int_test'    =>  new Core\IntType(),
-            ]
+            'string_test' =>  T::String(),
+            'int_test'    =>  T::Int(),
         ];
+
         $test->newInstance($params)
             ->testThatArgs(
                 [
@@ -112,11 +108,10 @@ class StructTypeTest
     public static function getErrorsTest($test)
     {
         $params = [
-            'fields' => [
-                'string_test' =>  new Core\StringType(),
-                'int_test'    =>  new Core\IntType(),
-            ]
+            'string_test' =>  T::String(),
+            'int_test'    =>  T::Int(),
         ];
+
         $test->newInstance($params)
             ->testThatArgs(
                 [
@@ -151,10 +146,8 @@ class StructTypeTest
     public static function castTest($test)
     {
         $params = [
-            'fields' => [
-                'string_test' =>  new Core\StringType(),
-                'int_test'    =>  new Core\IntType(),
-            ]
+            'string_test' =>  T::String(),
+            'int_test'    =>  T::Int(),
         ];
         $test->newInstance($params)
             ->testThatArgs(

@@ -3,7 +3,7 @@ namespace Webbhuset\Bifrost\Type;
 
 interface TypeInterface
 {
-    public function __construct($params);
+    public function __construct();
     public function cast($value);
     public function getErrors($value);
     public function isEqual($a, $b);

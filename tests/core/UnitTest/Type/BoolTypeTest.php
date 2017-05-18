@@ -1,43 +1,54 @@
 <?php
 namespace Webbhuset\Bifrost\Test\UnitTest\Type;
 
+use Webbhuset\Bifrost\Type\TypeConstructor AS T;
+
 class BoolTypeTest
 {
     public static function __constructTest($test)
     {
-        $params = ['required' => false];
-        $test->testThatArgs($params)
+        $test->testThatArgs(T::NULLABLE)
             ->notThrows('Exception');
 
-        $params = ['required' => true];
-        $test->testThatArgs($params)
+        $test->testThatArgs()
             ->notThrows('Exception');
-
-        $params = ['required' => 'apa'];
-        $test->testThatArgs($params)
-            ->throws('Webbhuset\Bifrost\BifrostException');
     }
 
     public static function isEqualTest($test)
     {
         $test->newInstance()
-            ->testThatArgs(true, true)->returnsValue(true)
-            ->testThatArgs(false, false)->returnsValue(true)
-            ->testThatArgs(true, false)->returnsValue(false);
+            ->testThatArgs(true, true)->returnsTrue()
+            ->testThatArgs(false, false)->returnsTrue()
+            ->testThatArgs(true, false)->returnsFalse();
     }
 
     public static function getErrorsTest($test)
     {
+        $test->newInstance(T::NULLABLE)
+            ->testThatArgs(null)->returnsFalse();
+
         $test->newInstance()
-            ->testThatArgs(false)->returnsValue(false)
-            ->testThatArgs(true)->returnsValue(false)
-            ->testThatArgs(null)->returnsValue(false)
+            ->testThatArgs(null)->notReturnsFalse();
+
+        $test->newInstance(T::NULLABLE(true))
+            ->testThatArgs(null)->returnsFalse();
+
+        $test->newInstance(T::NULLABLE(false))
+            ->testThatArgs(null)->notReturnsFalse();
+
+        $test->newInstance(T::NULLABLE)
+            ->testThatArgs(false)->returnsFalse()
+            ->testThatArgs(true)->returnsFalse()
+            ->testThatArgs(null)->returnsFalse();
+
+        $test->newInstance()
+            ->testThatArgs(null)->notReturnsFalse()
             ->testThatArgs('false')->notReturnsValue(false)
             ->testThatArgs('1')->notReturnsValue(false)
             ->testThatArgs(1)->notReturnsValue(false)
             ->testThatArgs([true])->notReturnsValue(false);
 
-        $test->newInstance(['required' => true])
+        $test->newInstance()
             ->testThatArgs(false)->returnsValue(false)
             ->testThatArgs(true)->returnsValue(false)
             ->testThatArgs(null)->notReturnsValue(false);
@@ -53,7 +64,7 @@ class BoolTypeTest
             ->testThatArgs('false')->returnsValue(true)
             ->testThatArgs('')->returnsValue(false);
 
-        $test->newInstance(['required' => true])
+        $test->newInstance(T::NULLABLE)
             ->testThatArgs(1)->returnsValue(true)
             ->testThatArgs(0)->returnsValue(false)
             ->testThatArgs(null)->returnsValue(null)

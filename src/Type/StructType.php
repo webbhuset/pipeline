@@ -1,23 +1,34 @@
 <?php
 namespace Webbhuset\Bifrost\Type;
+
 use Webbhuset\Bifrost\BifrostException;
+use Webbhuset\Bifrost\Type\TypeConstructor AS T;
 
 class StructType extends AbstractType
 {
-    protected $fields;
+    protected $fields = [];
 
-    public function __construct($params)
+    protected function parseArg($arg)
     {
-        if (!isset($params['fields']) || !is_array($params['fields'])) {
-            throw new BifrostException("Fields params must be array");
-        }
-        foreach ($params['fields'] as $type) {
-            if (!$type instanceof TypeInterface) {
-                throw new BifrostException("Field parameter values must implement TypeInterface");
+        if (is_array($arg)) {
+            foreach ($arg as $field => $type) {
+                if (!$type instanceof TypeInterface) {
+                    throw new BifrostException("Field parameter values must implement TypeInterface");
+                }
+                $this->fields[$field] = $type;
             }
+            return;
         }
 
-        $this->fields = $params['fields'];
+        parent::parseArg($arg);
+    }
+
+    protected function afterConstruct()
+    {
+        if (empty($this->fields)) {
+            throw new BifrostException("Struct does not have any fields");
+        }
+
     }
 
     public function cast($value)

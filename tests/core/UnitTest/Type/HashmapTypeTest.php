@@ -1,33 +1,21 @@
 <?php
 namespace Webbhuset\Bifrost\Test\UnitTest\Type;
-use Webbhuset\Bifrost\Type as Core;
+
+use Webbhuset\Bifrost\Type\TypeConstructor AS T;
 
 class HashmapTypeTest
 {
-
     public static function __constructTest($test)
     {
-        $params = [
-            'key_type'   =>  new Core\StringType(),
-            'value_type' =>  new Core\IntType(),
-        ];
-        $test->testThatArgs($params)->notThrows('Exception');
+        $test->testThatArgs(T::String(), T::Int())->notThrows('Exception');
 
-        $params = [
-            'key_type'   =>  new Core\StringType(),
-            'value_type' =>  new \stdClass(),
-        ];
-        $test->testThatArgs($params)
+        $test->testThatArgs(T::String(), new \stdClass)
             ->throws('Webbhuset\Bifrost\BifrostException');
     }
 
     public static function diffTest($test)
     {
-        $params = [
-            'key_type'   =>  new Core\StringType(),
-            'value_type' =>  new Core\IntType(),
-        ];
-        $test->newInstance($params);
+        $test->newInstance(T::String(), T::Int());
 
         /* Test that two equal arrays returns empty diff */
         $old = [
@@ -42,7 +30,7 @@ class HashmapTypeTest
             '+' => [],
             '-' => [],
         ];
-        $test->testThatArgs($old, $new)->returnsValue($expected);
+        $test->testThatArgs($new, $old)->returnsValue($expected);
 
         /* Test changed keys*/
         $old = [
@@ -57,7 +45,7 @@ class HashmapTypeTest
             '+' => ['string2'  => 167,],
             '-' => ['string3'  => 167,],
         ];
-        $test->testThatArgs($old, $new)->returnsValue($expected);
+        $test->testThatArgs($new, $old)->returnsValue($expected);
 
         /* Test changed values */
         $old = [
@@ -72,17 +60,13 @@ class HashmapTypeTest
             '+' => ['string2'  => 167,],
             '-' => ['string2'  => 1600,],
         ];
-        $test->testThatArgs($old, $new)->returnsValue($expected);
+        $test->testThatArgs($new, $old)->returnsValue($expected);
 
 
     }
     public static function isEqualTest($test)
     {
-        $params = [
-            'key_type'   =>  new Core\StringType(),
-            'value_type' =>  new Core\IntType(),
-        ];
-        $test->newInstance($params)
+        $test->newInstance(T::String(), T::Int())
             ->testThatArgs(
                 [
                     'string1'  => 143,
@@ -132,11 +116,7 @@ class HashmapTypeTest
 
     public static function getErrorsTest($test)
     {
-        $params = [
-            'key_type'   =>  new Core\StringType(),
-            'value_type' =>  new Core\IntType(),
-        ];
-        $test->newInstance($params)
+        $test->newInstance(T::String(), T::Int())
             ->testThatArgs(
                 [
                     'string1'  => 143,
@@ -159,14 +139,7 @@ class HashmapTypeTest
             )
             ->notReturnsValue(false);
 
-
-        $params = [
-            'key_type'   =>  new Core\StringType(),
-            'value_type' =>  new Core\IntType(),
-            'min_size'   => 2,
-            'max_size'   => 4,
-        ];
-        $test->newInstance($params)
+        $test->newInstance(T::String(), T::Int(), T::MIN(2), T::MAX(4))
             ->testThatArgs(
                 [
                     'a' => 1,
@@ -195,12 +168,7 @@ class HashmapTypeTest
 
     public static function castTest($test)
     {
-        $params = [
-            'key_type'   =>  new Core\StringType(),
-            'value_type' =>  new Core\IntType(),
-        ];
-
-        $test->newInstance($params)
+        $test->newInstance(T::String(), T::Int())
             ->testThatArgs(
                 ['a' => 5]
             )

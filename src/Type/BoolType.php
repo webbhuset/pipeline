@@ -1,11 +1,11 @@
 <?php
 namespace Webbhuset\Bifrost\Type;
+
 use Webbhuset\Bifrost\BifrostException;
 
 class BoolType extends AbstractType
     implements TypeInterface
 {
-
     public function getErrors($value)
     {
         if ($error = parent::getErrors($value)){
@@ -18,6 +18,7 @@ class BoolType extends AbstractType
 
         if (!is_bool($value)) {
             $string = $this->getValueString($value);
+
             return "Not a valid boolean: '{$string}'";
         }
 

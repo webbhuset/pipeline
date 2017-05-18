@@ -1,6 +1,8 @@
 <?php
 namespace Webbhuset\Bifrost\Type;
+
 use Webbhuset\Bifrost\BifrostException;
+use Webbhuset\Bifrost\Type\TypeConstructor AS T;
 
 class FloatType extends AbstractType
     implements TypeInterface
@@ -8,31 +10,6 @@ class FloatType extends AbstractType
     protected $max;
     protected $min;
     protected $tolerance = 1e-5;
-
-    public function __construct($params = null)
-    {
-        parent::__construct($params);
-        if (isset($params['max_value'])) {
-            if (!is_numeric($params['max_value'])) {
-                throw new BifrostException("Max value must be numeric");
-            }
-            $this->max = $params['max_value'];
-        }
-
-        if (isset($params['min_value'])) {
-            if (!is_numeric($params['min_value'])) {
-                throw new BifrostException("Min value must be numeric");
-            }
-            $this->min = $params['min_value'];
-        }
-
-        if (isset($params['tolerance'])) {
-            if (!is_numeric($params['tolerance'])) {
-                throw new BifrostException("Tolerance must be numeric");
-            }
-            $this->tolerance = $params['tolerance'];
-        }
-    }
 
     public function getErrors($value)
     {
@@ -58,6 +35,24 @@ class FloatType extends AbstractType
         }
 
         return false;
+    }
+
+    protected function parseArg($arg)
+    {
+        if (is_array($arg) && isset($arg[T::ARG_KEY_MIN])) {
+            $this->min  = is_numeric($arg[T::ARG_KEY_MIN])
+                        ? (float)$arg[T::ARG_KEY_MIN]
+                        : null;
+            return;
+        }
+        if (is_array($arg) && isset($arg[T::ARG_KEY_MAX])) {
+            $this->max  = is_numeric($arg[T::ARG_KEY_MAX])
+                        ? (float)$arg[T::ARG_KEY_MAX]
+                        : null;
+            return;
+        }
+
+        parent::parseArg($arg);
     }
 
     public function isEqual($a, $b)

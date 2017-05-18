@@ -1,6 +1,9 @@
 <?php
 namespace Webbhuset\Bifrost\Type;
+
+use Webbhuset\Bifrost\Type\TypeConstructor AS T;
 use Webbhuset\Bifrost\BifrostException;
+
 
 class SetType extends AbstractType
     implements TypeInterface
@@ -9,28 +12,36 @@ class SetType extends AbstractType
     protected $min;
     protected $type;
 
-    public function __construct($params)
+    protected function parseArg($arg)
     {
-        if (!isset($params['type'])) {
-            throw new BifrostException("Type parameter not set.");
+        if (is_array($arg) && isset($arg[T::ARG_KEY_MIN])) {
+            $this->min  = is_int($arg[T::ARG_KEY_MIN])
+                        ? $arg[T::ARG_KEY_MIN]
+                        : null;
+            return;
         }
-        if (!$params['type'] instanceof TypeInterface) {
-            throw new BifrostException("Type param must implement TypeInterface");
-        }
-        $this->type = $params['type'];
 
-        if (isset($params['max_size'])) {
-            if (!is_numeric($params['max_size'])) {
-                throw new BifrostException("Max size must be numeric");
-            }
-            $this->max = $params['max_size'];
+        if (is_array($arg) && isset($arg[T::ARG_KEY_MAX])) {
+            $this->max  = is_int($arg[T::ARG_KEY_MAX])
+                        ? $arg[T::ARG_KEY_MAX]
+                        : null;
+            return;
         }
-        if (isset($params['min_size'])) {
-            if (!is_numeric($params['min_size'])) {
-                throw new BifrostException("Min size must be numeric");
-            }
-            $this->min = $params['min_size'];
+
+        if ($arg instanceof TypeInterface) {
+            $this->type = $arg;
+            return;
         }
+
+        parent::parseArg($arg);
+    }
+
+    protected function afterConstruct()
+    {
+        if (!$this->type instanceof TypeInterface) {
+            throw new BifrostException("Type param is missing for set.");
+        }
+
     }
 
     public function cast($valueArray)
@@ -49,8 +60,8 @@ class SetType extends AbstractType
 
     public function getErrors($valueArray)
     {
-        if (!$this->required && is_null($valueArray)) {
-            return false;
+        if ($error = parent::getErrors($valueArray)){
+            return $error;
         }
         if (!is_array($valueArray)) {
             $string = $this->getValueString($valueArray);
@@ -109,8 +120,8 @@ class SetType extends AbstractType
         return true;
     }
 
-    public function diff($new, $old) {
-
+    public function diff($new, $old)
+    {
         if (!is_array($old) || !is_array($new)) {
             throw new BifrostException("Values must be arrays to be compared.");
         }
@@ -136,13 +147,6 @@ class SetType extends AbstractType
             if (array_search($element, $old) === false) {
                 $result['+'][] = $element;
             }
-        }
-
-        if (!$result['+']) {
-            unset($result['+']);
-        }
-        if (!$result['-']) {
-            unset($result['-']);
         }
 
         return $result;

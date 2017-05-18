@@ -1,21 +1,18 @@
 <?php
 namespace Webbhuset\Bifrost\Test\UnitTest\Type;
-use Webbhuset\Bifrost\Type as Core;
+
+use Webbhuset\Bifrost\Type\TypeConstructor AS T;
 
 class SetTypeTest
 {
     public static function __constructTest($test)
     {
-        $params = [
-            'type' =>  new Core\IntType(),
-        ];
-        $test->testThatArgs($params)
+        $test->testThatArgs(T::Int())
             ->notThrows('Exception');
 
-        $params = ['type' => new \stdClass];
-        $test->testThatArgs($params)
+        $test->testThatArgs(new \stdClass)
             ->throws('Webbhuset\Bifrost\BifrostException');
-            
+
         $params = [];
         $test->testThatArgs($params)
             ->throws('Webbhuset\Bifrost\BifrostException');
@@ -23,10 +20,7 @@ class SetTypeTest
 
     public static function diffTest($test)
     {
-        $params = [
-            'type' =>  new Core\IntType(),
-        ];
-        $test->newInstance($params);
+        $test->newInstance(T::Int());
 
         /* Test that two equal sets returns empty diff */
         $old = [11, 12, 13, 14, 15];
@@ -35,7 +29,7 @@ class SetTypeTest
             '+' => [],
             '-' => [],
         ];
-        $test->testThatArgs($old, $new)->returnsValue($expected);
+        $test->testThatArgs($new, $old)->returnsValue($expected);
 
         /* Test that two equal sets returns empty diff */
         $old = [11, 12, 13, 14, 15];
@@ -44,7 +38,7 @@ class SetTypeTest
             '+' => [],
             '-' => [],
         ];
-        $test->testThatArgs($old, $new)->returnsValue($expected);
+        $test->testThatArgs($new, $old)->returnsValue($expected);
 
         /* Test added element  */
         $old = [11, 12, 13, 14];
@@ -53,7 +47,7 @@ class SetTypeTest
             '+' => [15],
             '-' => [],
         ];
-        $test->testThatArgs($old, $new)->returnsValue($expected);
+        $test->testThatArgs($new, $old)->returnsValue($expected);
 
         /* Test removed element  */
         $old = [11, 12, 13, 14, 15];
@@ -62,17 +56,14 @@ class SetTypeTest
             '+' => [],
             '-' => [11],
         ];
-        $test->testThatArgs($old, $new)->returnsValue($expected);
+        $test->testThatArgs($new, $old)->returnsValue($expected);
 
 
     }
 
     public static function isEqualTest($test)
     {
-        $params = [
-            'type' =>  new Core\IntType(),
-        ];
-        $test->newInstance($params)
+        $test->newInstance(T::Int())
             ->testThatArgs(
                 [11, 12, 13, 14, 15],
                 [11, 12, 13, 14, 15]
@@ -94,10 +85,7 @@ class SetTypeTest
             )
             ->returnsValue(false);
 
-        $params = [
-            'type' =>  new Core\StringType(),
-        ];
-        $test->newInstance($params)
+        $test->newInstance(T::String())
             ->testThatArgs(
                 ['abc','bbb','edf'],
                 ['abc','bbb','edf']
@@ -118,23 +106,13 @@ class SetTypeTest
 
     public static function getErrorsTest($test)
     {
-        $params = [
-            'type' =>  new Core\StringType(),
-        ];
-
-        $test->newInstance($params)
+        $test->newInstance(T::String())
             ->testThatArgs(['abc','bbb','edf'])->returnsValue(false)
             ->testThatArgs([])->returnsValue(false)
             ->testThatArgs(['abc', 123, 'edf'])->notReturnsValue(false)
             ->testThatArgs(['abc', false])->notReturnsValue(false);
 
-        $params = [
-            'type' =>  new Core\IntType(),
-            'min_size' => 2,
-            'max_size' => 4,
-        ];
-
-        $test->newInstance($params)
+        $test->newInstance(T::Int(), T::MIN(2), T::MAX(4))
             ->testThatArgs([1, 2, 3, 4])->returnsValue(false)
             ->testThatArgs([66, 77])->returnsValue(false)
             ->testThatArgs([1])->notReturnsValue(false)
@@ -144,11 +122,7 @@ class SetTypeTest
 
     public static function castTest($test)
     {
-        $params = [
-            'type' =>  new Core\IntType(),
-        ];
-
-        $test->newInstance($params)
+        $test->newInstance(T::String())
             ->testThatArgs([1, 2, 33.0, '4'])->returnsValue([1, 2, 33, 4]);
     }
 }

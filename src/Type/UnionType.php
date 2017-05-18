@@ -5,23 +5,18 @@ use Webbhuset\Bifrost\BifrostException;
 
 class UnionType extends AbstractType
 {
-    protected $types;
+    protected $types = [];
 
-    public function __construct($params)
+    protected function parseArg($arg)
     {
-        parent::__construct($params);
-        if (!isset($params['types']) || !is_array($params['types'])) {
-            throw new BifrostException("You must specify types.");
+        if ($arg instanceof TypeInterface) {
+            $this->types[] = $arg;
+            return;
         }
 
-        foreach ($params['types'] as $type) {
-            if (!$type instanceof TypeInterface) {
-                throw new BifrostException("Type parameter values must implement TypeInterface");
-            }
-        }
-
-        $this->types = $params['types'];
+        parent::parseArg($arg);
     }
+
 
     public function getErrors($value)
     {

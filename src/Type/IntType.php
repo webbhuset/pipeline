@@ -1,29 +1,13 @@
 <?php
 namespace Webbhuset\Bifrost\Type;
+
+use Webbhuset\Bifrost\Type\TypeConstructor AS T;
 use Webbhuset\Bifrost\BifrostException;
 
 class IntType extends AbstractType
 {
     protected $max;
     protected $min;
-
-    public function __construct($params = null)
-    {
-        parent::__construct($params);
-        if (isset($params['max_value'])) {
-            if (!is_numeric($params['max_value'])) {
-                throw new BifrostException("Max value must be numeric");
-            }
-            $this->max = $params['max_value'];
-        }
-
-        if (isset($params['min_value'])) {
-            if (!is_numeric($params['min_value'])) {
-                throw new BifrostException("Min value must be numeric");
-            }
-            $this->min = $params['min_value'];
-        }
-    }
 
     public function getErrors($value)
     {
@@ -49,6 +33,24 @@ class IntType extends AbstractType
         }
 
         return false;
+    }
+
+    protected function parseArg($arg)
+    {
+        if (is_array($arg) && isset($arg[T::ARG_KEY_MIN])) {
+            $this->min  = is_int($arg[T::ARG_KEY_MIN])
+                        ? $arg[T::ARG_KEY_MIN]
+                        : null;
+            return;
+        }
+        if (is_array($arg) && isset($arg[T::ARG_KEY_MAX])) {
+            $this->max  = is_int($arg[T::ARG_KEY_MAX])
+                        ? $arg[T::ARG_KEY_MAX]
+                        : null;
+            return;
+        }
+
+        parent::parseArg($arg);
     }
 
     public function cast($value)

@@ -1,6 +1,8 @@
 <?php
 namespace Webbhuset\Bifrost\Type;
+
 use Webbhuset\Bifrost\BifrostException;
+use Webbhuset\Bifrost\Type\TypeConstructor AS T;
 
 class StringType extends AbstractType
     implements TypeInterface
@@ -10,39 +12,37 @@ class StringType extends AbstractType
     protected $matches      = [];
     protected $notMatches   = [];
 
-    public function __construct($params = null)
+    protected function parseArg($arg)
     {
-        parent::__construct($params);
-        if (isset($params['max_length'])) {
-            if (!is_numeric($params['max_length'])) {
-                throw new BifrostException("Max length must be numeric");
-            }
-            $this->maxLen = $params['max_length'];
+        if (is_array($arg) && isset($arg[T::ARG_KEY_MIN])) {
+            $this->minLen   = is_numeric($arg[T::ARG_KEY_MIN])
+                            ? (int)$arg[T::ARG_KEY_MIN]
+                            : null;
+            return;
         }
-        if (isset($params['min_length'])) {
-            if (!is_numeric($params['min_length'])) {
-                throw new BifrostException("Min length must be numeric");
-            }
-            $this->minLen = $params['min_length'];
+
+        if (is_array($arg) && isset($arg[T::ARG_KEY_MAX])) {
+            $this->maxLen   = is_numeric($arg[T::ARG_KEY_MAX])
+                            ? (int)$arg[T::ARG_KEY_MAX]
+                            : null;
+            return;
         }
-        if (isset($params['min_length'])) {
-            if (!is_numeric($params['min_length'])) {
-                throw new BifrostException("Min length must be numeric");
-            }
-            $this->minLen = $params['min_length'];
+
+        if (isset($arg[T::ARG_KEY_MATCH])) {
+            $this->matches = is_array($arg[T::ARG_KEY_MATCH])
+                            ? $arg[T::ARG_KEY_MATCH]
+                            : [];
+            return;
         }
-        if (isset($params['matches'])) {
-            if (!is_array($params['matches'])) {
-                throw new BifrostException("Matches should be in the form <regex> => <message>");
-            }
-            $this->matches = $params['matches'];
+
+        if (isset($arg[T::ARG_KEY_NOTMATCH])) {
+            $this->notMatches = is_array($arg[T::ARG_KEY_NOTMATCH])
+                            ? $arg[T::ARG_KEY_NOTMATCH]
+                            : [];
+            return;
         }
-        if (isset($params['not_matches'])) {
-            if (!is_array($params['not_matches'])) {
-                throw new BifrostException("Matches should be in the form <regex> => <message>");
-            }
-            $this->notMatches = $params['not_matches'];
-        }
+
+        parent::parseArg($arg);
     }
 
     public function getErrors($value)

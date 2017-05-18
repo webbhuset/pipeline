@@ -6,11 +6,6 @@ use Webbhuset\Bifrost\BifrostException;
 
 class ScalarType extends AbstractType
 {
-    public function __construct($params = null)
-    {
-
-    }
-
     public function getErrors($value)
     {
         if ($error = parent::getErrors($value)){
@@ -23,6 +18,7 @@ class ScalarType extends AbstractType
 
         if (!is_scalar($value)) {
             $string = $this->getValueString($value);
+
             return "Not a valid scalar value: '{$string}'";
         }
 
