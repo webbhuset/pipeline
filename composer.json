@@ -1,13 +1,10 @@
 {
     "name": "webbhuset/bifrost",
-    "type": "magento-module",
+    "type": "library",
     "license": "proprietary",
     "description": "A bridge between worlds.",
     "require": {
         "php": "^5.4.0 || ^7.0",
-        "salsify/json-streaming-parser": "dev-master"
-    },
-    "provide": {
         "salsify/json-streaming-parser": "dev-master"
     },
     "require-dev": {
@@ -40,13 +37,5 @@
             "type": "vcs",
             "url": "git@gitlab.webbhuset.com:libs/bifrost.git"
         }
-    ],
-    "extra": {
-        "map": [
-            [
-                "src/",
-                "lib/Webbhuset/Bifrost"
-            ]
-        ]
-    }
+    ]
 }

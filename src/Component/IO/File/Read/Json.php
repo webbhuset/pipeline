@@ -61,7 +61,7 @@ class Json implements ComponentInterface, Listener
     protected $done;
 
 
-    public function _construct(array $params)
+    public function __construct(array $params)
     {
         if (isset($params['depth'])) {
             $this->itemDepth = $params['depth'];

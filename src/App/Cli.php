@@ -111,7 +111,7 @@ class Cli
         foreach ($jobs as $job) {
             try {
                 $this->app->runJob($job, $args);
-            } catch (BifrostException $e) {
+            } catch (Exception $e) {
                 echo $e->__toString();
             }
         }
