@@ -1,12 +1,12 @@
 <?php
 
-namespace Webbhuset\Bifrost\Component\Monad;
+namespace Webbhuset\Bifrost\Component\Observer;
 
 use Webbhuset\Bifrost\BifrostException;
 use Webbhuset\Bifrost\Component\ComponentInterface;
 use Webbhuset\Bifrost\Data\ActionData\SideEffectData;
 
-class Standard implements ComponentInterface
+class SideEffect implements ComponentInterface
 {
     protected $actions;
     protected $passthru;
@@ -16,7 +16,7 @@ class Standard implements ComponentInterface
         if (is_array($actions)) {
             foreach ($actions as $name => $action) {
                 if (!is_callable($action)) {
-                    throw new BifrostException("Monad method '{$name}' in array is not callable");
+                    throw new BifrostException("Observer method '{$name}' in array is not callable");
                 }
             }
         }

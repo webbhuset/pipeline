@@ -24,7 +24,7 @@ class AssertComponent
         $gen = $pipeline->process($items);
 
         if ($monad) {
-            $monad  = new Component\Monad\Standard($monad, true);
+            $monad  = new Component\Observer\SideEffect($monad, true);
             $gen    = $monad->process($gen);
         }
         $result = $e = null;

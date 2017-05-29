@@ -5,7 +5,7 @@ namespace Webbhuset\Bifrost\Component\Flow;
 use Webbhuset\Bifrost\BifrostException;
 use Webbhuset\Bifrost\Component\ComponentInterface;
 use Webbhuset\Bifrost\Component\Flow\Pipeline;
-use Webbhuset\Bifrost\Component\Monad\AppendContext;
+use Webbhuset\Bifrost\Component\Observer\AppendContext;
 use Webbhuset\Bifrost\Data\ActionData\ActionDataInterface;
 use Webbhuset\Bifrost\Data\ActionData\EventData;
 use Webbhuset\Bifrost\Data\ActionData\ErrorData;

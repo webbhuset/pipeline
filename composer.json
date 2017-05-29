@@ -5,7 +5,7 @@
     "description": "A bridge between worlds.",
     "require": {
         "php": "^5.4.0 || ^7.0",
-        "salsify/json-streaming-parser": "dev-master"
+        "salsify/json-streaming-parser": "7.*"
     },
     "require-dev": {
         "webbhuset/test": "dev-master"
@@ -21,7 +21,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Webbhuset\\Bifrost\\Test\\": "tests/core/"
+            "Webbhuset\\Bifrost\\Test\\": "tests/"
         }
     },
     "repositories": [

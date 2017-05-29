@@ -45,132 +45,106 @@ class TypeConstructor
         return [self::ARG_KEY_NOTMATCH => $arg];
     }
 
-    public static function Any()
+    public static function Any(...$args)
     {
-        $args       = func_get_args();
         $className  = __NAMESPACE__.'\AnyType';
-        $refClass   = new ReflectionClass($className);
-        $typeObject = $refClass->newInstanceArgs($args);
+        $typeObject = new $className(...$args);
 
         return $typeObject;
     }
 
-    public static function Bool()
+    public static function Bool(...$args)
     {
-        $args       = func_get_args();
         $className  = __NAMESPACE__.'\BoolType';
-        $refClass   = new ReflectionClass($className);
-        $typeObject = $refClass->newInstanceArgs($args);
+        $typeObject = new $className(...$args);
 
         return $typeObject;
     }
 
-    public static function Datetime()
+    public static function Datetime(...$args)
     {
-        $args       = func_get_args();
         $className  = __NAMESPACE__.'\StringType\\DatetimeType';
-        $refClass   = new ReflectionClass($className);
-        $typeObject = $refClass->newInstanceArgs($args);
+        $typeObject = new $className(...$args);
 
         return $typeObject;
     }
 
-    public static function Decimal()
+    public static function Decimal(...$args)
     {
-        $args       = func_get_args();
         $className  = __NAMESPACE__.'\FloatType\\DecimalType';
-        $refClass   = new ReflectionClass($className);
-        $typeObject = $refClass->newInstanceArgs($args);
+        $typeObject = new $className(...$args);
 
         return $typeObject;
     }
 
-    public static function Enum()
+    public static function Enum(...$args)
     {
-        $args       = func_get_args();
         $className  = __NAMESPACE__.'\EnumType';
-        $refClass   = new ReflectionClass($className);
-        $typeObject = $refClass->newInstanceArgs($args);
+        $typeObject = new $className(...$args);
 
         return $typeObject;
     }
 
-    public static function Float()
+    public static function Float(...$args)
     {
-        $args       = func_get_args();
         $className  = __NAMESPACE__.'\FloatType';
-        $refClass   = new ReflectionClass($className);
-        $typeObject = $refClass->newInstanceArgs($args);
+        $typeObject = new $className(...$args);
 
         return $typeObject;
     }
 
-    public static function Hashmap()
+    public static function Hashmap(...$args)
     {
-        $args       = func_get_args();
         $className  = __NAMESPACE__.'\HashmapType';
-        $refClass   = new ReflectionClass($className);
-        $typeObject = $refClass->newInstanceArgs($args);
+        $typeObject = new $className(...$args);
 
         return $typeObject;
     }
 
-    public static function Int()
+    public static function Int(...$args)
     {
-        $args       = func_get_args();
         $className  = __NAMESPACE__.'\IntType';
-        $refClass   = new ReflectionClass($className);
-        $typeObject = $refClass->newInstanceArgs($args);
+        $typeObject = new $className(...$args);
 
         return $typeObject;
     }
 
-    public static function Scalar()
+    public static function Scalar(...$args)
     {
-        $args       = func_get_args();
         $className  = __NAMESPACE__.'\ScalarType';
-        $refClass   = new ReflectionClass($className);
-        $typeObject = $refClass->newInstanceArgs($args);
+        $typeObject = new $className(...$args);
 
         return $typeObject;
     }
 
-    public static function Set()
+    public static function Set(...$args)
     {
-        $args       = func_get_args();
         $className  = __NAMESPACE__.'\SetType';
-        $refClass   = new ReflectionClass($className);
-        $typeObject = $refClass->newInstanceArgs($args);
+        $typeObject = new $className(...$args);
 
         return $typeObject;
     }
 
-    public static function String()
+    public static function String(...$args)
     {
-        $args       = func_get_args();
         $className  = __NAMESPACE__.'\StringType';
-        $refClass   = new ReflectionClass($className);
-        $typeObject = $refClass->newInstanceArgs($args);
+        $typeObject = new $className(...$args);
 
         return $typeObject;
     }
 
-    public static function Struct()
+    public static function Struct(...$args)
     {
-        $args       = func_get_args();
         $className  = __NAMESPACE__.'\StructType';
-        $refClass   = new ReflectionClass($className);
-        $typeObject = $refClass->newInstanceArgs($args);
+        $typeObject = new $className(...$args);
 
         return $typeObject;
     }
 
-    public static function Union()
+    public static function Union(...$args)
     {
-        $args       = func_get_args();
         $className  = __NAMESPACE__.'\UnionType';
-        $refClass   = new ReflectionClass($className);
-        $typeObject = $refClass->newInstanceArgs($args);
+        $typeObject = new $className(...$args);
 
         return $typeObject;
     }

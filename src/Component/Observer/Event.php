@@ -1,12 +1,12 @@
 <?php
 
-namespace Webbhuset\Bifrost\Component\Monad;
+namespace Webbhuset\Bifrost\Component\Observer;
 
 use Webbhuset\Bifrost\BifrostException;
 use Webbhuset\Bifrost\Component\ComponentInterface;
 use Webbhuset\Bifrost\Data\ActionData\EventData;
 
-class Observer implements ComponentInterface
+class Event implements ComponentInterface
 {
     protected $events;
 

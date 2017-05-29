@@ -1,6 +1,6 @@
 <?php
 
-namespace Webbhuset\Bifrost\Component\Monad;
+namespace Webbhuset\Bifrost\Component\Observer;
 
 use Webbhuset\Bifrost\Component\ComponentInterface;
 use Webbhuset\Bifrost\Data\ActionData\EventData;

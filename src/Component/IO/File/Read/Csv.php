@@ -14,7 +14,7 @@ class Csv implements ComponentInterface
     protected $trimHeaders  = true;
     protected $columnCount  = false;
 
-    public function __construct(array $params)
+    public function __construct(array $params = [])
     {
         if (isset($params['separator'])) {
             $this->separator = $params['separator'];

@@ -7,7 +7,6 @@ use Webbhuset\Bifrost\Data\ActionData\ActionDataInterface;
 use Generator;
 use Webbhuset\Bifrost\BifrostException;
 use Webbhuset\Bifrost\Helper\ReflectionHelper;
-use Webbhuset\Bifrost\Monad\Action;
 
 class Expand implements ComponentInterface
 {
