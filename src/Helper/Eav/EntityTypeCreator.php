@@ -15,7 +15,7 @@ class EntityTypeCreator
             $fields[$code]  = $type;
         }
 
-        $structType = new Type\StructType(['fields' => $fields]);
+        $structType = new Type\StructType($fields);
 
         return $structType;
     }

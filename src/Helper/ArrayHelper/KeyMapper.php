@@ -17,10 +17,10 @@ class KeyMapper
         $children   = [],
         $wildcard   = '*'
     ) {
-        $mapType = new Type\HashmapType([
-            'key_type'      => new Type\ScalarType(),
-            'value_type'    => new Type\ScalarType(),
-        ]);
+        $mapType = new Type\HashmapType(
+            new Type\ScalarType(),
+            new Type\ScalarType()
+        );
 
         $errors = $mapType->getErrors($map);
 
