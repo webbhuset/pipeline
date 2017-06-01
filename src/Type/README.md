@@ -29,7 +29,7 @@ use Webbhuset\Bifrost\Type\TypeConstructor AS T;
 $languagesType  = T::Enum(['en', 'sv', 'es']);
 $currencyType   = T::Enum(['USD', 'SEK', 'EUR']);
 
-$productType = T::Struct(
+$productType = T::Struct([
     'name' => T::Hashmap(
         $languagesType,
         T::String(
@@ -56,7 +56,7 @@ $productType = T::Struct(
     ),
     'color' => T::Enum(['White', 'Blue', 'Green']), // Option Attribute
     'size'  => T::Set(T::Enum(['S', 'M', 'L'])),    // Multiselect Attribute
-);
+]);
 
 $product = [
     'name' => [
