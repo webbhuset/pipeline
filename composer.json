@@ -1,11 +1,11 @@
 {
-    "name": "webbhuset/bifrost",
+    "name": "webbhuset/whaskell",
     "type": "library",
     "license": "proprietary",
-    "description": "A bridge between worlds.",
+    "description": "A library of data-manipulation functions.",
     "require": {
         "php": "^5.4.0 || ^7.0",
-        "salsify/json-streaming-parser": "7.*"
+        "salsify/json-streaming-parser": "^7.0"
     },
     "require-dev": {
         "webbhuset/test": "dev-master"
@@ -16,26 +16,18 @@
     },
     "autoload": {
         "psr-4": {
-            "Webbhuset\\Bifrost\\": "src/"
+            "Webbhuset\\Whaskell\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Webbhuset\\Bifrost\\Test\\": "tests/"
+            "Webbhuset\\Whaskell\\Test\\": "tests/"
         }
     },
     "repositories": [
         {
-            "type": "vcs",
-            "url": "git@gitlab.webbhuset.com:libs/test.git"
-        },
-        {
-            "type": "vcs",
-            "url": "git@github.com:webbhuset/jsonstreamingparser.git"
-        },
-        {
-            "type": "vcs",
-            "url": "git@gitlab.webbhuset.com:libs/bifrost.git"
+            "type": "composer",
+            "url": "https://packages-php.webbhuset.com"
         }
     ]
 }

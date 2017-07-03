@@ -1,1 +1,0 @@
-Checkout the [docs](/doc/README.md) for more info.
