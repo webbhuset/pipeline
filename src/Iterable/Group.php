@@ -2,10 +2,9 @@
 
 namespace Webbhuset\Whaskell\Iterable;
 
-use Generator;
-use Webbhuset\Whaskell\ReflectionHelper;
 use Webbhuset\Whaskell\WhaskellException;
 use Webbhuset\Whaskell\Dispatch\Data\DataInterface;
+use Webbhuset\Whaskell\Args;
 
 class Group
 {
@@ -23,7 +22,12 @@ class Group
             $this->batchSize = $arg;
             $this->callback = [$this, 'checkBatchSize'];
         } elseif (is_callable($arg)) {
-            $this->validateCallback($arg);
+
+            $canBeUsed = Args::canBeUsedWithArgCount($callback, 3, false);
+
+            if ($canBeUsed !== true) {
+                throw new WhaskellException($canBeUsed . ' Eg. function($batch, $item, $finalize)');
+            }
             $this->callback = $arg;
         } else {
             throw new WhaskellException('Group by callback or batchSize.');
@@ -67,32 +71,6 @@ class Group
             }
         } else {
             $this->batch[] = $item;
-        }
-    }
-
-    protected function validateCallback($callback)
-    {
-        $reflection = ReflectionHelper::getReflectionFromCallback($callback);
-
-        if (!$reflection) {
-            throw new WhaskellException('Could not create reflection from callback parameter');
-        }
-
-        $params = $reflection->getParameters();
-
-        if (count($params) < 3) {
-            throw new WhaskellException('The callback requires 3 params. function($batch, $item, $finalize)');
-        }
-        if (count($params) > 3) {
-            foreach ($params as $idx => $param) {
-                if ($idx >= 3) {
-                    continue;
-                }
-                if (!$param->isOptional()) {
-                    $idx += 1;
-                    throw new WhaskellException("Callback function param {$idx} is not optional. All params except the first three has to be optional.");
-                }
-            }
         }
     }
 
