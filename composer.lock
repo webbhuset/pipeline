@@ -1,0 +1,139 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
+    ],
+    "hash": "0d5a334dde99bc82fffa8411ee163e0e",
+    "content-hash": "3301cc2198ec0924193db0641731b0d3",
+    "packages": [
+        {
+            "name": "salsify/json-streaming-parser",
+            "version": "v7.0.0",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:webbhuset/jsonstreamingparser.git",
+                "reference": "9b0806e31772831e7803adfd3c607b0f4292a6b5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/webbhuset/jsonstreamingparser/zipball/9b0806e31772831e7803adfd3c607b0f4292a6b5",
+                "reference": "9b0806e31772831e7803adfd3c607b0f4292a6b5",
+                "shasum": ""
+            },
+            "require": {
+                "ext-mbstring": "*",
+                "php": "^5.4 | ^7.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "JsonStreamingParser\\": "src",
+                    "JsonStreamingParser\\Test\\": "tests"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Rob Gonzalez",
+                    "email": "rob@salsify.com",
+                    "homepage": "http://salsify.com/"
+                },
+                {
+                    "name": "Maxim Gnatenko",
+                    "email": "mgnatenko@gmail.com"
+                },
+                {
+                    "name": "Max Grigorian",
+                    "email": "maxakawizard@gmail.com",
+                    "homepage": "http://wizardcat.com/"
+                }
+            ],
+            "description": "A streaming parser for JSON in PHP.",
+            "homepage": "https://github.com/salsify/jsonstreamingparser",
+            "keywords": [
+                "json",
+                "parser",
+                "streaming"
+            ],
+            "time": "2016-10-10 07:33:01"
+        },
+        {
+            "name": "webbhuset/data",
+            "version": "v0.1.0",
+            "source": {
+                "type": "git",
+                "url": "git@gitlab.webbhuset.com:libs/data.git",
+                "reference": "6e68aa85056ceaf1796ed84dedc46686f2423117"
+            },
+            "require": {
+                "php": "^5.4.0 || ^7.0"
+            },
+            "require-dev": {
+                "webbhuset/test": "dev-master"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Webbhuset\\Data\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Webbhuset\\Data\\Test\\": "tests/"
+                }
+            },
+            "license": [
+                "proprietary"
+            ],
+            "description": "A library for data handling and validation.",
+            "time": "2017-07-03 12:01:25"
+        }
+    ],
+    "packages-dev": [
+        {
+            "name": "webbhuset/test",
+            "version": "v0.0.1",
+            "source": {
+                "type": "git",
+                "url": "git@gitlab.webbhuset.com:libs/test.git",
+                "reference": "4c001f4e570cb96048a961af3e3b69f5c4466b5a"
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Webbhuset\\Test\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Webbhuset\\Test\\Dev\\": "dev/src",
+                    "Webbhuset\\Test\\Dev\\Test\\": "dev/tests",
+                    "Webbhuset\\Test\\Test\\": "tests"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "Test Framework",
+            "time": "2017-07-03 14:01:29"
+        }
+    ],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": {
+        "php": "^5.4.0 || ^7.0"
+    },
+    "platform-dev": []
+}

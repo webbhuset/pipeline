@@ -8,7 +8,7 @@
         "salsify/json-streaming-parser": "^7.0"
     },
     "require-dev": {
-        "webbhuset/test": "dev-master"
+        "webbhuset/test": "*"
     },
     "config": {
         "secure-http": false,
