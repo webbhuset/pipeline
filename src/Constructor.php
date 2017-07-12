@@ -14,20 +14,25 @@ use Webbhuset\Whaskell\Validate;
 class Constructor
 {
     // Convert
-    public static function TableToTree(...$args)
+    public static function TreeToLeaves(...$args)
     {
-        return new Convert\TableToTree(...$args);
+        return new Convert\TreeToLeaves(...$args);
     }
 
-    public static function TreeToTable(...$args)
+    public static function RowsToTree(...$args)
     {
-        return new Convert\TreeToTable(...$args);
+        return new Convert\RowsToTree(...$args);
+    }
+
+    public static function TreeToRows(...$args)
+    {
+        return new Convert\TreeToRows(...$args);
     }
 
     // Dev
     public static function Dahbug(...$args)
     {
-        return new Dev\Dahbug(...$args);
+        return new Dev\Dahbug(debug_backtrace(), ...$args);
     }
 
     public static function Mute(...$args)

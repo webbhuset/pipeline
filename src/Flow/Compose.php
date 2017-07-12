@@ -2,6 +2,7 @@
 
 namespace Webbhuset\Whaskell\Flow;
 
+use Webbhuset\Whaskell\Constructor as F;
 use Webbhuset\Whaskell\WhaskellException;
 
 class Compose
@@ -10,7 +11,9 @@ class Compose
 
     public function __construct(array $functions)
     {
-        $functions = $this->getArrayLeaves($functions);
+        $treeToLeaves = F::TreeToLeaves();
+
+        $functions = iterator_to_array($treeToLeaves($functions));
 
         foreach ($functions as $idx => $function) {
             if ($function === false) {
@@ -37,18 +40,5 @@ class Compose
         }
 
         return $items;
-    }
-
-    protected function getArrayLeaves($array)
-    {
-        return iterator_to_array(
-            new RecursiveIteratorIterator(
-                new RecursiveArrayIterator(
-                    $array,
-                    RecursiveArrayIterator::CHILD_ARRAYS_ONLY
-                )
-            ),
-            false
-        );
     }
 }

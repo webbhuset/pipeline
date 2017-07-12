@@ -11,12 +11,12 @@ class Dahbug
     protected $log;
     protected $backtrace;
 
-    public function __construct($label = 'dump', $events = false, $log = true)
+    public function __construct(array $backtrace = null, $label = 'dump', $events = false, $log = true)
     {
         $this->events       = $events;
         $this->label        = $label;
         $this->log          = $log;
-        $this->backtrace    = debug_backtrace();
+        $this->backtrace    = $backtrace ?: debug_backtrace();
     }
 
     public function __invoke($items)

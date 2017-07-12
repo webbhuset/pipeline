@@ -17,13 +17,15 @@ class Merge
 
     public function __invoke($items, $finalize = true)
     {
+        $function = $this->function;
+
         foreach ($items as $item) {
             if ($item instanceof DataInterface) {
                 yield $item;
                 continue;
             }
             $this->batch    = array_merge($this->batch, [$item]);
-            $newItems       = $this->function([$item], false);
+            $newItems       = $function([$item], false);
             $idx            = 0;
             foreach ($newItems as $newItem) {
                 if ($newItem instanceof DataInterface) {
@@ -41,7 +43,7 @@ class Merge
 
         if ($finalize && count($this->batch)) {
             $this->batch    = array_values($this->batch);
-            $newItems       = $this->function([], true);
+            $newItems       = $function([], true);
             $idx            = 0;
             foreach ($newItems as $newItem) {
                 if ($newItem instanceof DataInterface) {

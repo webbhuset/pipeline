@@ -1,11 +1,11 @@
 <?php
 
-namespace Webbhuset\Whaskell\Db;
+namespace Webbhuset\Whaskell\Convert;
 
 use Webbhuset\Whaskell\Dispatch\Data\DataInterface;
 use Webbhuset\Whaskell\WhaskellException;
 
-class TableToTree
+class RowsToTree
 {
     protected $dimensions;
 

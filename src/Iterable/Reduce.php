@@ -14,10 +14,10 @@ class Reduce
 
     public function __construct($callback, $initialValue)
     {
-        $canBeUsed = Args::canBeUsedWithArgCount($callback, 3, false);
+        $canBeUsed = Args::canBeUsedWithArgCount($callback, 2, false);
 
         if ($canBeUsed !== true) {
-            throw new WhaskellException($canBeUsed . ' Eg. function($carry, $item, $isDone)');
+            throw new WhaskellException($canBeUsed . ' Eg. function($carry, $item)');
         }
 
         $this->callback     = $callback;
