@@ -1,6 +1,6 @@
 <?php
 
-namespace Webbhuset\Bifrost\Test\UnitTest\Component\IO\File\Read;
+namespace Webbhuset\Whaskell\Test\UnitTest\IO\File\Read;
 
 class JsonTest
 {

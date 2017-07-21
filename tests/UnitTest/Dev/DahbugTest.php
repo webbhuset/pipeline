@@ -1,5 +1,5 @@
 <?php
-namespace Webbhuset\Bifrost\Test\UnitTest\Component\Dev;
+namespace Webbhuset\Whaskell\Test\UnitTest\Dev;
 
 class DahbugTest
 {
@@ -7,7 +7,7 @@ class DahbugTest
     {
     }
 
-    public static function processTest($test)
+    public static function __invokeTest($test)
     {
     }
 }

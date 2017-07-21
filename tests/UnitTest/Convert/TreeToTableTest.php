@@ -1,6 +1,6 @@
 <?php
 
-namespace Webbhuset\Bifrost\Test\UnitTest\Component\Db;
+namespace Webbhuset\Whaskell\Test\UnitTest\Db;
 
 class TreeToTableTest
 {
@@ -10,16 +10,16 @@ class TreeToTableTest
         $dimensions = ['col1'];
         $static     = ['col1' => 1];
         $test->testThatArgs($columns, $dimensions, $static)
-            ->throws('Webbhuset\\Bifrost\\Core\\BifrostException');
+            ->throws('Webbhuset\\Whaskell\\\WhaskellException');
 
         $columns    = ['col2'];
         $dimensions = ['col1'];
         $static     = ['col1' => 1];
         $test->testThatArgs($columns, $dimensions, $static)
-            ->throws('Webbhuset\\Bifrost\\Core\\BifrostException');
+            ->throws('Webbhuset\\Whaskell\\\WhaskellException');
     }
 
-    public static function processTest($test)
+    public static function __invokeTest($test)
     {
         /**
          * @testCase Tree values and static values can be combined.

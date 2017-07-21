@@ -1,6 +1,6 @@
 <?php
 
-namespace Webbhuset\Bifrost\Test\UnitTest\Component\IO\File\Read;
+namespace Webbhuset\Whaskell\Test\UnitTest\IO\File\Read;
 
 class XmlTest
 {
@@ -8,10 +8,10 @@ class XmlTest
     {
     }
 
-    public static function processTest($test)
+    public static function __invokeTest($test)
     {
         $test->newInstance('products/simple')
-            ->testThatArgs(__DIR__ . '/example.xml')
+            ->testThatArgs([__DIR__ . '/example.xml'])
             ->returnsGenerator()
             ->returnsStrictValue([
                 [
@@ -77,7 +77,7 @@ class XmlTest
             ]);
 
         $test->newInstance('products/configurable')
-            ->testThatArgs(__DIR__ . '/example.xml')
+            ->testThatArgs([__DIR__ . '/example.xml'])
             ->returnsGenerator()
             ->returnsStrictValue([
                 [

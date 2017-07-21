@@ -1,8 +1,8 @@
 <?php
 
-namespace Webbhuset\Bifrost\Test\UnitTest\Component\Flow;
+namespace Webbhuset\Whaskell\Test\UnitTest\Flow;
 
-use Webbhuset\Bifrost\Component\Iterable;
+use Webbhuset\Whaskell\Iterable;
 
 class MultiplexTest
 {
@@ -10,7 +10,7 @@ class MultiplexTest
     {
     }
 
-    public static function processTest($test)
+    public static function __invokeTest($test)
     {
         $mapA = new Iterable\Map(function($item) {
             return 'a';

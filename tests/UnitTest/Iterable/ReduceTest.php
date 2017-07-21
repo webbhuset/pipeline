@@ -1,20 +1,20 @@
 <?php
 
-namespace Webbhuset\Bifrost\Test\UnitTest\Component\Iterable;
+namespace Webbhuset\Whaskell\Test\UnitTest\Iterable;
 
 class ReduceTest
 {
     public static function __constructTest($test)
     {
         $test
-            ->testThatArgs(123, [])->throws('Webbhuset\\Bifrost\\Core\\BifrostException')
-            ->testThatArgs(__METHOD__, [])->throws('Webbhuset\\Bifrost\\Core\\BifrostException')
-            ->testThatArgs(function($one, $two, $three) {}, [])->throws('Webbhuset\\Bifrost\\Core\\BifrostException')
-            ->testThatArgs(function($one, $two) {}, [])->notThrows('Webbhuset\\Bifrost\\Core\\BifrostException')
+            ->testThatArgs(123, [])->throws('Webbhuset\\Whaskell\\WhaskellException')
+            ->testThatArgs(__METHOD__, [])->throws('Webbhuset\\Whaskell\\WhaskellException')
+            ->testThatArgs(function($one, $two, $three) {}, [])->throws('Webbhuset\\Whaskell\\WhaskellException')
+            ->testThatArgs(function($one, $two) {}, [])->notThrows('Webbhuset\\Whaskell\\WhaskellException')
         ;
     }
 
-    public static function processTest($test)
+    public static function __invokeTest($test)
     {
         $test->newInstance(function($carry, $item) {
             $carry += $item;

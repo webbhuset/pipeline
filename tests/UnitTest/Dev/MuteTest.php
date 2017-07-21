@@ -1,9 +1,9 @@
 <?php
-namespace Webbhuset\Bifrost\Test\UnitTestComponent;
+namespace Webbhuset\Whaskell\Test\UnitTestComponent;
 
 class MuteTest
 {
-    public static function processTest($test)
+    public static function __invokeTest($test)
     {
     }
 }

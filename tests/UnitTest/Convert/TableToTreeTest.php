@@ -1,18 +1,18 @@
 <?php
 
-namespace Webbhuset\Bifrost\Test\UnitTest\Component\Db;
+namespace Webbhuset\Whaskell\Test\UnitTest\Db;
 
-use Webbhuset\Bifrost\Component\Db;
+use Webbhuset\Whaskell\Db;
 
 class TableToTreeTest
 {
     public static function __constructTest($test)
     {
         $test->testThatArgs(['one'])
-            ->throws('Webbhuset\\Bifrost\\Core\\BifrostException');
+            ->throws('Webbhuset\\Whaskell\\\WhaskellException');
     }
 
-    public static function processTest($test)
+    public static function __invokeTest($test)
     {
         /**
          * @testCase The treeToTable and tableToTree components are isomorphic.

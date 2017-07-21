@@ -1,6 +1,6 @@
 <?php
 
-namespace Webbhuset\Bifrost\Test\UnitTest\Component\IO\File\Fetch;
+namespace Webbhuset\Whaskell\Test\UnitTest\IO\File\Fetch;
 
 class DirectoryTest
 {
@@ -8,7 +8,7 @@ class DirectoryTest
     {
     }
 
-    public static function processTest($test)
+    public static function __invokeTest($test)
     {
         $config = [
             'pathname' => true,

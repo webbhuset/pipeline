@@ -1,19 +1,19 @@
 <?php
 
-namespace Webbhuset\Bifrost\Test\UnitTest\Component\Iterable;
+namespace Webbhuset\Whaskell\Test\UnitTest\Iterable;
 
 class GroupTest
 {
     public static function __constructTest($test)
     {
         $test
-            ->testThatArgs(1)->throws('Webbhuset\\Bifrost\\Core\\BifrostException')
-            ->testThatArgs(function(){})->throws('Webbhuset\\Bifrost\\Core\\BifrostException')
-            ->testThatArgs(function($arg, $arg2){})->throws('Webbhuset\\Bifrost\\Core\\BifrostException')
+            ->testThatArgs(1)->throws('Webbhuset\\Whaskell\\WhaskellException')
+            ->testThatArgs(function(){})->throws('Webbhuset\\Whaskell\\WhaskellException')
+            ->testThatArgs(function($arg, $arg2){})->throws('Webbhuset\\Whaskell\\WhaskellException')
         ;
     }
 
-    public static function processTest($test)
+    public static function __invokeTest($test)
     {
         $test->newInstance(2)
             ->testThatArgs([1, 2, 3, 4, 5])

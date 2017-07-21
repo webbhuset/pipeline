@@ -1,6 +1,6 @@
 <?php
 
-namespace Webbhuset\Bifrost\Test\UnitTest\Component\IO\File\Read;
+namespace Webbhuset\Whaskell\Test\UnitTest\IO\File\Read;
 
 class LineTest
 {
@@ -9,7 +9,7 @@ class LineTest
 
     }
 
-    public static function processTest($test)
+    public static function __invokeTest($test)
     {
         $testFile = __DIR__ . '/example-line.txt';
 

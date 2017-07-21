@@ -1,30 +1,23 @@
 <?php
 
-namespace Webbhuset\Bifrost\Test\UnitTest\Component\Iterable;
+namespace Webbhuset\Whaskell\Test\UnitTest\Iterable;
 
 class ExpandTest
 {
     public static function __constructTest($test)
     {
         $test
-            ->testThatArgs(123)->throws('Webbhuset\\Bifrost\\Core\\BifrostException')
-            ->testThatArgs(function(){})->throws('Webbhuset\\Bifrost\\Core\\BifrostException')
-            ->testThatArgs(function($item){})->notThrows('Exception')
-            ->testThatArgs(function($item, $arg){})->throws('Webbhuset\\Bifrost\\Core\\BifrostException')
-            ->testThatArgs(function($item, $arg = 'def'){})->notThrows('Exception')
+            ->testThatArgs(123)->throws('Webbhuset\\Whaskell\\WhaskellException')
+            ->testThatArgs(function(){yield 1;})->throws('Webbhuset\\Whaskell\\WhaskellException')
+            ->testThatArgs(function(){})->throws('Webbhuset\\Whaskell\\WhaskellException')
+            ->testThatArgs(function($item){yield 1;})->notThrows('Exception')
+            ->testThatArgs(function($item, $arg){yield 1;})->throws('Webbhuset\\Whaskell\\WhaskellException')
+            ->testThatArgs(function($item, $arg = 'def'){yield 1;})->notThrows('Exception')
         ;
     }
 
-    public static function processTest($test)
+    public static function __invokeTest($test)
     {
-        $test->newInstance(function($item) {
-            return [];
-        });
-
-        $test->testThatArgs(['a'])
-            ->returnsGenerator()
-            ->throws('Webbhuset\\Bifrost\\Core\\BifrostException');
-
         $test->newInstance(function($skus) {
             foreach ($skus as $sku) {
                 yield ['sku' => $sku];

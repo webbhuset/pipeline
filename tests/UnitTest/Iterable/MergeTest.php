@@ -1,9 +1,9 @@
 <?php
 
-namespace Webbhuset\Bifrost\Test\UnitTest\Component\Iterable;
+namespace Webbhuset\Whaskell\Test\UnitTest\Iterable;
 
-use Webbhuset\Bifrost\Component\Iterable;
-use Webbhuset\Bifrost\Component\Flow;
+use Webbhuset\Whaskell\Iterable;
+use Webbhuset\Whaskell\Flow;
 
 class MergeTest
 {
@@ -12,7 +12,7 @@ class MergeTest
 
     }
 
-    public static function processTest($test)
+    public static function __invokeTest($test)
     {
         /**
          * @testCase Test merge with multiple levels. Simulates default data.
@@ -82,7 +82,7 @@ class MergeTest
 
         $test->testThatArgs($items)
             ->returnsGenerator()
-            ->throws('Webbhuset\\Bifrost\\Core\\BifrostException');
+            ->throws('Webbhuset\\Whaskell\\WhaskellException');
 
         /**
          * @testCase Test with reducer and expander. Simulates filling data from db.
@@ -103,7 +103,7 @@ class MergeTest
             return $rows;
         };
         $test->newInstance(
-            new Flow\Pipeline([
+            new Flow\Compose([
                 new Iterable\Map(function($item) {
                     return $item['sku'];
                 }),

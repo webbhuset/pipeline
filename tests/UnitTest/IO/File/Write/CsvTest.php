@@ -1,6 +1,6 @@
 <?php
 
-namespace Webbhuset\Bifrost\Test\UnitTest\Component\IO\File\Write;
+namespace Webbhuset\Whaskell\Test\UnitTest\IO\File\Write;
 
 class CsvTest
 {
@@ -9,7 +9,7 @@ class CsvTest
 
     }
 
-    public static function processTest($test)
+    public static function __invokeTest($test)
     {
         $testFile   = __DIR__.'/testfile.csv';
         $items      = self::getTestData();

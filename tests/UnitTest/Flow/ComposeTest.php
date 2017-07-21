@@ -1,20 +1,20 @@
 <?php
 
-namespace Webbhuset\Bifrost\Test\UnitTest\Component\Flow;
+namespace Webbhuset\Whaskell\Test\UnitTest\Flow;
 
-use Webbhuset\Bifrost\Component\Iterable;
+use Webbhuset\Whaskell\Iterable;
 
-class PipelineTest
+class ComposeTest
 {
     public static function __constructTest($test)
     {
         $test
-            ->testThatArgs(['apa'])->throws('Webbhuset\\Bifrost\\Core\\BifrostException')
-            ->testThatArgs([new \stdClass])->throws('Webbhuset\\Bifrost\\Core\\BifrostException')
+            ->testThatArgs(['apa'])->throws('Webbhuset\\Whaskell\\WhaskellException')
+            ->testThatArgs([new \stdClass])->throws('Webbhuset\\Whaskell\\WhaskellException')
         ;
     }
 
-    public static function processTest($test)
+    public static function __invokeTest($test)
     {
         $test->newInstance([
             new Iterable\Map(function($item) {

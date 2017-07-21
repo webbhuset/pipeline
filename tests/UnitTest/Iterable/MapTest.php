@@ -1,21 +1,22 @@
 <?php
 
-namespace Webbhuset\Bifrost\Test\UnitTest\Component\Iterable;
+namespace Webbhuset\Whaskell\Test\UnitTest\Iterable;
 
 class MapTest
 {
     public static function __constructTest($test)
     {
+        $e = 'Webbhuset\\Whaskell\\WhaskellException';
         $test
-            ->testThatArgs(123)->throws('Webbhuset\\Bifrost\\Core\\BifrostException')
-            ->testThatArgs(function(){})->throws('Webbhuset\\Bifrost\\Core\\BifrostException')
+            ->testThatArgs(123)->throws($e)
+            ->testThatArgs(function(){})->throws($e)
             ->testThatArgs(function($item){})->notThrows('Exception')
-            ->testThatArgs(function($item, $arg){})->throws('Webbhuset\\Bifrost\\Core\\BifrostException')
+            ->testThatArgs(function($item, $arg){})->throws($e)
             ->testThatArgs(function($item, $arg = 'def'){})->notThrows('Exception')
         ;
     }
 
-    public static function processTest($test)
+    public static function __invokeTest($test)
     {
         $test->newInstance(function($item) {
             return [
@@ -45,13 +46,5 @@ class MapTest
                     'bb' => 4,
                 ],
             ]);
-
-        $test->newInstance(function($item) {
-            yield ['asdf'];
-        });
-
-        $test->testThatArgs([['asdf']])
-            ->returnsGenerator()
-            ->throws('Webbhuset\\Bifrost\\Core\\BifrostException');
     }
 }

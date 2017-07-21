@@ -1,6 +1,6 @@
 <?php
 
-namespace Webbhuset\Bifrost\Test\UnitTest\Component\IO\File;
+namespace Webbhuset\Whaskell\Test\UnitTest\IO\File;
 
 class MoveTest
 {
@@ -11,7 +11,7 @@ class MoveTest
 
     }
 
-    public static function processTest($test)
+    public static function __invokeTest($test)
     {
         if (!file_exists(self::TEST_DIR)) {
             mkdir(self::TEST_DIR);
