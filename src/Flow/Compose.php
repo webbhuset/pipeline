@@ -23,7 +23,7 @@ class Compose
 
             if (!is_callable($function)) {
                 // TODO: toString on $function
-                $class = get_class($function);
+                $class = is_object($function) ? get_class($function) : $function;
                 throw new WhaskellException("Function {$idx} ({$class}) is not callable");
             }
 

@@ -23,7 +23,7 @@ class Group
             $this->callback = [$this, 'checkBatchSize'];
         } elseif (is_callable($arg)) {
 
-            $canBeUsed = Args::canBeUsedWithArgCount($callback, 3, false);
+            $canBeUsed = Args::canBeUsedWithArgCount($arg, 3, false);
 
             if ($canBeUsed !== true) {
                 throw new WhaskellException($canBeUsed . ' Eg. function($batch, $item, $finalize)');
