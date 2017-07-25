@@ -6,8 +6,9 @@ use Webbhuset\Whaskell\WhaskellException;
 
 class Defer
 {
-    protected $allback;
+    protected $callback;
     protected $args = [];
+    protected $function;
 
     public function __construct($callback)
     {
@@ -19,7 +20,11 @@ class Defer
 
     public function __invoke($items, $finalize = true)
     {
-        $function = call_user_func_array($this->callback, $this->args);
+        if (!$this->function) {
+            $this->function = call_user_func_array($this->callback, $this->args);
+        }
+
+        $function = $this->function;
 
         return $function($items, $finalize);
     }
