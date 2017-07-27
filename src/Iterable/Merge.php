@@ -2,36 +2,39 @@
 
 namespace Webbhuset\Whaskell\Iterable;
 
+use Webbhuset\Whaskell\AbstractFunction;
+use Webbhuset\Whaskell\Constructor as F;
+use Webbhuset\Whaskell\FunctionInterface;
+use Webbhuset\Whaskell\Observe\ObserverInterface;
 use Webbhuset\Whaskell\WhaskellException;
-use Webbhuset\Whaskell\Dispatch\Data\DataInterface;
 
-class Merge
+class Merge extends AbstractFunction
 {
     protected $function;
     protected $batch = [];
 
-    public function __construct(Callable $function)
+    public function __construct($function)
     {
+        if (is_array($function)) {
+            $function = F::Compose($function);
+        }
+
+        if (!$function instanceof FunctionInterface) {
+            throw new WhaskellException('Function must implement FunctionInterface');
+        }
+
         $this->function = $function;
     }
 
-    public function __invoke($items, $finalize = true)
+    protected function invoke($items, $finalize = true)
     {
         $function = $this->function;
 
         foreach ($items as $item) {
-            if ($item instanceof DataInterface) {
-                yield $item;
-                continue;
-            }
             $this->batch    = array_merge($this->batch, [$item]);
             $newItems       = $function([$item], false);
             $idx            = 0;
             foreach ($newItems as $newItem) {
-                if ($newItem instanceof DataInterface) {
-                    yield $newItem;
-                    continue;
-                }
                 if (!isset($this->batch[$idx])) {
                     throw new WhaskellException('Merge function items mismatch. Too many items were generated.');
                 }
@@ -46,10 +49,6 @@ class Merge
             $newItems       = $function([], true);
             $idx            = 0;
             foreach ($newItems as $newItem) {
-                if ($newItem instanceof DataInterface) {
-                    yield $newItem;
-                    continue;
-                }
                 if (!isset($this->batch[$idx])) {
                     throw new WhaskellException('Merge function items mismatch. Too many items were generated.');
                 }
@@ -61,6 +60,11 @@ class Merge
                 throw new WhaskellException('Merge function items mismatch. Too few items were generated.');
             }
         }
+    }
+
+    public function registerObserver(ObserverInterface $observer)
+    {
+        $this->function->registerObserver($observer);
     }
 
     protected function merge($a, $b)

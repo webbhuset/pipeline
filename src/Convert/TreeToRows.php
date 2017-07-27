@@ -2,10 +2,10 @@
 
 namespace Webbhuset\Whaskell\Convert;
 
-use Webbhuset\Whaskell\Dispatch\Data\DataInterface;
+use Webbhuset\Whaskell\AbstractFunction;
 use Webbhuset\Whaskell\WhaskellException;
 
-class TreeToRows
+class TreeToRows extends AbstractFunction
 {
     protected $staticRows = [[]];
     protected $columns;
@@ -40,14 +40,9 @@ class TreeToRows
         }
     }
 
-    public function __invoke($items)
+    protected function invoke($items, $finalize = true)
     {
         foreach ($items as $tree) {
-            if ($tree instanceof DataInterface) {
-                yield $tree;
-                continue;
-            }
-
             if (empty($tree)) {
                 $treeGen = [[]];
             } else {

@@ -2,13 +2,11 @@
 
 namespace Webbhuset\Whaskell\IO\File;
 
-use Webbhuset\Whaskell\WhaskellException;
-use Webbhuset\Whaskell\Dispatch\Data\DataInterface;
-use Webbhuset\Whaskell\Dispatch\Data\EventData;
-use Webbhuset\Whaskell\Dispatch\Data\ErrorData;
+use Webbhuset\Whaskell\AbstractFunction;
 use Webbhuset\Whaskell\FunctionSignature;
+use Webbhuset\Whaskell\WhaskellException;
 
-class Move
+class Move extends AbstractFunction
 {
     protected $callback;
     protected $copy = false;
@@ -28,18 +26,14 @@ class Move
         }
     }
 
-    public function __invoke($items)
+    protected function invoke($items, $finalize = true)
     {
         foreach ($items as $item) {
-            if ($item instanceof DataInterface) {
-                yield $item;
-                continue;
-            }
-
             if (!is_string($item)) {
                 $msg = 'Item is not a string.';
-                yield new ErrorData($item, $msg);
-                yield false;
+                $this->error($item, $msg);
+
+                yield $item;
                 continue;
             }
 
@@ -47,8 +41,9 @@ class Move
 
             if (!file_exists($oldPath)) {
                 $msg = "File '{$oldPath}' does not exist.";
-                yield new ErrorData($item, $msg);
-                yield false;
+                $this->error($item, $msg);
+
+                yield $oldPath;
                 continue;
             }
 
@@ -58,35 +53,47 @@ class Move
             if (!is_dir($dir)) {
                 if (is_file($dir)) {
                     $msg = "Could not create directory '{$dir}', file exists with same path.";
-                    yield new ErrorData($item, $msg);
-                    yield false;
+                    $this->error($item, $msg);
+
+                    yield $oldPath;
                     continue;
                 } elseif (!mkdir($dir, 0777, true)) {
                     $msg = "Could not create directory '{$dir}'.";
-                    yield new ErrorData($item, $msg);
-                    yield false;
+                    $this->error($item, $msg);
+
+                    yield $oldPath;
                     continue;
                 }
             }
 
             if (!copy($oldPath, $newPath)) {
                 $msg = "Could not copy '{$oldPath}' to '{$newPath}'.";
-                yield new ErrorData($item, $msg);
-                yield false;
+                $this->error($item, $msg);
+
+                yield $oldPath;
                 continue;
             }
 
 
-            $type = $this->copy ? 'Copied' : 'Moved';
-            $msg = "{$type} '{$oldPath}' to '{$newPath}'.";
-            yield new EventData('info', $msg);
+            if ($this->observer) {
+                $type   = $this->copy ? 'Copied' : 'Moved';
+                $msg    = "{$type} '{$oldPath}' to '{$newPath}'.";
+                $this->observer->observeEvent('info', $newPath, $msg);
+            }
 
             if (!$this->copy && !unlink($oldPath)) {
                 $msg = "Could not unlink '{$oldPath}' after copying.";
-                yield new ErrorData($item, $msg);
+                $this->error($item, $msg);
             }
 
             yield $newPath;
+        }
+    }
+
+    protected function error($item, $msg)
+    {
+        if ($this->observer) {
+            $this->observer->observeError($item, $msg);
         }
     }
 }

@@ -2,11 +2,11 @@
 
 namespace Webbhuset\Whaskell\Iterable;
 
-use Webbhuset\Whaskell\WhaskellException;
-use Webbhuset\Whaskell\Dispatch\Data\DataInterface;
+use Webbhuset\Whaskell\AbstractFunction;
 use Webbhuset\Whaskell\FunctionSignature;
+use Webbhuset\Whaskell\WhaskellException;
 
-class Map
+class Map extends AbstractFunction
 {
     protected $callback;
 
@@ -21,13 +21,9 @@ class Map
         $this->callback = $callback;
     }
 
-    public function __invoke($items)
+    protected function invoke($items, $finalize = true)
     {
         foreach ($items as $item) {
-            if ($item instanceof DataInterface) {
-                yield $item;
-                continue;
-            }
             $results = call_user_func($this->callback, $item);
 
             yield $results;

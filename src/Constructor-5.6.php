@@ -174,4 +174,9 @@ class Constructor
     {
         return new Observe\SideEffect(...$args);
     }
+
+    public static function ObserveException(...$args)
+    {
+        return new Observe\Exception(...$args);
+    }
 }

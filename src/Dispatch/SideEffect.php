@@ -3,17 +3,16 @@
 namespace Webbhuset\Whaskell\Dispatch;
 
 use Generator;
-use Webbhuset\Whaskell\Dispatch\Data\DataInterface;
-use Webbhuset\Whaskell\Dispatch\Data\SideEffectData;
+use Webbhuset\Whaskell\AbstractFunction;
 
-class SideEffect
+class SideEffect extends AbstractFunction
 {
     protected $id;
     protected $bind;
     protected $useCallback = false;
     protected $callback;
 
-    public function __construct($idOrCallable, $id = null)
+    public function __construct($idOrCallable, $idOrBind = null, $bind = null)
     {
         $args   = func_get_args();
         $argOne = array_shift($args);
@@ -22,31 +21,35 @@ class SideEffect
             $this->callback     = $argOne;
             $this->useCallback  = true;
             $id                 = array_shift($args);
+            $bind               = array_shift($args);
         } else {
             $id                 = $argOne;
+            $bind               = array_shift($args);
         }
 
-        $this->id       = $id;
-        $this->bind     = $args;
+        $this->id   = $id;
+        $this->bind = $bind;
     }
 
-    public function __invoke($items, $finalize = true)
+    protected function invoke($items, $finalize = true)
     {
-        foreach ($items as $key => $item) {
-            if ($item instanceof DataInterface) {
+        if (!$this->observer) {
+            foreach ($items as $item) {
                 yield $item;
-                continue;
             }
-            if (!$this->useCallback || call_user_func($this->callback, $item)) {
-                $data = new SideEffectData($this->id, $item, $this->bind);
-                yield $data;
 
-                if ($data->getItem() instanceof Generator) {
-                    foreach ($data->getItem() as $dataItem) {
-                        yield $dataItem;
+            return;
+        }
+
+        foreach ($items as $item) {
+            if (!$this->useCallback || call_user_func($this->callback, $item)) {
+                $return = $this->observer->observeSideEffect($this->id, $item, $this->bind);
+                if ($return instanceof Generator) {
+                    foreach ($return as $returnItem) {
+                        yield $returnItem;
                     }
                 } else {
-                    yield $data->getItem();
+                    yield $return;
                 }
             } else {
                 yield $item;

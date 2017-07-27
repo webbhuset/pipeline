@@ -311,7 +311,7 @@ class Product
         usort($this->sizes, $scramble('sizes'));
     }
 
-    public function __invoke($count)
+    protected function invoke($count)
     {
         if (is_array($count)) {
             $count = reset($count);

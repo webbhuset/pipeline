@@ -2,11 +2,11 @@
 
 namespace Webbhuset\Whaskell\Iterable;
 
-use Webbhuset\Whaskell\Dispatch\Data\DataInterface;
-use Webbhuset\Whaskell\WhaskellException;
+use Webbhuset\Whaskell\AbstractFunction;
 use Webbhuset\Whaskell\FunctionSignature;
+use Webbhuset\Whaskell\WhaskellException;
 
-class Expand
+class Expand extends AbstractFunction
 {
     protected $callback;
 
@@ -21,13 +21,9 @@ class Expand
         $this->callback = $callback;
     }
 
-    public function __invoke($items)
+    protected function invoke($items, $finalize = true)
     {
         foreach ($items as $item) {
-            if ($item instanceof DataInterface) {
-                yield $item;
-                continue;
-            }
             $generator = call_user_func($this->callback, $item);
 
             foreach ($generator as $yield) {

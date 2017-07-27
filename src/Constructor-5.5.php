@@ -257,4 +257,12 @@ class Constructor
 
         return $reflection->newInstanceArgs($args);
     }
+
+    public static function ObserveException()
+    {
+        $reflection = new ReflectionClass(Observe\Exception::class);
+        $args       = func_get_args();
+
+        return $reflection->newInstanceArgs($args);
+    }
 }

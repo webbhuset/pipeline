@@ -2,11 +2,13 @@
 
 namespace Webbhuset\Whaskell\Flow;
 
-use Webbhuset\Whaskell\WhaskellException;
-use Webbhuset\Whaskell\Dispatch\Data\DataInterface;
+use Webbhuset\Whaskell\AbstractFunction;
+use Webbhuset\Whaskell\FunctionInterface;
 use Webbhuset\Whaskell\FunctionSignature;
+use Webbhuset\Whaskell\Observe\ObserverInterface;
+use Webbhuset\Whaskell\WhaskellException;
 
-class Multiplex
+class Multiplex extends AbstractFunction
 {
     protected $conditionCallback;
     protected $functions;
@@ -33,10 +35,10 @@ class Multiplex
                 continue;
             }
 
-            if (!is_callable($function)) {
+            if (!$function instanceof FunctionInterface) {
                 // TODO: toString on $function
-                $class = get_class($cfunction);
-                throw new WhaskellException("Function {$idx} ({$class}) is not callable");
+                $class = get_class($function);
+                throw new WhaskellException("Function {$idx} ({$class}) does not implement FunctionInterface.");
             }
 
             // TODO: Validate callable.
@@ -46,14 +48,9 @@ class Multiplex
         $this->functions            = $functions;
     }
 
-    public function __invoke($items, $finalize = true)
+    protected function invoke($items, $finalize = true)
     {
         foreach ($items as $item) {
-            if ($item instanceof DataInterface) {
-                yield $item;
-                continue;
-            }
-
             $key = call_user_func($this->conditionCallback, $item);
 
             if (isset($this->functions[$key])) {
@@ -72,6 +69,13 @@ class Multiplex
                     yield $result;
                 }
             }
+        }
+    }
+
+    public function registerObserver(ObserverInterface $observer)
+    {
+        foreach ($this->functions as $function) {
+            $function->registerObserver($observer);
         }
     }
 }

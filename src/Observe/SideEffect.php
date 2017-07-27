@@ -3,15 +3,16 @@
 namespace Webbhuset\Whaskell\Observe;
 
 use Webbhuset\Whaskell\WhaskellException;
-use Webbhuset\Whaskell\Dispatch\Data\SideEffectData;
 
-class SideEffect
+class SideEffect extends AbstractObserver
 {
+    protected $function;
     protected $actions;
-    protected $passthru;
 
-    public function __construct($actions, $passthru = false)
+    public function __construct($function, $actions)
     {
+        parent::__construct($function);
+
         if (is_array($actions)) {
             foreach ($actions as $name => $action) {
                 if (!is_callable($action)) {
@@ -19,27 +20,22 @@ class SideEffect
                 }
             }
         }
-        $this->passthru = $passthru;
-        $this->actions  = $actions;
+
+        $this->actions = $actions;
     }
 
-    public function __invoke($items, $finalize = true)
+    public function observeSideEffect($name, $item, $data)
     {
-        foreach ($items as $item) {
-            if ($item instanceof SideEffectData) {
-                $action = $this->getAction($item->getName());
-                if ($action) {
-                    $result = call_user_func_array($action, array_merge([$item->getItem()], $item->getData()));
-                    if ($result) {
-                        $item->setItem($result);
-                    }
-                    if (!$this->passthru) {
-                        continue;
-                    }
-                }
-            }
-            yield $item;
+        $function = $this->getAction($name);
+        if ($function) {
+            $item = $function($item, $data);
         }
+
+        if (isset($this->observer)) {
+            $item = $this->observer->observeSideEffect($name, $item, $data);
+        }
+
+        return $item;
     }
 
     protected function getAction($name)
@@ -54,5 +50,7 @@ class SideEffect
                 return $method;
             }
         }
+
+        return false;
     }
 }

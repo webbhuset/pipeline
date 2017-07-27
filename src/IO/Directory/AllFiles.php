@@ -2,14 +2,13 @@
 
 namespace Webbhuset\Whaskell\IO\Directory;
 
-use Webbhuset\Whaskell\WhaskellException;
-use Webbhuset\Whaskell\Dispatch\Data\DataInterface;
-use Webbhuset\Whaskell\Dispatch\Data\ErrorData;
 use DirectoryIterator;
 use RecursiveIteratorIterator;
 use RecursiveDirectoryIterator;
+use Webbhuset\Whaskell\AbstractFunction;
+use Webbhuset\Whaskell\WhaskellException;
 
-class AllFiles
+class AllFiles extends AbstractFunction
 {
     protected $recursive        = false;
     protected $onlyFiles        = true;
@@ -32,17 +31,15 @@ class AllFiles
         }
     }
 
-    public function __invoke($items)
+    protected function invoke($items, $finalize = true)
     {
         foreach ($items as $item) {
-            if ($item instanceof DataInterface) {
-                yield $item;
-                continue;
-            }
-
             if (!is_dir($item)) {
                 $msg = "Directory '{$item}' does not exist.";
-                yield new ErrorData($item, $msg);
+                if ($this->observer) {
+                    $this->observer->observeError($item, $msg);
+                }
+
                 continue;
             }
             $iterator = $this->getIterator($item);

@@ -2,24 +2,15 @@
 
 namespace Webbhuset\Whaskell\Dev;
 
-use Webbhuset\Whaskell\Dispatch\Data\DataInterface;
+use Webbhuset\Whaskell\AbstractFunction;
 
-class Export
+class Export extends AbstractFunction
 {
-    public function __invoke($items)
+    protected function invoke($items, $finalize = true)
     {
         foreach ($items as $item) {
-            if ($item instanceof DataInterface) {
-                yield $item;
-                continue;
-            }
             echo var_export($item) . ",\n";
             yield $item;
         }
-    }
-
-    public function finalize($items = [])
-    {
-        return $items;
     }
 }

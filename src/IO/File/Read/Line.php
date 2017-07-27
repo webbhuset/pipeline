@@ -2,11 +2,10 @@
 
 namespace Webbhuset\Whaskell\IO\File\Read;
 
+use Webbhuset\Whaskell\AbstractFunction;
 use Webbhuset\Whaskell\WhaskellException;
-use Webbhuset\Whaskell\Dispatch\Data\DataInterface;
-use Webbhuset\Whaskell\Dispatch\Data\ErrorData;
 
-class Line
+class Line extends AbstractFunction
 {
     protected $ignoreEmpty = true;
 
@@ -17,17 +16,15 @@ class Line
         }
     }
 
-    public function __invoke($files)
+    protected function invoke($files, $finalize = true)
     {
         foreach ($files as $key => $filename) {
-            if ($filename instanceof DataInterface) {
-                yield $filename;
-                continue;
-            }
-
             if (!is_file($filename)) {
                 $msg = "File not found '{$filename}'.";
-                yield new ErrorData($filename, $msg);
+                if ($this->observer) {
+                    $this->observer->observeError($filename, $error);
+                }
+
                 continue;
             }
 

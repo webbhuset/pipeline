@@ -3,14 +3,15 @@
 namespace Webbhuset\Whaskell\Observe;
 
 use Webbhuset\Whaskell\WhaskellException;
-use Webbhuset\Whaskell\Dispatch\Data\EventData;
 
-class Event
+class Event extends AbstractObserver
 {
     protected $events;
 
-    public function __construct(array $events)
+    public function __construct($function, array $events)
     {
+        parent::__construct($function);
+
         foreach ($events as $name => $observers) {
             foreach ($observers as $observer) {
                 if (!is_callable($observer)) {
@@ -22,23 +23,26 @@ class Event
         $this->events = $events;
     }
 
-    public function __invoke($items, $finalize = true)
+    public function observeEvent($name, $item, $data, $contexts = [])
     {
-        foreach ($items as $item) {
-            if ($item instanceof EventData) {
-                $name       = $item->getName();
-                $observers  = $this->getObservers($name);
-                if ($observers) {
-                    foreach ($observers as $observer) {
-                        call_user_func($observer, $item->getItem(), $item->getData(), $item->getContexts());
-                    }
-                }
+        $functions = $this->getEventFunctions($name);
+        if ($functions) {
+            foreach ($functions as $function) {
+                $function($item, $data, $contexts);
             }
-            yield $item;
+        }
+
+        if ($this->observer) {
+            $this->observer->observeEvent($name, $item, $data, $contexts);
         }
     }
 
-    protected function getObservers($name)
+    public function observeError($item, $data, $contexts = [])
+    {
+        $this->observeEvent('error', $item, $data, $contexts);
+    }
+
+    protected function getEventFunctions($name)
     {
         if (isset($this->events[$name])) {
             return $this->events[$name];

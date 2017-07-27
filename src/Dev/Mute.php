@@ -2,22 +2,12 @@
 
 namespace Webbhuset\Whaskell\Dev;
 
-use Webbhuset\Whaskell\Dispatch\Data\DataInterface;
+use Webbhuset\Whaskell\AbstractFunction;
 
-class Mute
+class Mute extends AbstractFunction
 {
-    protected $muteActions;
-
-    public function __construct($muteActions = false) {
-        $this->muteActions = $muteActions;
-    }
-
-    public function __invoke($items)
+    protected function invoke($items, $finalize = true)
     {
-        foreach ($items as $item) {
-            if ($item instanceof DataInterface && !$this->muteActions) {
-                yield $item;
-            }
-        }
+        return [];
     }
 }

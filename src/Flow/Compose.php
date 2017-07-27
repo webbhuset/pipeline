@@ -2,10 +2,13 @@
 
 namespace Webbhuset\Whaskell\Flow;
 
+use Webbhuset\Whaskell\AbstractFunction;
 use Webbhuset\Whaskell\Constructor as F;
+use Webbhuset\Whaskell\FunctionInterface;
+use Webbhuset\Whaskell\Observe\ObserverInterface;
 use Webbhuset\Whaskell\WhaskellException;
 
-class Compose
+class Compose extends AbstractFunction
 {
     protected $functions;
 
@@ -21,10 +24,10 @@ class Compose
                 continue;
             }
 
-            if (!is_callable($function)) {
+            if (!$function instanceof FunctionInterface) {
                 // TODO: toString on $function
                 $class = is_object($function) ? get_class($function) : $function;
-                throw new WhaskellException("Function {$idx} ({$class}) is not callable");
+                throw new WhaskellException("Function {$idx} ({$class}) does not implement FunctionInterface.");
             }
         }
 
@@ -42,13 +45,20 @@ class Compose
         $this->functions = $flattenedFunctions;
     }
 
-    public function __invoke($items, $finalize = true)
+    protected function invoke($items, $finalize = true)
     {
         foreach ($this->functions as $function) {
             $items = $function($items, $finalize);
         }
 
         return $items;
+    }
+
+    public function registerObserver(ObserverInterface $observer)
+    {
+        foreach ($this->functions as $function) {
+            $function->registerObserver($observer);
+        }
     }
 
     public function getFunctions()

@@ -2,11 +2,11 @@
 
 namespace Webbhuset\Whaskell\Iterable;
 
-use Webbhuset\Whaskell\WhaskellException;
-use Webbhuset\Whaskell\Dispatch\Data\DataInterface;
+use Webbhuset\Whaskell\AbstractFunction;
 use Webbhuset\Whaskell\FunctionSignature;
+use Webbhuset\Whaskell\WhaskellException;
 
-class Reduce
+class Reduce extends AbstractFunction
 {
     protected $callback;
     protected $initialValue;
@@ -25,15 +25,11 @@ class Reduce
         $this->carry        = $initialValue;
     }
 
-    public function __invoke($items, $finalize = true)
+    protected function invoke($items, $finalize = true)
     {
         $newItems = [];
 
         foreach ($items as $item) {
-            if ($item instanceof DataInterface) {
-                yield $item;
-                continue;
-            }
             $this->carry = call_user_func_array($this->callback, [$this->carry, $item]);
         }
 

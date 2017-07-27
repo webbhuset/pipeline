@@ -2,11 +2,10 @@
 
 namespace Webbhuset\Whaskell\IO\File\Write;
 
+use Webbhuset\Whaskell\AbstractFunction;
 use Webbhuset\Whaskell\WhaskellException;
-use Webbhuset\Whaskell\Dispatch\Data\DataInterface;
-use Webbhuset\Whaskell\Dispatch\Data\ErrorData;
 
-class Xml
+class Xml extends AbstractFunction
 {
     protected $filename;
     protected $xml;
@@ -67,14 +66,9 @@ class Xml
      *
      * @return \Generator
      */
-    public function __invoke($items, $finalize = true)
+    protected function invoke($items, $finalize = true)
     {
         foreach ($items as $item) {
-            if ($item instanceof DataInterface) {
-                yield $item;
-                continue;
-            }
-
             foreach ($item as $name => $data) {
                 if ($name == $this->attributesKey) {
                     continue;

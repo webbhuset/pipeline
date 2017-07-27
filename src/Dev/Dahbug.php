@@ -2,30 +2,24 @@
 
 namespace Webbhuset\Whaskell\Dev;
 
-use Webbhuset\Whaskell\Dispatch\Data\DataInterface;
+use Webbhuset\Whaskell\AbstractFunction;
 
-class Dahbug
+class Dahbug extends AbstractFunction
 {
-    protected $events;
     protected $label;
     protected $log;
     protected $backtrace;
 
-    public function __construct(array $backtrace = null, $label = 'dump', $events = false, $log = true)
+    public function __construct(array $backtrace = null, $label = 'dump', $log = true)
     {
-        $this->events       = $events;
         $this->label        = $label;
         $this->log          = $log;
         $this->backtrace    = $backtrace ?: debug_backtrace();
     }
 
-    public function __invoke($items)
+    protected function invoke($items, $finalize = true)
     {
         foreach ($items as $item) {
-            if ($item instanceof DataInterface && !$this->events) {
-                yield $item;
-                continue;
-            }
             if ($this->log) {
                 LocalDahbug::dumpWithBacktrace($this->backtrace, $item, $this->label, 10);
             }

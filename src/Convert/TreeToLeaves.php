@@ -4,10 +4,12 @@ namespace Webbhuset\Whaskell\Convert;
 
 use RecursiveArrayIterator;
 use RecursiveIteratorIterator;
+use Webbhuset\Whaskell\AbstractFunction;
 
-class TreeToLeaves
+class TreeToLeaves extends AbstractFunction
 {
-    public function __invoke($tree) {
+    protected function invoke($tree, $finalize = true)
+    {
         $it = new RecursiveIteratorIterator(
             new RecursiveArrayIterator(
                 $tree,

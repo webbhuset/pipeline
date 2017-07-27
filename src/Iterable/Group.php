@@ -2,11 +2,11 @@
 
 namespace Webbhuset\Whaskell\Iterable;
 
-use Webbhuset\Whaskell\WhaskellException;
-use Webbhuset\Whaskell\Dispatch\Data\DataInterface;
+use Webbhuset\Whaskell\AbstractFunction;
 use Webbhuset\Whaskell\FunctionSignature;
+use Webbhuset\Whaskell\WhaskellException;
 
-class Group
+class Group extends AbstractFunction
 {
     protected $callback;
     protected $batchSize;
@@ -34,13 +34,9 @@ class Group
         }
     }
 
-    public function __invoke($items, $shouldFinalize = true)
+    protected function invoke($items, $shouldFinalize = true)
     {
         foreach ($items as $item) {
-            if ($item instanceof DataInterface) {
-                yield $item;
-                continue;
-            }
             if (empty($this->batch)) {
                 $this->addToBatch($item);
                 continue;

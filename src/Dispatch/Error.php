@@ -2,12 +2,11 @@
 
 namespace Webbhuset\Whaskell\Dispatch;
 
-use Webbhuset\Whaskell\WhaskellException;
-use Webbhuset\Whaskell\Dispatch\Data\DataInterface;
-use Webbhuset\Whaskell\Dispatch\Data\ErrorData;
+use Webbhuset\Whaskell\AbstractFunction;
 use Webbhuset\Whaskell\FunctionSignature;
+use Webbhuset\Whaskell\WhaskellException;
 
-class Error
+class Error extends AbstractFunction
 {
     protected $callback;
 
@@ -22,17 +21,22 @@ class Error
         $this->callback = $callback;
     }
 
-    public function __invoke($items, $finalize = true)
+    protected function invoke($items, $finalize = true)
     {
-        foreach ($items as $item) {
-            if ($item instanceof DataInterface) {
+        if (!$this->observer) {
+            foreach ($items as $item) {
                 yield $item;
-                continue;
             }
 
+            return;
+        }
+
+        foreach ($items as $item) {
             $result = call_user_func($this->callback, $item);
             if ($result) {
-                yield new ErrorData($item, $result);
+                if ($this->observer) {
+                    $this->observer->observeEvent('error', $item, $result, []);
+                }
             } else {
                 yield $item;
             }

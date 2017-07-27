@@ -2,11 +2,10 @@
 
 namespace Webbhuset\Whaskell\IO\File\Write;
 
+use Webbhuset\Whaskell\AbstractFunction;
 use Webbhuset\Whaskell\WhaskellException;
-use Webbhuset\Whaskell\Dispatch\Data\DataInterface;
-use Webbhuset\Whaskell\Dispatch\Data\ErrorData;
 
-class Line
+class Line extends AbstractFunction
 {
     protected $file;
     protected $filename;
@@ -29,19 +28,16 @@ class Line
         }
     }
 
-    public function __invoke($items)
+    protected function invoke($items, $finalize = true)
     {
         foreach ($items as $item) {
-            if ($item instanceof DataInterface) {
-                yield $item;
-                continue;
-            }
-
             $bytes = fwrite($this->file, "{$item}\n");
 
             if ($bytes === false) {
                 $msg = "Could not write to '{$this->filename}'.";
-                yield new ErrorData($item, $msg);
+                if ($this->observer) {
+                    $this->observer->observeError($item, $msg);
+                }
             }
 
             yield $item;

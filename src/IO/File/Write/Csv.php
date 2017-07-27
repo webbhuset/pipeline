@@ -2,11 +2,10 @@
 
 namespace Webbhuset\Whaskell\IO\File\Write;
 
+use Webbhuset\Whaskell\AbstractFunction;
 use Webbhuset\Whaskell\WhaskellException;
-use Webbhuset\Whaskell\Dispatch\Data\DataInterface;
-use Webbhuset\Whaskell\Dispatch\Data\ErrorData;
 
-class Csv
+class Csv extends AbstractFunction
 {
     protected $separator    = ',';
     protected $enclosure    = '"';
@@ -44,13 +43,9 @@ class Csv
         $this->filename = $target;
     }
 
-    public function __invoke($items, $finalize = true)
+    protected function invoke($items, $finalize = true)
     {
         foreach ($items as $item) {
-            if ($item instanceof DataInterface) {
-                yield $item;
-                continue;
-            }
             if (!$this->headersWritten) {
                 $this->putRow(array_keys($item));
                 $this->headersWritten = true;
@@ -60,7 +55,9 @@ class Csv
 
             if ($bytes == false) {
                 $msg = "Could not write to '{$this->filename}'.";
-                yield new ErrorData($item, $msg);
+                if ($this->observer) {
+                    $this->observe->observeEvent($item, $msg);
+                }
             }
         }
 

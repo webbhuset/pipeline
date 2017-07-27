@@ -2,13 +2,12 @@
 
 namespace Webbhuset\Whaskell\IO\File\Read;
 
-use Webbhuset\Whaskell\WhaskellException;
-use Webbhuset\Whaskell\Dispatch\Data\DataInterface;
-use Webbhuset\Whaskell\Dispatch\Data\ErrorData;
 use JsonStreamingParser\Listener;
 use JsonStreamingParser\Parser;
+use Webbhuset\Whaskell\AbstractFunction;
+use Webbhuset\Whaskell\WhaskellException;
 
-class Json implements Listener
+class Json extends AbstractFunction implements Listener
 {
     /**
      * Depth of items in json file.
@@ -67,16 +66,15 @@ class Json implements Listener
         }
     }
 
-    public function __invoke($files)
+    protected function invoke($files, $finalize = true)
     {
         foreach ($files as $filename) {
-            if ($filename instanceof DataInterface) {
-                yield $filename;
-                continue;
-            }
             if (!is_file($filename)) {
                 $msg = "File not found {$filename}";
-                yield new ErrorData($filename, $msg);
+                if ($this->observer) {
+                    $this->observer->observeError($filename, $msg);
+                }
+
                 continue;
             }
 

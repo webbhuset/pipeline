@@ -2,11 +2,10 @@
 
 namespace Webbhuset\Whaskell\IO\File\Read;
 
+use Webbhuset\Whaskell\AbstractFunction;
 use Webbhuset\Whaskell\WhaskellException;
-use Webbhuset\Whaskell\Dispatch\Data\DataInterface;
-use Webbhuset\Whaskell\Dispatch\Data\ErrorData;
 
-class Csv
+class Csv extends AbstractFunction
 {
     protected $separator    = ',';
     protected $enclosure    = '"';
@@ -29,16 +28,13 @@ class Csv
         }
     }
 
-    public function __invoke($files)
+    protected function invoke($files)
     {
         foreach ($files as $filename) {
-            if ($filename instanceof DataInterface) {
-                yield $filename;
-                continue;
-            }
             if (!is_file($filename)) {
                 $msg = "File not found {$filename}";
-                yield new ErrorData($filename, $msg);
+                $this->error($filename, $msg);
+
                 continue;
             }
 
@@ -49,7 +45,8 @@ class Csv
             if ($this->columnCount) {
                 if (count($headers) != $this->columnCount) {
                     $msg = "Column count mismatch in {$filename}";
-                    yield new ErrorData($filename, $msg);
+                    $this->error($filename, $msg);
+
                     continue;
                 }
             }
@@ -69,7 +66,8 @@ class Csv
                     } else {
                         $msg = "Header-row column missmatch in file {$filename}:{$rowNumber}";
                     }
-                    yield new ErrorData($filename, $msg);
+                    $this->error($filename, $msg);
+
                     continue;
                 }
 
@@ -78,6 +76,13 @@ class Csv
             }
 
             fclose($file);
+        }
+    }
+
+    protected function error($filename, $message)
+    {
+        if ($this->observer) {
+            $this->observer->observeError($filename, $msg);
         }
     }
 

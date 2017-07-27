@@ -2,10 +2,12 @@
 
 namespace Webbhuset\Whaskell\Flow;
 
+use Webbhuset\Whaskell\AbstractFunction;
+use Webbhuset\Whaskell\FunctionInterface;
+use Webbhuset\Whaskell\Observe\ObserverInterface;
 use Webbhuset\Whaskell\WhaskellException;
-use Webbhuset\Whaskell\Dispatch\Data\DataInterface;
 
-class Fork
+class Fork extends AbstractFunction
 {
     protected $functions;
 
@@ -16,25 +18,20 @@ class Fork
                 unset($functions[$idx]);
                 continue;
             }
-            if (!is_callable($function)) {
-                // TODO: toString on $function
 
+            if (!$function instanceof FunctionInterface) {
+                // TODO: toString on $function
                 $class = is_object($function) ? get_class($function) : $function;
-                throw new WhaskellException("Function {$idx} ({$class}) is not callable");
+                throw new WhaskellException("Function {$idx} ({$class}) does not implement FunctionInterface.");
             }
-            // TODO: Validate callable.
         }
+
         $this->functions = $functions;
     }
 
-    public function __invoke($items, $finalize = true)
+    protected function invoke($items, $finalize = true)
     {
         foreach ($items as $item) {
-            if ($item instanceof DataInterface) {
-                yield $item;
-                continue;
-            }
-
             foreach ($this->functions as $function) {
                 $results = $function([$item], false);
                 foreach ($results as $res) {
@@ -50,6 +47,13 @@ class Fork
                     yield $res;
                 }
             }
+        }
+    }
+
+    public function registerObserver(ObserverInterface $observer)
+    {
+        foreach ($this->functions as $function) {
+            $function->registerObserver($observer);
         }
     }
 }

@@ -2,26 +2,30 @@
 
 namespace Webbhuset\Whaskell\Observe;
 
-use Webbhuset\Whaskell\Dispatch\Data\EventData;
-
-class AppendContext
+class AppendContext extends AbstractObserver
 {
     protected $context;
 
-    public function __construct($context)
+    public function __construct($function, $context)
     {
+        parent::__construct($function);
+
         $this->context = $context;
     }
 
-    public function __invoke($items)
+    public function observeEvent($name, $item, $data, $contexts = [])
     {
-        foreach ($items as $item) {
-            if ($item instanceof EventData) {
-                yield $item->appendContext($this->context);
-            } else {
-                yield $item;
-            }
+        if ($this->observer) {
+            $contexts[] = $this->context;
+            $this->observer->observeEvent($name, $item, $data, $contexts);
+        }
+    }
 
+    public function observeError($item, $data, $contexts = [])
+    {
+        if ($this->observer) {
+            $contexts[] = $this->context;
+            $this->observer->observeError($item, $data, $contexts);
         }
     }
 }

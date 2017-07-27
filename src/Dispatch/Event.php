@@ -2,15 +2,15 @@
 
 namespace Webbhuset\Whaskell\Dispatch;
 
-use Webbhuset\Whaskell\Dispatch\Data\DataInterface;
-use Webbhuset\Whaskell\Dispatch\Data\EventData;
+use Webbhuset\Whaskell\AbstractFunction;
 
-class Event
+class Event extends AbstractFunction
 {
     protected $name;
     protected $bind;
     protected $useCallback = false;
     protected $callback;
+    protected $observer;
 
     public function __construct($idOrCallable, $idOrBind = null, $bind = null)
     {
@@ -31,15 +31,22 @@ class Event
         $this->bind = $bind;
     }
 
-    public function __invoke($items)
+    protected function invoke($items, $finalize = true)
     {
-        foreach ($items as $item) {
-            if ($item instanceof DataInterface) {
+        if (!$this->observer) {
+            foreach ($items as $item) {
                 yield $item;
-                continue;
             }
-            if (!$this->useCallback || call_user_func($this->callback, $item)) {
-                yield new EventData($this->name, $item, $this->bind);
+
+            return;
+        }
+
+        foreach ($items as $item) {
+            if (!$this->useCallback || $result = call_user_func($this->callback, $item)) {
+                if (is_bool($result)) {
+                    $result = $item;
+                }
+                $this->observer->observeEvent($this->name, $result, $this->bind);
             }
             yield $item;
         }
