@@ -26,11 +26,20 @@ class Compose
                 $class = is_object($function) ? get_class($function) : $function;
                 throw new WhaskellException("Function {$idx} ({$class}) is not callable");
             }
-
-            // TODO: Validate callable.
         }
 
-        $this->functions = $functions;
+        $flattenedFunctions = [];
+        foreach ($functions as $function) {
+            if ($function instanceof self) {
+                foreach ($function->getFunctions() as $childFunction) {
+                    $flattenedFunctions[] = $childFunction;
+                }
+            } else {
+                $flattenedFunctions[] = $function;
+            }
+        }
+
+        $this->functions = $flattenedFunctions;
     }
 
     public function __invoke($items, $finalize = true)
@@ -40,5 +49,10 @@ class Compose
         }
 
         return $items;
+    }
+
+    public function getFunctions()
+    {
+        return $this->functions;
     }
 }
