@@ -24,13 +24,19 @@ class Csv
             $this->enclosure = $params['enclosure'];
         }
 
+        $writeMode = 'w';
+        if (isset($params['append']) && $params['append'] == true) {
+            $writeMode            = 'a';
+            $this->headersWritten = true;
+        }
+
         $dir = dirname($target);
 
         if (!is_dir($dir)) {
             mkdir($dir, 0777, true);
         }
 
-        $this->file = fopen($target, 'w');
+        $this->file = fopen($target, $writeMode);
 
         if (!$this->file) {
             throw new WhaskellException("Could not open file {$target} for writing.");
