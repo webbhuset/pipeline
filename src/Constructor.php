@@ -115,7 +115,7 @@ class Constructor
 
     public static function WriteLine(...$args)
     {
-        return new IO\File\Write\Json(...$args);
+        return new IO\File\Write\Line(...$args);
     }
 
     public static function MoveFile(...$args)
