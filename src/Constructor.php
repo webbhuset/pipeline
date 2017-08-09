@@ -118,6 +118,11 @@ class Constructor
         return new IO\File\Write\Line(...$args);
     }
 
+    public static function WriteXml(...$args)
+    {
+        return new IO\File\Write\Xml(...$args);
+    }
+
     public static function MoveFile(...$args)
     {
         return new IO\File\Move(...$args);
