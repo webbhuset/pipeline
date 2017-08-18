@@ -8,10 +8,10 @@ use Webbhuset\Whaskell\Dispatch\Data\ErrorData;
 
 class Xml
 {
-    protected $file;
     protected $filename;
     protected $xml;
     protected $intentXml = false;
+    protected $root = 'Root';
 
     protected $attributesKey    = '@attributes';
 
@@ -35,18 +35,28 @@ class Xml
             $this->intentXml = $params['indentXml'];
         }
 
-        $this->file = new \XmlWriter;
-        $file = $this->file->openUri($target);
-        if (!$file) {
-            throw new WhaskellException("Could not open file {$target} for writing.");
+        if (isset($params['root'])) {
+            $this->root = $params['root'];
+        }
+
+        if (!$this->isNameValid($this->root)) {
+            throw new WhaskellException("The XML root tag name {$this->root} is not valid.");
         }
 
         $this->filename = $target;
 
-        $this->xml = new \XMLWriter;
-        $this->xml->openMemory();
-        $this->xml->startDocument('1.0', 'UTF-8');
-        $this->xml->setIndent($this->intentXml);
+        $xml = new \XMLWriter;
+        $file = $xml->openUri($target);
+
+        if (!$file) {
+            throw new WhaskellException("Could not open file {$target} for writing.");
+        }
+
+        $xml->startDocument('1.0', 'UTF-8');
+        $xml->setIndent($this->intentXml);
+        $xml->startElement($this->root);
+
+        $this->xml = $xml;
     }
 
     /**
@@ -59,20 +69,69 @@ class Xml
      */
     public function __invoke($items, $finalize = true)
     {
-        foreach ($items as $name => $item) {
+        foreach ($items as $item) {
             if ($item instanceof DataInterface) {
                 yield $item;
                 continue;
             }
 
-            $this->arrayToXml($name, $item);
+            foreach ($item as $name => $data) {
+                if ($name == $this->attributesKey) {
+                    continue;
+                }
+
+                $this->arrayToXml($name, $data);
+            }
         }
 
         if ($finalize) {
-            $this->file->endDocument();
+            $this->xml->endElement();
+            $this->xml->endDocument();
 
             yield $this->filename;
         }
+    }
+
+    /**
+     * Validates XML tag name.
+     *
+     * @param string $name
+     * @access protected
+     * @return bool
+     */
+    protected function isNameValid($name)
+    {
+        if (!preg_match('/^[\p{L}\._\-\d]+$/u', $name)) {
+            // XML tag name can only contain letters, numbers and punctuation
+            return false;
+        }
+        if (!preg_match('/^\p{L}.*\p{L}$/u', $name)) {
+            // XML tag can not start with non word chars.
+            return false;
+        }
+        if (preg_match('/^xml/i', $name)) {
+            // XML tag can not start with the letters xml
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Validates XML attribute name.
+     *
+     * @param string $name
+     * @access protected
+     * @return bool
+     */
+    protected function isAttributeKeyValid($key)
+    {
+        if (!preg_match('/^\p{L}+$/u', $key)) {
+            // XML tag name can only contain letters, numbers and punctuation
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -89,6 +148,10 @@ class Xml
     {
         $xml = $this->xml;
         if (is_int($name)) {
+            if (!is_array($data)) {
+                $xml->text($data);
+                return;
+            }
             foreach ($data as $key => $value) {
                 $this->arrayToXml($key, $value);
             }
@@ -96,6 +159,9 @@ class Xml
             return;
         }
 
+        if (!$this->isNameValid($name)) {
+            return;
+        }
         $xml->startElement($name);
 
         if ($this->hasChildren($data)) {
@@ -110,8 +176,6 @@ class Xml
         }
 
         $xml->endElement();
-
-        $this->file->writeRaw($xml->outputMemory(true));
     }
 
     /**
@@ -125,6 +189,9 @@ class Xml
         $attributes = isset($data[$this->attributesKey]) ? $data[$this->attributesKey] : [];
 
         foreach ($attributes as $name => $value) {
+            if (!$this->isAttributeKeyValid($name)) {
+                continue;
+            }
             $xml->writeAttribute($name, $value);
         }
     }
