@@ -4,7 +4,7 @@ namespace Webbhuset\Whaskell\Iterable;
 
 use Webbhuset\Whaskell\Dispatch\Data\DataInterface;
 use Webbhuset\Whaskell\WhaskellException;
-use Webbhuset\Whaskell\Args;
+use Webbhuset\Whaskell\FunctionSignature;
 
 class Expand
 {
@@ -12,7 +12,7 @@ class Expand
 
     public function __construct($callback)
     {
-        $canBeUsed = Args::canBeUsedWithArgCount($callback, 1, true);
+        $canBeUsed = FunctionSignature::canBeUsedWithArgCount($callback, 1, true);
 
         if ($canBeUsed !== true) {
             throw new WhaskellException($canBeUsed . ' Eg. function($item)');

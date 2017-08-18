@@ -4,7 +4,7 @@ namespace Webbhuset\Whaskell\Iterable;
 
 use Webbhuset\Whaskell\WhaskellException;
 use Webbhuset\Whaskell\Dispatch\Data\DataInterface;
-use Webbhuset\Whaskell\Args;
+use Webbhuset\Whaskell\FunctionSignature;
 
 class Group
 {
@@ -23,7 +23,7 @@ class Group
             $this->callback = [$this, 'checkBatchSize'];
         } elseif (is_callable($arg)) {
 
-            $canBeUsed = Args::canBeUsedWithArgCount($arg, 3, false);
+            $canBeUsed = FunctionSignature::canBeUsedWithArgCount($arg, 3, false);
 
             if ($canBeUsed !== true) {
                 throw new WhaskellException($canBeUsed . ' Eg. function($batch, $item, $finalize)');

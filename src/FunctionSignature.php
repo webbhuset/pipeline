@@ -6,7 +6,7 @@ use ReflectionMethod;
 use ReflectionFunction;
 use Exception;
 
-class Args
+class FunctionSignature
 {
     public static function canBeUsedWithArgCount($callable, $count, $generator = null)
     {

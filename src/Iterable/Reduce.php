@@ -4,7 +4,7 @@ namespace Webbhuset\Whaskell\Iterable;
 
 use Webbhuset\Whaskell\WhaskellException;
 use Webbhuset\Whaskell\Dispatch\Data\DataInterface;
-use Webbhuset\Whaskell\Args;
+use Webbhuset\Whaskell\FunctionSignature;
 
 class Reduce
 {
@@ -14,7 +14,7 @@ class Reduce
 
     public function __construct($callback, $initialValue)
     {
-        $canBeUsed = Args::canBeUsedWithArgCount($callback, 2, false);
+        $canBeUsed = FunctionSignature::canBeUsedWithArgCount($callback, 2, false);
 
         if ($canBeUsed !== true) {
             throw new WhaskellException($canBeUsed . ' Eg. function($carry, $item)');

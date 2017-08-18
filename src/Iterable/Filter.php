@@ -4,7 +4,7 @@ namespace Webbhuset\Whaskell\Iterable;
 
 use Webbhuset\Whaskell\WhaskellException;
 use Webbhuset\Whaskell\Dispatch\Data\DataInterface;
-use Webbhuset\Whaskell\Args;
+use Webbhuset\Whaskell\FunctionSignature;
 
 class Filter
 {
@@ -12,7 +12,7 @@ class Filter
 
     public function __construct($callback)
     {
-        $canBeUsed = Args::canBeUsedWithArgCount($callback, 1, false);
+        $canBeUsed = FunctionSignature::canBeUsedWithArgCount($callback, 1, false);
 
         if ($canBeUsed !== true) {
             throw new WhaskellException($canBeUsed . ' Eg. function($item): bool');
