@@ -4,7 +4,7 @@ namespace Webbhuset\Whaskell\Test\UnitTest;
 
 use Webbhuset\Whaskell\Args;
 
-class ArgsTest
+class FunctionSignatureTest
 {
     public static function canBeUsedWithArgCountTest($test)
     {

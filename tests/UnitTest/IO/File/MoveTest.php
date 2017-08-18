@@ -4,7 +4,7 @@ namespace Webbhuset\Whaskell\Test\UnitTest\IO\File;
 
 class MoveTest
 {
-    const TEST_DIR = '/tmp/bifrost-test';
+    const TEST_DIR = '/tmp/whaskell-test';
 
     public static function __constructTest($test)
     {
