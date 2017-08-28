@@ -31,8 +31,6 @@ abstract class AbstractObserver extends AbstractFunction implements ObserverInte
         $this->function = $function;
     }
 
-    public abstract function reconstruct($function);
-
     protected function invoke($items, $finalize = true)
     {
         if (!$this->function) {
