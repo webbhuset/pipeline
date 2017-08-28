@@ -8,6 +8,10 @@ class Mute extends AbstractFunction
 {
     protected function invoke($items, $finalize = true)
     {
-        return [];
+        foreach ($items as $item) {
+            if (false) {
+                yield null;
+            }
+        }
     }
 }
