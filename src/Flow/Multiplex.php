@@ -3,6 +3,7 @@
 namespace Webbhuset\Whaskell\Flow;
 
 use Webbhuset\Whaskell\AbstractFunction;
+use Webbhuset\Whaskell\Constructor as F;
 use Webbhuset\Whaskell\FunctionInterface;
 use Webbhuset\Whaskell\FunctionSignature;
 use Webbhuset\Whaskell\Observe\ObserverInterface;
@@ -35,7 +36,10 @@ class Multiplex extends AbstractFunction
                 continue;
             }
 
-            if (!$function instanceof FunctionInterface) {
+            if (is_array($function)) {
+                $function = F::Compose($function);
+                $functions[$key] = $function;
+            } elseif (!$function instanceof FunctionInterface) {
                 // TODO: toString on $function
                 $class = get_class($function);
                 throw new WhaskellException("Function {$idx} ({$class}) does not implement FunctionInterface.");
