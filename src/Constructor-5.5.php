@@ -156,6 +156,14 @@ class Constructor
         return $reflection->newInstanceArgs($args);
     }
 
+    public static function ReadRaw()
+    {
+        $reflection = new ReflectionClass(IO\File\Read\Raw::class);
+        $args       = func_get_args();
+
+        return $reflection->newInstanceArgs($args);
+    }
+
     public static function ReadXml()
     {
         $reflection = new ReflectionClass(IO\File\Read\Xml::class);

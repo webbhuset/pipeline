@@ -103,6 +103,11 @@ class Constructor
         return new IO\File\Read\Line(...$args);
     }
 
+    public static function ReadRaw(...$args)
+    {
+        return new IO\File\Read\Raw(...$args);
+    }
+
     public static function ReadXml(...$args)
     {
         return new IO\File\Read\Xml(...$args);
