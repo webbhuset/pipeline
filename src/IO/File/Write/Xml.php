@@ -9,10 +9,11 @@ class Xml extends AbstractFunction
 {
     protected $filename;
     protected $xml;
-    protected $intentXml = false;
-    protected $root = 'Root';
-
-    protected $attributesKey    = '@attributes';
+    protected $indentXml            = false;
+    protected $indentString         = '    ';
+    protected $root                 = 'Root';
+    protected $attributesKey        = '@attributes';
+    protected $includeDeclaration   = true;
 
     /**
      * Xml constructor.
@@ -31,7 +32,11 @@ class Xml extends AbstractFunction
         }
 
         if (isset($params['indentXml'])) {
-            $this->intentXml = $params['indentXml'];
+            $this->indentXml = $params['indentXml'];
+        }
+
+        if (isset($params['indentString'])) {
+            $this->indentString = $params['indentString'];
         }
 
         if (isset($params['root'])) {
@@ -40,6 +45,10 @@ class Xml extends AbstractFunction
 
         if (!$this->isNameValid($this->root)) {
             throw new WhaskellException("The XML root tag name {$this->root} is not valid.");
+        }
+
+        if (isset($params['includeDeclaration'])) {
+            $this->includeDeclaration = $params['includeDeclaration'];
         }
 
         $this->filename = $target;
@@ -51,8 +60,11 @@ class Xml extends AbstractFunction
             throw new WhaskellException("Could not open file {$target} for writing.");
         }
 
-        $xml->startDocument('1.0', 'UTF-8');
-        $xml->setIndent($this->intentXml);
+        if ($this->includeDeclaration) {
+            $xml->startDocument('1.0', 'UTF-8');
+        }
+        $xml->setIndent($this->indentXml);
+        $xml->setIndentString($this->indentString);
         $xml->startElement($this->root);
 
         $this->xml = $xml;
@@ -95,16 +107,18 @@ class Xml extends AbstractFunction
      */
     protected function isNameValid($name)
     {
-        if (!preg_match('/^[\p{L}\._\-\d]+$/u', $name)) {
-            // XML tag name can only contain letters, numbers and punctuation
+        if (!preg_match('/^(([\p{L}\._\-\d]+)\:)?[\p{L}\._\-\d]+$/u', $name, $matches)) {
+            // XML tag name can only contain letters, numbers, punctuation and optionally a namespace.
             return false;
         }
+
         if (!preg_match('/^\p{L}.*\p{L}$/u', $name)) {
-            // XML tag can not start with non word chars.
+            // XML tag cannot start with non word chars.
             return false;
         }
+
         if (preg_match('/^xml/i', $name)) {
-            // XML tag can not start with the letters xml
+            // XML tag cannot start with the letters 'xml'.
             return false;
         }
 
@@ -141,6 +155,7 @@ class Xml extends AbstractFunction
     protected function arrayToXml($name, $data)
     {
         $xml = $this->xml;
+
         if (is_int($name)) {
             if (!is_array($data)) {
                 $xml->text($data);
@@ -156,13 +171,21 @@ class Xml extends AbstractFunction
         if (!$this->isNameValid($name)) {
             return;
         }
+
         $xml->startElement($name);
 
         if ($this->hasChildren($data)) {
             $this->writeAttributes($xml, $data);
             unset($data[$this->attributesKey]);
 
+            $firstChild = true;
             foreach ($data as $key => $value) {
+                if (!$firstChild && is_int($key)) {
+                    $xml->endElement();
+                    $xml->startElement($name);
+                }
+                $firstChild = false;
+
                 $this->arrayToXml($key, $value);
             }
         } else {
