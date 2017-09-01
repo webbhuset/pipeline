@@ -35,6 +35,11 @@ class Constructor
         return new Dev\Dahbug(debug_backtrace(), ...$args);
     }
 
+    public static function DahbugWrite(...$args)
+    {
+        return new Dev\DahbugWrite(...$args);
+    }
+
     public static function Mute(...$args)
     {
         return new Dev\Mute(...$args);

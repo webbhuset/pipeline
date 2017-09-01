@@ -42,7 +42,19 @@ class Constructor
     // Dev
     public static function Dahbug()
     {
-        return new Dev\Dahbug(debug_backtrace());
+        $reflection = new ReflectionClass(Dev\Dahbug::class);
+        $args       = func_get_args();
+        array_unshift($args, debug_backtrace());
+
+        return $reflection->newInstanceArgs($args);
+    }
+
+    public static function DahbugWrite()
+    {
+        $reflection = new ReflectionClass(Dev\DahbugWrite::class);
+        $args       = func_get_args();
+
+        return $reflection->newInstanceArgs($args);
     }
 
     public static function Mute()

@@ -6,22 +6,24 @@ use Webbhuset\Whaskell\AbstractFunction;
 
 class Dahbug extends AbstractFunction
 {
-    protected $label;
-    protected $log;
     protected $backtrace;
+    protected $log;
+    protected $label;
+    protected $depth;
 
-    public function __construct(array $backtrace = null, $label = 'dump', $log = true)
+    public function __construct(array $backtrace = null, $label = 'dump', $depth = 10)
     {
-        $this->label        = $label;
-        $this->log          = $log;
         $this->backtrace    = $backtrace ?: debug_backtrace();
+        $this->log          = class_exists('\dahbug');
+        $this->label        = $label;
+        $this->depth        = $depth;
     }
 
     protected function invoke($items, $finalize = true)
     {
         foreach ($items as $item) {
             if ($this->log) {
-                LocalDahbug::dumpWithBacktrace($this->backtrace, $item, $this->label, 10);
+                LocalDahbug::dumpWithBacktrace($this->backtrace, $item, $this->label, $this->depth);
             }
             yield $item;
         }
