@@ -39,8 +39,10 @@ class Line extends AbstractFunction
                     $this->observer->observeError($item, $msg);
                 }
             }
+        }
 
-            yield $item;
+        if ($finalize) {
+            yield $this->filename;
         }
     }
 }
