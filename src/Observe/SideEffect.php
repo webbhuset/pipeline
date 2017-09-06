@@ -6,27 +6,26 @@ use Webbhuset\Whaskell\WhaskellException;
 
 class SideEffect extends AbstractObserver
 {
-    protected $function;
-    protected $actions;
+    protected $sideEffectFunctions;
 
-    public function __construct($function, $actions)
+    public function __construct($function, $sideEffectFunctions)
     {
         parent::__construct($function);
 
-        if (is_array($actions)) {
-            foreach ($actions as $name => $action) {
-                if (!is_callable($action)) {
+        if (is_array($sideEffectFunctions)) {
+            foreach ($sideEffectFunctions as $name => $sideEffectFunction) {
+                if (!is_callable($sideEffectFunction)) {
                     throw new WhaskellException("Observer method '{$name}' in array is not callable");
                 }
             }
         }
 
-        $this->actions = $actions;
+        $this->sideEffectFunctions = $sideEffectFunctions;
     }
 
     public function observeSideEffect($name, $item, $data)
     {
-        $function = $this->getAction($name);
+        $function = $this->getSideEffectFunction($name);
         if ($function) {
             $item = $function($item, $data);
         }
@@ -38,14 +37,14 @@ class SideEffect extends AbstractObserver
         return $item;
     }
 
-    protected function getAction($name)
+    protected function getSideEffectFunction($name)
     {
-        if (is_array($this->actions) && isset($this->actions[$name])) {
-            return $this->actions[$name];
+        if (is_array($this->sideEffectFunctions) && isset($this->sideEffectFunctions[$name])) {
+            return $this->sideEffectFunctions[$name];
         }
 
-        if (is_object($this->actions)) {
-            $method = [$this->actions, $name];
+        if (is_object($this->sideEffectFunctions)) {
+            $method = [$this->sideEffectFunctions, $name];
             if (is_callable($method)) {
                 return $method;
             }

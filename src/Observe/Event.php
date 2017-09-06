@@ -6,30 +6,28 @@ use Webbhuset\Whaskell\WhaskellException;
 
 class Event extends AbstractObserver
 {
-    protected $events;
+    protected $eventFunctions;
 
-    public function __construct($function, array $events)
+    public function __construct($function, $eventFunctions)
     {
         parent::__construct($function);
 
-        foreach ($events as $name => $observers) {
-            foreach ($observers as $observer) {
-                if (!is_callable($observer)) {
-                    throw new WhaskellException("Observer on event '{$name}' is not callable");
+        if (is_array($eventFunctions)) {
+            foreach ($eventFunctions as $name => $eventFunction) {
+                if (!is_callable($eventFunction)) {
+                    throw new WhaskellException("Observer method '{$name}' in array is not callable");
                 }
             }
         }
 
-        $this->events = $events;
+        $this->eventFunctions = $eventFunctions;
     }
 
     public function observeEvent($name, $item, $data, $contexts = [])
     {
-        $functions = $this->getEventFunctions($name);
-        if ($functions) {
-            foreach ($functions as $function) {
-                $function($item, $data, $contexts);
-            }
+        $function = $this->getEventFunction($name);
+        if ($function) {
+            $function($item, $data, $contexts);
         }
 
         if ($this->observer) {
@@ -42,10 +40,17 @@ class Event extends AbstractObserver
         $this->observeEvent('error', $item, $data, $contexts);
     }
 
-    protected function getEventFunctions($name)
+    protected function getEventFunction($name)
     {
-        if (isset($this->events[$name])) {
-            return $this->events[$name];
+        if (is_array($this->eventFunctions) && isset($this->eventFunctions[$name])) {
+            return $this->eventFunctions[$name];
+        }
+
+        if (is_object($this->eventFunctions)) {
+            $method = [$this->eventFunctions, $name];
+            if (is_callable($method)) {
+                return $method;
+            }
         }
 
         return false;
