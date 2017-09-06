@@ -42,12 +42,16 @@ class Event extends AbstractFunction
         }
 
         foreach ($items as $item) {
-            if (!$this->useCallback || $result = call_user_func($this->callback, $item)) {
+            if (!$this->useCallback) {
+                $this->observer->observeEvent($this->name, $item, $this->bind);
+            } else {
+                $result = call_user_func($this->callback, $item);
                 if (is_bool($result)) {
                     $result = $item;
                 }
                 $this->observer->observeEvent($this->name, $result, $this->bind);
             }
+
             yield $item;
         }
     }
