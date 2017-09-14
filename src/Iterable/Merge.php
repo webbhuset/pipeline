@@ -11,9 +11,11 @@ use Webbhuset\Whaskell\WhaskellException;
 class Merge extends AbstractFunction
 {
     protected $function;
+    protected $replace;
+    protected $recursive;
     protected $batch = [];
 
-    public function __construct($function)
+    public function __construct($function, $replace = false, $recursive = true)
     {
         if (is_array($function)) {
             $function = F::Compose($function);
@@ -23,7 +25,9 @@ class Merge extends AbstractFunction
             throw new WhaskellException('Function must implement FunctionInterface');
         }
 
-        $this->function = $function;
+        $this->function     = $function;
+        $this->replace      = $replace;
+        $this->recursive    = $replace;
     }
 
     protected function invoke($items, $finalize = true)
@@ -72,8 +76,10 @@ class Merge extends AbstractFunction
         if (is_array($b)) {
             foreach ($b as $key => $value) {
                 if (isset($a[$key])) {
-                    if (is_array($value)) {
+                    if (is_array($value) && $this->recursive) {
                         $a[$key] = $this->merge($a[$key], $value);
+                    } elseif ($this->replace) {
+                        $a[$key] = $value;
                     }
                 } else {
                     $a[$key] = $value;

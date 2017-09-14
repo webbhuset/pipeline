@@ -12,7 +12,7 @@ class Reduce extends AbstractFunction
     protected $initialValue;
     protected $carry;
 
-    public function __construct($callback, $initialValue)
+    public function __construct($callback, $initialValue = [])
     {
         $canBeUsed = FunctionSignature::canBeUsedWithArgCount($callback, 2, false);
 
