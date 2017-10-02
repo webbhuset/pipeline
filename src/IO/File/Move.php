@@ -78,7 +78,7 @@ class Move extends AbstractFunction
             if ($this->observer) {
                 $type   = $this->copy ? 'Copied' : 'Moved';
                 $msg    = "{$type} '{$oldPath}' to '{$newPath}'.";
-                $this->observer->observeEvent('info', $newPath, $msg);
+                $this->observer->observeEvent('log', $msg);
             }
 
             if (!$this->copy && !unlink($oldPath)) {

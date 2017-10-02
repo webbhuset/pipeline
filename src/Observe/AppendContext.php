@@ -13,7 +13,7 @@ class AppendContext extends AbstractObserver
         $this->context = $context;
     }
 
-    public function observeEvent($name, $item, $data, $contexts = [])
+    public function observeEvent($name, $item, $data = [], $contexts = [])
     {
         if ($this->observer) {
             $contexts[] = $this->context;
@@ -21,7 +21,7 @@ class AppendContext extends AbstractObserver
         }
     }
 
-    public function observeError($item, $data, $contexts = [])
+    public function observeError($item, $data = [], $contexts = [])
     {
         if ($this->observer) {
             $contexts[] = $this->context;

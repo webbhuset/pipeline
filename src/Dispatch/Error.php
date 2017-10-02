@@ -35,7 +35,7 @@ class Error extends AbstractFunction
             $result = call_user_func($this->callback, $item);
             if ($result) {
                 if ($this->observer) {
-                    $this->observer->observeEvent('error', $item, $result, []);
+                    $this->observer->observeEvent('error', $item, $result);
                 }
             } else {
                 yield $item;

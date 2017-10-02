@@ -40,14 +40,14 @@ abstract class AbstractObserver extends AbstractFunction implements ObserverInte
         return call_user_func($this->function, $items, $finalize);
     }
 
-    public function observeEvent($name, $item, $data, $contexts = [])
+    public function observeEvent($name, $item, $data = [], $contexts = [])
     {
         if ($this->observer) {
             $this->observer->observeEvent($name, $item, $data, $contexts);
         }
     }
 
-    public function observeSideEffect($name, $item, $data)
+    public function observeSideEffect($name, $item, $data = [])
     {
         if ($this->observer) {
             $item = $this->observer->observeSideEffect($name, $item, $data);
@@ -56,7 +56,7 @@ abstract class AbstractObserver extends AbstractFunction implements ObserverInte
         return $item;
     }
 
-    public function observeError($item, $data, $contexts = [])
+    public function observeError($item, $data = [], $contexts = [])
     {
         if ($this->observer) {
             $this->observer->observeError($item, $data, $contexts);

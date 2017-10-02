@@ -23,7 +23,7 @@ class SideEffect extends AbstractObserver
         $this->sideEffectFunctions = $sideEffectFunctions;
     }
 
-    public function observeSideEffect($name, $item, $data)
+    public function observeSideEffect($name, $item, $data = [])
     {
         $function = $this->getSideEffectFunction($name);
         if ($function) {

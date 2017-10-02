@@ -23,7 +23,7 @@ class Event extends AbstractObserver
         $this->eventFunctions = $eventFunctions;
     }
 
-    public function observeEvent($name, $item, $data, $contexts = [])
+    public function observeEvent($name, $item, $data = [], $contexts = [])
     {
         $function = $this->getEventFunction($name);
         if ($function) {
@@ -35,7 +35,7 @@ class Event extends AbstractObserver
         }
     }
 
-    public function observeError($item, $data, $contexts = [])
+    public function observeError($item, $data = [], $contexts = [])
     {
         $this->observeEvent('error', $item, $data, $contexts);
     }
