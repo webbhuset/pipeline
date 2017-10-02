@@ -107,6 +107,14 @@ class Constructor
         return $reflection->newInstanceArgs($args);
     }
 
+    public static function Factory()
+    {
+        $reflection = new ReflectionClass(Flow\Factory::class);
+        $args       = func_get_args();
+
+        return $reflection->newInstanceArgs($args);
+    }
+
     public static function Fork()
     {
         $reflection = new ReflectionClass(Flow\Fork::class);

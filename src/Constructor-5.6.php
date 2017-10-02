@@ -72,6 +72,11 @@ class Constructor
         return new Flow\Defer(...$args);
     }
 
+    public static function Factory(...$args)
+    {
+        return new Flow\Factory(...$args);
+    }
+
     public static function Fork(...$args)
     {
         return new Flow\Fork(...$args);
