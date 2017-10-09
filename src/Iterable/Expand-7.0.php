@@ -10,12 +10,18 @@ class Expand extends AbstractFunction
 {
     protected $callback;
 
-    public function __construct($callback)
+    public function __construct($callback = null)
     {
-        $canBeUsed = FunctionSignature::canBeUsedWithArgCount($callback, 1, true);
+        if ($callback !== null) {
+            $canBeUsed = FunctionSignature::canBeUsedWithArgCount($callback, 1, true);
 
-        if ($canBeUsed !== true) {
-            throw new WhaskellException($canBeUsed . ' Eg. function($item)');
+            if ($canBeUsed !== true) {
+                throw new WhaskellException($canBeUsed . " e.g. 'function($item)'");
+            }
+        } else {
+            $callback = function($items) {
+                yield from $items;
+            };
         }
 
         $this->callback = $callback;
