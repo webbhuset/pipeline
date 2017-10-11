@@ -63,6 +63,8 @@ class Multiplex extends AbstractFunction
                 foreach ($results as $result) {
                     yield $result;
                 }
+            } else {
+                yield $item;
             }
         }
 
