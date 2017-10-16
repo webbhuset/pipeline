@@ -261,6 +261,14 @@ class Constructor
         return $reflection->newInstanceArgs($args);
     }
 
+    public static function SplitApplyCombine()
+    {
+        $reflection = new ReflectionClass(Iterable\SplitApplyCombine::class);
+        $args       = func_get_args();
+
+        return $reflection->newInstanceArgs($args);
+    }
+
     // Observe
     public static function AppendContext()
     {

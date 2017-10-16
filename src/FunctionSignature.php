@@ -14,15 +14,13 @@ class FunctionSignature
             return 'Callback is not callable';
         }
 
-        $ref = self::getReflectionFromCallback($callable);
-
-        $requiredCount = $ref->getNumberOfRequiredParameters();
-        $optionalCount = $ref->getNumberOfParameters();
-
-        $isGenerator = $ref->isGenerator();
+        $ref            = self::getReflectionFromCallback($callable);
+        $requiredCount  = $ref->getNumberOfRequiredParameters();
+        $optionalCount  = $ref->getNumberOfParameters();
+        $isGenerator    = $ref->isGenerator();
 
         if ($isGenerator && $generator === false) {
-            return "You can not use a generator here.";
+            return "You cannot use a generator here.";
         }
 
         if (!$isGenerator && $generator === true) {
@@ -30,11 +28,11 @@ class FunctionSignature
         }
 
         if ($requiredCount > $count) {
-            return "To many args. Callback Requires {$requiredCount} arg(s), only {$count} will be passed.";
+            return "Too many args. Callback Requires {$requiredCount} arg(s), only {$count} will be passed.";
         }
 
         if ($optionalCount < $count) {
-            return "To few args in callback. {$count} args will be passed but callback only takes {$optionalCount} args.";
+            return "Too few args in callback. {$count} args will be passed but callback only takes {$optionalCount} args.";
         }
 
         return true;

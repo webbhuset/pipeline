@@ -174,6 +174,11 @@ class Constructor
         return new Iterable\Reduce(...$args);
     }
 
+    public static function SplitApplyCombine(...$args)
+    {
+        return new Iterable\SplitApplyCombine(...$args);
+    }
+
     // Observe
     public static function AppendContext(...$args)
     {

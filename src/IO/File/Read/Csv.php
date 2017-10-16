@@ -28,7 +28,7 @@ class Csv extends AbstractFunction
         }
     }
 
-    protected function invoke($files)
+    protected function invoke($files, $finalize = true)
     {
         foreach ($files as $filename) {
             if (!is_file($filename)) {
