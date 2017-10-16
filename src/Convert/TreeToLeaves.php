@@ -8,17 +8,19 @@ use Webbhuset\Whaskell\AbstractFunction;
 
 class TreeToLeaves extends AbstractFunction
 {
-    protected function invoke($tree, $finalize = true)
+    protected function invoke($items, $finalize = true)
     {
-        $it = new RecursiveIteratorIterator(
-            new RecursiveArrayIterator(
-                $tree,
-                RecursiveArrayIterator::CHILD_ARRAYS_ONLY
-            )
-        );
+        foreach ($items as $item) {
+            $it = new RecursiveIteratorIterator(
+                new RecursiveArrayIterator(
+                    $item,
+                    RecursiveArrayIterator::CHILD_ARRAYS_ONLY
+                )
+            );
 
-        foreach ($it as $leaf) {
-            yield $leaf;
+            foreach ($it as $leaf) {
+                yield $leaf;
+            }
         }
     }
 }

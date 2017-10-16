@@ -16,7 +16,7 @@ class Compose extends AbstractFunction
     {
         $treeToLeaves = F::TreeToLeaves();
 
-        $functions = iterator_to_array($treeToLeaves($functions));
+        $functions = iterator_to_array($treeToLeaves([$functions]));
 
         foreach ($functions as $idx => $function) {
             if ($function === false) {
