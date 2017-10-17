@@ -15,10 +15,10 @@ class Move extends AbstractFunction
     public function __construct($oldPathCallback, $newPathCallback = null, $config = [])
     {
         if (!is_callable($newPathCallback)) {
+            $newPathCallback    = $oldPathCallback;
             $oldPathCallback    = function($item) {
                 return $item;
             };
-            $newPathCallback    = $oldPathCallback;
             $config             = $newPathCallback ?: [];
         }
 
