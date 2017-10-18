@@ -213,6 +213,14 @@ class Constructor
     }
 
     // Iterable
+    public static function ApplyCombine()
+    {
+        $reflection = new ReflectionClass(Iterable\ApplyCombine::class);
+        $args       = func_get_args();
+
+        return $reflection->newInstanceArgs($args);
+    }
+
     public static function Expand()
     {
         $reflection = new ReflectionClass(Iterable\Expand::class);
@@ -256,14 +264,6 @@ class Constructor
     public static function Reduce()
     {
         $reflection = new ReflectionClass(Iterable\Reduce::class);
-        $args       = func_get_args();
-
-        return $reflection->newInstanceArgs($args);
-    }
-
-    public static function SplitApplyCombine()
-    {
-        $reflection = new ReflectionClass(Iterable\SplitApplyCombine::class);
         $args       = func_get_args();
 
         return $reflection->newInstanceArgs($args);

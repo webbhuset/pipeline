@@ -144,6 +144,11 @@ class Constructor
     }
 
     // Iterable
+    public static function ApplyCombine(...$args)
+    {
+        return new Iterable\ApplyCombine(...$args);
+    }
+
     public static function Expand(...$args)
     {
         return new Iterable\Expand(...$args);
@@ -172,11 +177,6 @@ class Constructor
     public static function Reduce(...$args)
     {
         return new Iterable\Reduce(...$args);
-    }
-
-    public static function SplitApplyCombine(...$args)
-    {
-        return new Iterable\SplitApplyCombine(...$args);
     }
 
     // Observe
