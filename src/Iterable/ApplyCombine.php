@@ -37,7 +37,7 @@ class ApplyCombine extends AbstractFunction
     protected function invoke($items, $finalize = true)
     {
         foreach ($items as $item) {
-            $results = iterator_to_array(call_user_func($this->applyFunction, [$item]));
+            $results = call_user_func($this->applyFunction, [$item]);
 
             yield call_user_func($this->combineFunction, $item, $results);
         }
