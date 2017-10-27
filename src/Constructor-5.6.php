@@ -103,6 +103,11 @@ class Constructor
         return new IO\File\Read\Json(...$args);
     }
 
+    public static function ReadJsonDecode(...$args)
+    {
+        return new IO\File\Read\JsonDecode(...$args);
+    }
+
     public static function ReadLine(...$args)
     {
         return new IO\File\Read\Line(...$args);

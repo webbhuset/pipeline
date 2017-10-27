@@ -156,6 +156,14 @@ class Constructor
         return $reflection->newInstanceArgs($args);
     }
 
+    public static function ReadJsonDecode()
+    {
+        $reflection = new ReflectionClass(IO\File\Read\JsonDecode::class);
+        $args       = func_get_args();
+
+        return $reflection->newInstanceArgs($args);
+    }
+
     public static function ReadLine()
     {
         $reflection = new ReflectionClass(IO\File\Read\Line::class);
