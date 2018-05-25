@@ -82,7 +82,7 @@ class Csv extends AbstractFunction
     protected function error($filename, $message)
     {
         if ($this->observer) {
-            $this->observer->observeError($filename, $msg);
+            $this->observer->observeError($filename, $message);
         }
     }
 
