@@ -7,7 +7,7 @@ use Webbhuset\Whaskell\Dispatch;
 use Webbhuset\Whaskell\Dev;
 use Webbhuset\Whaskell\Flow;
 use Webbhuset\Whaskell\IO;
-use Webbhuset\Whaskell\Iterable;
+use Webbhuset\Whaskell\Iterable as Iterables;
 use Webbhuset\Whaskell\Observer;
 use Webbhuset\Whaskell\Validate;
 
@@ -151,37 +151,37 @@ class Constructor
     // Iterable
     public static function ApplyCombine(...$args)
     {
-        return new Iterable\ApplyCombine(...$args);
+        return new Iterables\ApplyCombine(...$args);
     }
 
     public static function Expand(...$args)
     {
-        return new Iterable\Expand(...$args);
+        return new Iterables\Expand(...$args);
     }
 
     public static function Filter(...$args)
     {
-        return new Iterable\Filter(...$args);
+        return new Iterables\Filter(...$args);
     }
 
     public static function Group(...$args)
     {
-        return new Iterable\Group(...$args);
+        return new Iterables\Group(...$args);
     }
 
     public static function Map(...$args)
     {
-        return new Iterable\Map(...$args);
+        return new Iterables\Map(...$args);
     }
 
     public static function Merge(...$args)
     {
-        return new Iterable\Merge(...$args);
+        return new Iterables\Merge(...$args);
     }
 
     public static function Reduce(...$args)
     {
-        return new Iterable\Reduce(...$args);
+        return new Iterables\Reduce(...$args);
     }
 
     // Observe

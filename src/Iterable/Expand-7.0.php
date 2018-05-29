@@ -16,7 +16,7 @@ class Expand extends AbstractFunction
             $canBeUsed = FunctionSignature::canBeUsedWithArgCount($callback, 1, true);
 
             if ($canBeUsed !== true) {
-                throw new WhaskellException($canBeUsed . " e.g. 'function($item)'");
+                throw new WhaskellException($canBeUsed . " e.g. 'function(\$item)'");
             }
         } else {
             $callback = function($items) {
