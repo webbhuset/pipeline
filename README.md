@@ -54,6 +54,9 @@ Prints every input using dahbug::write().
 ##### Mute
 Discards all input, preventing items from passing through.
 
+##### Slice
+Takes a slice of the input, e.g. only first 5 items.
+
 ---
 
 ### Dispatch

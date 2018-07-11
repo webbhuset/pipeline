@@ -45,6 +45,11 @@ class Constructor
         return new Dev\Mute(...$args);
     }
 
+    public static function Slice(...$args)
+    {
+        return new Dev\Slice(...$args);
+    }
+
     // Dispatch
     public static function DispatchError(...$args)
     {

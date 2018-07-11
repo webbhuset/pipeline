@@ -65,6 +65,14 @@ class Constructor
         return $reflection->newInstanceArgs($args);
     }
 
+    public static function Slice()
+    {
+        $reflection = new ReflectionClass(Dev\Slice::class);
+        $args       = func_get_args();
+
+        return $reflection->newInstanceArgs($args);
+    }
+
     // Dispatch
     public static function DispatchError()
     {
