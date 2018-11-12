@@ -8,7 +8,6 @@ class Slice extends AbstractFunction
 {
     protected $amount;
     protected $skip;
-    protected $current;
 
 
     public function __construct($amount = 1, $skip = 0)
@@ -19,11 +18,13 @@ class Slice extends AbstractFunction
 
     protected function invoke($items, $finalize = true)
     {
+        $current = 0;
+
         foreach ($items as $item) {
-            if ($this->current < $this->skip) {
-                $this->current++;
-            } elseif ($this->current < $this->amount + $this->skip) {
-                $this->current++;
+            if ($current < $this->skip) {
+                $current++;
+            } elseif ($current < $this->amount + $this->skip) {
+                $current++;
 
                 yield $item;
             }
