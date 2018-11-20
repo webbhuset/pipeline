@@ -5,7 +5,7 @@ namespace Webbhuset\Whaskell\IO\Directory;
 use DirectoryIterator;
 use RecursiveIteratorIterator;
 use RecursiveDirectoryIterator;
-use Webbhuset\Whaskell\AbstractFunction;
+use Webbhuset\Whaskell\FunctionInterface;
 use Webbhuset\Whaskell\WhaskellException;
 
 class AllFiles implements FunctionInterface

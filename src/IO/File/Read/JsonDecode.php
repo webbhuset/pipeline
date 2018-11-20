@@ -2,7 +2,7 @@
 
 namespace Webbhuset\Whaskell\IO\File\Read;
 
-use Webbhuset\Whaskell\AbstractFunction;
+use Webbhuset\Whaskell\FunctionInterface;
 use Webbhuset\Whaskell\WhaskellException;
 
 class JsonDecode implements FunctionInterface

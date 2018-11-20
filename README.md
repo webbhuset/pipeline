@@ -4,7 +4,7 @@ Whaskell is a collection of functions for manipulating data designed so that the
 
 ## Functions
 
-Every Whaskell function is a class implementing \_\_invoke(), thus allowing instances to be run as a function. Every function takes a Traversable as input and returns a Generator. Functions are constructed using the static methods in the Constructor class.  
+Every Whaskell function is a class implementing \_\_invoke(), thus allowing instances to be run as functions. Every function takes a Traversable as input and returns a Generator. Functions are constructed using the static methods in the Constructor class.  
 Example usage (opens a file, appends 'hello' to every line, then writes to another file):
 
 ```php
@@ -27,20 +27,6 @@ iterator_to_array($generator); // Iterate the generator to run.
 
 ---
 
-### Convert
-Convert from one structure to another.
-
-##### TreeToLeaves
-Takes a tree and returns all leaves.
-
-##### RowsToTree
-Takes an array of rows and turns into a tree.
-
-##### TreeToRows
-Takes a tree and turns into an array of rows.
-
----
-
 ### Dev
 
 Functions helpful for development.
@@ -56,20 +42,6 @@ Discards all input, preventing items from passing through.
 
 ##### Slice
 Takes a slice of the input, e.g. only first 5 items.
-
----
-
-### Dispatch
-Functions for dispatching events for Observe-functions. For more information read [Observe](#observe).
-
-##### DispatchError
-Dispatches an error event if callback returns true.
-
-##### DispatchEvent
-Dispatches an event.
-
-##### DispatchSideEffect
-Dispatches a side effect.
 
 ---
 
@@ -220,8 +192,18 @@ F::Group(function($batch, $item, $finalize) {
 });
 ```
 
-##### Map
+### Map
+
+`Generator Map(callable $callback)`
+
 Edits every input item.
+
+#### Parameters
+
+- `callback` - `mixed callback (mixed $item)`
+    - `item` - The value being mapped.
+
+#### Examples
 
 ```php
 <?php
@@ -231,6 +213,7 @@ F::Map(function($item) {
     return $item;
 });
 ```
+
 
 ##### Merge
 Sends every item through a sub-function and merges result with original item. The sub-function must return the same amount of items as input.
@@ -252,49 +235,26 @@ F::Merge([
 ```
 
 
-##### Reduce
+### Reduce
+
+`Generator Reduce(callable $callback, mixed $initialValue = [])`
+
 Reduce all input items into a single item.
+
+#### Parameters
+
+- `callback` - `mixed callback (mixed $item, mixed $carry)`
+    - `item` - The value of the current item.
+    - `carry` - The return value of previous iteration.
+- `intialValue` - The initial value of $carry.
+
+#### Examples
 
 ```php
 <?php
-F::Reduce(function($carry, $item) {
+F::Reduce(function($item, $carry) {
     $carry += $item['qty'];
 
     return $carry;
 }, 0);
 ```
-
----
-
-### Observe
-Functions for observing events dispatched by Dispatch-functions in the inner function. Events bubble outwards. Example:
-
-
-##### AppendContext
-Appends a context to events and then dispatches them again.
-
-##### ObserveEvent
-Observes events.
-
-```php
-F::ObserveEvent(
-    F::DispatchEvent('hello'),
-    [
-        'hello' => function($item, $data, $contexts) {
-            echo 'Hello event!';
-        },
-    ]
-);
-
-F::ObserveEvent(
-    F::DispatchEvent('hello'),
-    $class // Instance of class with a public hello() function
-);
-```
-
-##### ObserveException
-Observes thrown exceptions and then throws them again.
-
-##### ObserveSideEffect
-Observes side effects. Unlike events, side effect observers can edit the item being observed.
-

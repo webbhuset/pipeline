@@ -4,10 +4,10 @@ namespace Webbhuset\Whaskell\IO\File\Read;
 
 use JsonStreamingParser\Listener;
 use JsonStreamingParser\Parser;
-use Webbhuset\Whaskell\AbstractFunction;
+use Webbhuset\Whaskell\FunctionInterface;
 use Webbhuset\Whaskell\WhaskellException;
 
-class Json implements FunctionInterface implements Listener
+class JsonStream implements FunctionInterface, Listener
 {
     /**
      * Depth of items in json file.
