@@ -5,7 +5,7 @@ namespace Webbhuset\Whaskell\IO\File\Read;
 use Webbhuset\Whaskell\AbstractFunction;
 use Webbhuset\Whaskell\WhaskellException;
 
-class JsonDecode extends AbstractFunction
+class JsonDecode implements FunctionInterface
 {
     /**
      * Depth of items in json file.
@@ -22,7 +22,7 @@ class JsonDecode extends AbstractFunction
         }
     }
 
-    protected function invoke($files, $finalize = true)
+    public function __invoke($files, $finalize = true)
     {
         foreach ($files as $filename) {
             if (!is_file($filename)) {

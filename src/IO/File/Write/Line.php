@@ -5,7 +5,7 @@ namespace Webbhuset\Whaskell\IO\File\Write;
 use Webbhuset\Whaskell\AbstractFunction;
 use Webbhuset\Whaskell\WhaskellException;
 
-class Line extends AbstractFunction
+class Line implements FunctionInterface
 {
     protected $file;
     protected $filename;
@@ -28,7 +28,7 @@ class Line extends AbstractFunction
         }
     }
 
-    protected function invoke($items, $finalize = true)
+    public function __invoke($items, $finalize = true)
     {
         foreach ($items as $item) {
             $bytes = fwrite($this->file, "{$item}\n");

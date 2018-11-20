@@ -8,7 +8,7 @@ use RecursiveDirectoryIterator;
 use Webbhuset\Whaskell\AbstractFunction;
 use Webbhuset\Whaskell\WhaskellException;
 
-class AllFiles extends AbstractFunction
+class AllFiles implements FunctionInterface
 {
     protected $recursive        = false;
     protected $onlyFiles        = true;
@@ -31,7 +31,7 @@ class AllFiles extends AbstractFunction
         }
     }
 
-    protected function invoke($items, $finalize = true)
+    public function __invoke($items, $finalize = true)
     {
         foreach ($items as $item) {
             if (!is_dir($item)) {

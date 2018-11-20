@@ -6,7 +6,7 @@ use Webbhuset\Whaskell\AbstractFunction;
 use Webbhuset\Whaskell\WhaskellException;
 use XMLReader;
 
-class Xml extends AbstractFunction
+class Xml implements FunctionInterface
 {
     protected $path;
 
@@ -15,7 +15,7 @@ class Xml extends AbstractFunction
         $this->path = $path;
     }
 
-    protected function invoke($files, $finalize = true)
+    public function __invoke($files, $finalize = true)
     {
         foreach ($files as $key => $filename) {
             if (!is_file($filename)) {

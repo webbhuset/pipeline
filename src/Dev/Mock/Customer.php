@@ -26,7 +26,7 @@ class Customer
         $this->dataGenerator->setGlobalSeed($seed);
     }
 
-    protected function invoke($count)
+    public function __invoke($count)
     {
         if (is_array($count)) {
             $count = reset($count);

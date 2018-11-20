@@ -13,22 +13,6 @@ use Webbhuset\Whaskell\Validate;
 
 class Constructor
 {
-    // Convert
-    public static function TreeToLeaves(...$args)
-    {
-        return new Convert\TreeToLeaves(...$args);
-    }
-
-    public static function RowsToTree(...$args)
-    {
-        return new Convert\RowsToTree(...$args);
-    }
-
-    public static function TreeToRows(...$args)
-    {
-        return new Convert\TreeToRows(...$args);
-    }
-
     // Dev
     public static function Dahbug(...$args)
     {
@@ -103,7 +87,7 @@ class Constructor
         return new IO\File\Read\Csv(...$args);
     }
 
-    public static function ReadJson(...$args)
+    public static function ReadJsonStream(...$args)
     {
         return new IO\File\Read\Json(...$args);
     }

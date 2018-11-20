@@ -2,16 +2,15 @@
 
 namespace Webbhuset\Whaskell\Iterable;
 
-use Webbhuset\Whaskell\AbstractFunction;
 use Webbhuset\Whaskell\Constructor as F;
 use Webbhuset\Whaskell\FunctionSignature;
-use Webbhuset\Whaskell\Observe\ObserverInterface;
 use Webbhuset\Whaskell\WhaskellException;
 
-class ApplyCombine extends AbstractFunction
+class ApplyCombine implements FunctionInterface
 {
     protected $applyFunction;
     protected $combineFunction;
+
 
     public function __construct($applyFunction, $combineFunction)
     {
@@ -34,19 +33,12 @@ class ApplyCombine extends AbstractFunction
         $this->combineFunction  = $combineFunction;
     }
 
-    protected function invoke($items, $finalize = true)
+    public function __invoke($items, $finalize = true)
     {
         foreach ($items as $item) {
             $results = call_user_func($this->applyFunction, [$item]);
 
             yield call_user_func($this->combineFunction, $item, $results);
-        }
-    }
-
-    public function registerObserver(ObserverInterface $observer)
-    {
-        if ($this->applyFunction instanceof AbstractFunction) {
-            $this->applyFunction->registerObserver($observer);
         }
     }
 }

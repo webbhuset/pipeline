@@ -4,7 +4,7 @@ namespace Webbhuset\Whaskell\Dev;
 
 use Webbhuset\Whaskell\AbstractFunction;
 
-class Dahbug extends AbstractFunction
+class Dahbug implements FunctionInterface
 {
     protected $backtrace;
     protected $log;
@@ -19,7 +19,7 @@ class Dahbug extends AbstractFunction
         $this->depth        = $depth;
     }
 
-    protected function invoke($items, $finalize = true)
+    public function __invoke($items, $finalize = true)
     {
         foreach ($items as $item) {
             if ($this->log) {

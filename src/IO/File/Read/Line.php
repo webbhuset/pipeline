@@ -5,7 +5,7 @@ namespace Webbhuset\Whaskell\IO\File\Read;
 use Webbhuset\Whaskell\AbstractFunction;
 use Webbhuset\Whaskell\WhaskellException;
 
-class Line extends AbstractFunction
+class Line implements FunctionInterface
 {
     protected $ignoreEmpty = true;
 
@@ -16,7 +16,7 @@ class Line extends AbstractFunction
         }
     }
 
-    protected function invoke($files, $finalize = true)
+    public function __invoke($files, $finalize = true)
     {
         foreach ($files as $key => $filename) {
             if (!is_file($filename)) {

@@ -6,7 +6,7 @@ use Webbhuset\Whaskell\AbstractFunction;
 use Webbhuset\Whaskell\FunctionSignature;
 use Webbhuset\Whaskell\WhaskellException;
 
-class Move extends AbstractFunction
+class Move implements FunctionInterface
 {
     protected $oldPathCallback;
     protected $newPathCallback;
@@ -40,7 +40,7 @@ class Move extends AbstractFunction
         }
     }
 
-    protected function invoke($items, $finalize = true)
+    public function __invoke($items, $finalize = true)
     {
         foreach ($items as $item) {
             $oldPath = call_user_func($this->oldPathCallback, $item);

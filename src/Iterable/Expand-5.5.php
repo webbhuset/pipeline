@@ -6,7 +6,7 @@ use Webbhuset\Whaskell\AbstractFunction;
 use Webbhuset\Whaskell\FunctionSignature;
 use Webbhuset\Whaskell\WhaskellException;
 
-class Expand extends AbstractFunction
+class Expand implements FunctionInterface
 {
     protected $callback;
 
@@ -16,7 +16,7 @@ class Expand extends AbstractFunction
             $canBeUsed = FunctionSignature::canBeUsedWithArgCount($callback, 1, true);
 
             if ($canBeUsed !== true) {
-                throw new WhaskellException($canBeUsed . " e.g. 'function($item)'");
+                throw new WhaskellException($canBeUsed . ' e.g. function($item)');
             }
         } else {
             $callback = function($items) {
@@ -29,7 +29,7 @@ class Expand extends AbstractFunction
         $this->callback = $callback;
     }
 
-    protected function invoke($items, $finalize = true)
+    public function __invoke($items, $finalize = true)
     {
         foreach ($items as $item) {
             $generator = call_user_func($this->callback, $item);

@@ -4,7 +4,7 @@ namespace Webbhuset\Whaskell\Dev;
 
 use Webbhuset\Whaskell\AbstractFunction;
 
-class Slice extends AbstractFunction
+class Slice implements FunctionInterface
 {
     protected $amount;
     protected $skip;
@@ -16,7 +16,7 @@ class Slice extends AbstractFunction
         $this->skip     = $skip;
     }
 
-    protected function invoke($items, $finalize = true)
+    public function __invoke($items, $finalize = true)
     {
         $current = 0;
 

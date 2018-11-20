@@ -5,7 +5,7 @@ namespace Webbhuset\Whaskell\IO\File\Read;
 use Webbhuset\Whaskell\AbstractFunction;
 use Webbhuset\Whaskell\WhaskellException;
 
-class Csv extends AbstractFunction
+class Csv implements FunctionInterface
 {
     protected $separator    = ',';
     protected $enclosure    = '"';
@@ -28,7 +28,7 @@ class Csv extends AbstractFunction
         }
     }
 
-    protected function invoke($files, $finalize = true)
+    public function __invoke($files, $finalize = true)
     {
         foreach ($files as $filename) {
             if (!is_file($filename)) {

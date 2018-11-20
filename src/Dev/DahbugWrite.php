@@ -4,7 +4,7 @@ namespace Webbhuset\Whaskell\Dev;
 
 use Webbhuset\Whaskell\AbstractFunction;
 
-class DahbugWrite extends AbstractFunction
+class DahbugWrite implements FunctionInterface
 {
     protected $log;
 
@@ -13,7 +13,7 @@ class DahbugWrite extends AbstractFunction
         $this->log = class_exists('\dahbug');
     }
 
-    protected function invoke($items, $finalize = true)
+    public function __invoke($items, $finalize = true)
     {
         foreach ($items as $item) {
             if ($this->log) {

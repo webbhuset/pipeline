@@ -5,7 +5,7 @@ namespace Webbhuset\Whaskell\IO\File\Write;
 use Webbhuset\Whaskell\AbstractFunction;
 use Webbhuset\Whaskell\WhaskellException;
 
-class Csv extends AbstractFunction
+class Csv implements FunctionInterface
 {
     protected $separator    = ',';
     protected $enclosure    = '"';
@@ -43,7 +43,7 @@ class Csv extends AbstractFunction
         $this->filename = $target;
     }
 
-    protected function invoke($items, $finalize = true)
+    public function __invoke($items, $finalize = true)
     {
         foreach ($items as $item) {
             if (!$this->headersWritten) {

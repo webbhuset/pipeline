@@ -2,29 +2,32 @@
 
 namespace Webbhuset\Whaskell\Flow;
 
-use Webbhuset\Whaskell\AbstractFunction;
 use Webbhuset\Whaskell\Constructor as F;
 use Webbhuset\Whaskell\FunctionInterface;
+use Webbhuset\Whaskell\FunctionSignature;
 use Webbhuset\Whaskell\WhaskellException;
 
-class Defer extends AbstractFunction
+class Defer implements FunctionInterface
 {
     protected $callback;
-    protected $args = [];
     protected $function;
+
 
     public function __construct($callback)
     {
-        $args = func_get_args();
-        array_shift($args);
+        $canBeUsed = FunctionSignature::canBeUsedWithArgCount($callback, 0, false);
+
+        if ($canBeUsed !== true) {
+            throw new WhaskellException($canBeUsed . ' e.g. function()');
+        }
+
         $this->callback = $callback;
-        $this->args = $args;
     }
 
-    protected function invoke($items, $finalize = true)
+    public function __invoke($items, $finalize = true)
     {
         if (!$this->function) {
-            $function = call_user_func_array($this->callback, $this->args);
+            $function = call_user_func($this->callback);
 
             if (is_array($function)) {
                 $function = F::Compose($function);
@@ -32,10 +35,6 @@ class Defer extends AbstractFunction
 
             if (!$function instanceof FunctionInterface) {
                 throw new WhaskellException('Function must implement FunctionInterface.');
-            }
-
-            if ($this->observer) {
-                $function->registerObserver($this->observer);
             }
 
             $this->function = $function;

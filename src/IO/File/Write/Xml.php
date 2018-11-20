@@ -5,7 +5,7 @@ namespace Webbhuset\Whaskell\IO\File\Write;
 use Webbhuset\Whaskell\AbstractFunction;
 use Webbhuset\Whaskell\WhaskellException;
 
-class Xml extends AbstractFunction
+class Xml implements FunctionInterface
 {
     protected $filename;
     protected $xml;
@@ -78,7 +78,7 @@ class Xml extends AbstractFunction
      *
      * @return \Generator
      */
-    protected function invoke($items, $finalize = true)
+    public function __invoke($items, $finalize = true)
     {
         foreach ($items as $item) {
             foreach ($item as $name => $data) {

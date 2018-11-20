@@ -4,9 +4,9 @@ namespace Webbhuset\Whaskell\Dev;
 
 use Webbhuset\Whaskell\AbstractFunction;
 
-class Mute extends AbstractFunction
+class Mute implements FunctionInterface
 {
-    protected function invoke($items, $finalize = true)
+    public function __invoke($items, $finalize = true)
     {
         foreach ($items as $item) {
             if (false) {

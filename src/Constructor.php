@@ -2,9 +2,23 @@
 
 namespace Webbhuset\Whaskell;
 
-$phpVersion = phpversion();
+use Webbhuset\Whaskell\Convert;
+use Webbhuset\Whaskell\Dispatch;
+use Webbhuset\Whaskell\Dev;
+use Webbhuset\Whaskell\Flow;
+use Webbhuset\Whaskell\IO;
+use Webbhuset\Whaskell\Iterable as Iterables;
+use Webbhuset\Whaskell\Observer;
+use Webbhuset\Whaskell\Validate;
 
-switch (1) {
-    case version_compare($phpVersion, '5.6'): return require_once 'Constructor-5.6.php';
-    case version_compare($phpVersion, '5.5'): return require_once 'Constructor-5.5.php';
+class Constructor
+{
+    // Flow
+
+    public static function Compose(array $functions)
+    {
+        return new Flow\Compose($functions);
+    }
+
+    // IO
 }

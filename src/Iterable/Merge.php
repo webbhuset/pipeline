@@ -2,18 +2,17 @@
 
 namespace Webbhuset\Whaskell\Iterable;
 
-use Webbhuset\Whaskell\AbstractFunction;
 use Webbhuset\Whaskell\Constructor as F;
 use Webbhuset\Whaskell\FunctionInterface;
-use Webbhuset\Whaskell\Observe\ObserverInterface;
 use Webbhuset\Whaskell\WhaskellException;
 
-class Merge extends AbstractFunction
+class Merge implements FunctionInterface
 {
     protected $function;
     protected $replace;
     protected $recursive;
     protected $batch = [];
+
 
     public function __construct($function, $replace = false, $recursive = true)
     {
@@ -30,7 +29,7 @@ class Merge extends AbstractFunction
         $this->recursive    = $replace;
     }
 
-    protected function invoke($items, $finalize = true)
+    public function __invoke($items, $finalize = true)
     {
         $function = $this->function;
 
@@ -64,11 +63,6 @@ class Merge extends AbstractFunction
                 throw new WhaskellException('Merge function items mismatch. Too few items were generated.');
             }
         }
-    }
-
-    public function registerObserver(ObserverInterface $observer)
-    {
-        $this->function->registerObserver($observer);
     }
 
     protected function merge($a, $b)

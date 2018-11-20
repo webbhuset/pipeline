@@ -6,9 +6,10 @@ use Webbhuset\Whaskell\AbstractFunction;
 use Webbhuset\Whaskell\FunctionSignature;
 use Webbhuset\Whaskell\WhaskellException;
 
-class Expand extends AbstractFunction
+class Expand implements FunctionInterface
 {
     protected $callback;
+
 
     public function __construct($callback = null)
     {
@@ -27,7 +28,7 @@ class Expand extends AbstractFunction
         $this->callback = $callback;
     }
 
-    protected function invoke($items, $finalize = true)
+    public function __invoke($items, $finalize = true)
     {
         foreach ($items as $item) {
             yield from ($this->callback)($item);

@@ -7,7 +7,7 @@ use JsonStreamingParser\Parser;
 use Webbhuset\Whaskell\AbstractFunction;
 use Webbhuset\Whaskell\WhaskellException;
 
-class Json extends AbstractFunction implements Listener
+class Json implements FunctionInterface implements Listener
 {
     /**
      * Depth of items in json file.
@@ -66,7 +66,7 @@ class Json extends AbstractFunction implements Listener
         }
     }
 
-    protected function invoke($files, $finalize = true)
+    public function __invoke($files, $finalize = true)
     {
         foreach ($files as $filename) {
             if (!is_file($filename)) {
