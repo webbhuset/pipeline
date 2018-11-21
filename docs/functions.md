@@ -1,8 +1,8 @@
 # Value Functions
 
-## Expand
+* [Expand](docs/functions/expand.md) - Yields value(s) from every input value.
+* [Reduce](docs/functions/reduce.md) - Reduce all input values into a single value.
 
-Yields item(s) from every input item.
 
 ```php
 <?php
@@ -94,44 +94,6 @@ F::Merge([
         }
     }),
 ]);
-```
-
-
-## Reduce
-
-```php
-Generator Reduce(callable $callback, mixed $initialValue = [])
-```
-
-Reduce all input values into a single value.
-
-
-### Parameters
-
-#### callback
-
-```php
-mixed callback (mixed $value, mixed $carry)
-```
-Description
-
-* value - The current value.
-* carry - The return value of previous iteration.
-
-#### intialValue
-
-The initial value of $carry.
-
-
-### Examples
-
-```php
-<?php
-F::Reduce(function($value, $carry) {
-    $carry += $value['qty'];
-
-    return $carry;
-}, 0);
 ```
 
 
