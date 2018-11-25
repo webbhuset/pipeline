@@ -17,15 +17,15 @@ class Slice implements FunctionInterface
         $this->skip     = (int)$skip;
     }
 
-    public function __invoke($items, $finalize = true)
+    public function __invoke($values, $finalize = true)
     {
-        foreach ($items as $item) {
+        foreach ($values as $value) {
             if ($this->current < $this->skip) {
                 $this->current++;
             } elseif ($this->current < $this->amount + $this->skip) {
                 $this->current++;
 
-                yield $item;
+                yield $value;
             }
         }
 

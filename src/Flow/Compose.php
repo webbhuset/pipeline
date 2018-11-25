@@ -51,16 +51,16 @@ class Compose implements FunctionInterface
         $this->functions = $flattenedFunctions;
     }
 
-    public function __invoke($items, $finalize = true)
+    public function __invoke($values, $finalize = true)
     {
         foreach ($this->functions as $function) {
-            $items = $function($items, $finalize);
+            $values = $function($values, $finalize);
         }
 
-        return $items;
+        return $values;
     }
 
-    public function getFunctions()
+    protected function getFunctions()
     {
         return $this->functions;
     }

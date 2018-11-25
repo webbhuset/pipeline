@@ -6,21 +6,19 @@ use Webbhuset\Whaskell\FunctionInterface;
 use Webbhuset\Whaskell\FunctionSignature;
 use Webbhuset\Whaskell\WhaskellException;
 
-class Group implements FunctionInterface
+class GroupCount implements FunctionInterface
 {
-    protected $callback;
+    protected $batchSize;
     protected $batch = [];
 
 
-    public function __construct($callback)
+    public function __construct($batchSize)
     {
-        $canBeUsed = FunctionSignature::canBeUsedWithArgCount($callback, 3, false);
-
-        if ($canBeUsed !== true) {
-            throw new WhaskellException($canBeUsed . ' e.g. function($value, $batch, $finalize)');
+        if ($batchSize !== 0 && $batchSize < 2) {
+            throw new WhaskellException('Batch size has to be larger than 1 (or 0 for infinite).');
         }
 
-        $this->callback = $callback;
+        $this->batchSize = $batchSize;
     }
 
     public function __invoke($values, $finalize = true)
@@ -32,8 +30,7 @@ class Group implements FunctionInterface
                 continue;
             }
 
-            $addToCurrentBatch = call_user_func($this->callback, $value, $this->batch, false);
-            if (!$addToCurrentBatch) {
+            if ($this->batchSize && count($this->batch) >= $this->batchSize) {
                 yield $this->batch;
 
                 $this->batch = [];
@@ -42,10 +39,7 @@ class Group implements FunctionInterface
             $this->batch[] = $value;
         }
 
-        if ($finalize
-            && call_user_func($this->callback, null, $this->batch, true)
-            && count($this->batch)
-        ) {
+        if ($finalize && $this->batch) {
             yield $this->batch;
 
             $this->batch = [];

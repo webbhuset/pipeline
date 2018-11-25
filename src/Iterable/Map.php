@@ -16,16 +16,16 @@ class Map implements FunctionInterface
         $canBeUsed = FunctionSignature::canBeUsedWithArgCount($callback, 1, false);
 
         if ($canBeUsed !== true) {
-            throw new WhaskellException($canBeUsed . ' e.g. function($item)');
+            throw new WhaskellException($canBeUsed . ' e.g. function($value)');
         }
 
         $this->callback = $callback;
     }
 
-    public function __invoke($items, $finalize = true)
+    public function __invoke($values, $finalize = true)
     {
-        foreach ($items as $item) {
-            $results = call_user_func($this->callback, $item);
+        foreach ($values as $value) {
+            $results = call_user_func($this->callback, $value);
 
             yield $results;
         }

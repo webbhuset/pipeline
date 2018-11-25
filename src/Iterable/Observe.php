@@ -16,16 +16,16 @@ class Observe implements FunctionInterface
         $canBeUsed = FunctionSignature::canBeUsedWithArgCount($callback, 1);
 
         if ($canBeUsed !== true) {
-            throw new WhaskellException($canBeUsed . " e.g. 'function(\$item)'");
+            throw new WhaskellException($canBeUsed . ' e.g. function($value)');
         }
     }
 
-    public function __invoke($items, $finalize = true)
+    public function __invoke($values, $finalize = true)
     {
-        foreach ($items as $item) {
-            call_user_func($this->callback, $item);
+        foreach ($values as $value) {
+            call_user_func($this->callback, $value);
 
-            yield $item;
+            yield $value;
         }
     }
 }

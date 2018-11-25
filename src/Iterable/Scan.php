@@ -6,7 +6,7 @@ use Webbhuset\Whaskell\FunctionInterface;
 use Webbhuset\Whaskell\FunctionSignature;
 use Webbhuset\Whaskell\WhaskellException;
 
-class Reduce implements FunctionInterface
+class Scan implements FunctionInterface
 {
     protected $callback;
     protected $carry;
@@ -29,6 +29,8 @@ class Reduce implements FunctionInterface
     public function __invoke($values, $finalize = true)
     {
         foreach ($values as $value) {
+            yield $this->carry;
+
             $this->carry = call_user_func($this->callback, $value, $this->carry);
         }
 

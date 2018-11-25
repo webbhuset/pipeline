@@ -17,9 +17,9 @@ class Factory implements FunctionInterface
         $this->callback = $callback;
     }
 
-    public function __invoke($items, $finalize = true)
+    public function __invoke($values, $finalize = true)
     {
-        $function = call_user_func($this->callback, $item);
+        $function = call_user_func($this->callback, $value);
 
         if (is_array($function)) {
             $function = F::Compose($function);
@@ -29,6 +29,6 @@ class Factory implements FunctionInterface
             throw new WhaskellException('Function must implement FunctionInterface.');
         }
 
-        return $function($items, $finalize);
+        return $function($values, $finalize);
     }
 }

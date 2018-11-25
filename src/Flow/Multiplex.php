@@ -26,7 +26,7 @@ class Multiplex implements FunctionInterface
         $canBeUsed = FunctionSignature::canBeUsedWithArgCount($callback, 1);
 
         if ($canBeUsed !== true) {
-            throw new WhaskellException($canBeUsed . ' e.g. function($item)');
+            throw new WhaskellException($canBeUsed . ' e.g. function($value)');
         }
 
         foreach ($functions as $key => $function) {
@@ -44,35 +44,32 @@ class Multiplex implements FunctionInterface
 
                 throw new WhaskellException("Function {$idx} ({$class}) does not implement FunctionInterface.");
             }
-
-            // TODO: Validate callable.
         }
 
         $this->callback     = $callback;
         $this->functions    = $functions;
     }
 
-    public function __invoke($items, $finalize = true)
+    public function __invoke($values, $finalize = true)
     {
-        foreach ($items as $item) {
-            $key = call_user_func($this->callback, $item);
+        foreach ($values as $value) {
+            $key = call_user_func($this->callback, $value);
 
-            if (isset($this->functions[$key])) {
-                $function   = $this->functions[$key];
-                $results    = $function([$item], false);
-                foreach ($results as $result) {
-                    yield $result;
-                }
-            } elseif ($key === false) {
-                yield $item;
-            } else {
+            if (!isset($this->functions[$key])) {
                 throw new WhaskellException("Unknown multiplex function {$key}.");
+            }
+
+            $results = call_user_func($this->functions[$key], [$value], false);
+
+            foreach ($results as $result) {
+                yield $result;
             }
         }
 
         if ($finalize) {
             foreach ($this->functions as $function) {
                 $results = $function([], true);
+
                 foreach ($results as $result) {
                     yield $result;
                 }

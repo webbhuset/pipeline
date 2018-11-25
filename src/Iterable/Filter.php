@@ -15,19 +15,19 @@ class Filter implements FunctionInterface
         $canBeUsed = FunctionSignature::canBeUsedWithArgCount($callback, 1, false);
 
         if ($canBeUsed !== true) {
-            throw new WhaskellException($canBeUsed . ' e.g. function($item): bool');
+            throw new WhaskellException($canBeUsed . ' e.g. function($value): bool');
         }
 
         $this->callback = $callback;
     }
 
-    public function __invoke($items, $finalize = true)
+    public function __invoke($values, $finalize = true)
     {
-        foreach ($items as $item) {
-            $results = call_user_func($this->callback, $item);
+        foreach ($values as $value) {
+            $result = call_user_func($this->callback, $value);
 
-            if ($results) {
-                yield $item;
+            if ($result) {
+                yield $value;
             }
         }
     }
