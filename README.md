@@ -30,7 +30,7 @@ Every Whaskell function is a class implementing \_\_invoke(), thus allowing inst
 
 ## Usage
 
-### Example #1 - Basic usage
+### Example \#1 - Basic usage
 ```php
 <?php
 use Webbhuset\Whaskell\Constructor as F; // Alias constructor for ease of use.
@@ -55,7 +55,7 @@ Output:
 ```
 
 
-### Example #2 - Composing functions
+### Example \#2 - Composing functions
 ```php
 <?php
 use Webbhuset\Whaskell\Constructor as F;
