@@ -11,7 +11,7 @@ class Observe implements FunctionInterface
     protected $callback;
 
 
-    public function __construct($callback)
+    public function __construct(callable $callback)
     {
         $canBeUsed = FunctionSignature::canBeUsedWithArgCount($callback, 1);
 

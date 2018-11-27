@@ -13,7 +13,7 @@ class Reduce implements FunctionInterface
     protected $initialValue;
 
 
-    public function __construct($callback, $initialValue = [])
+    public function __construct(callable $callback, $initialValue = [])
     {
         $canBeUsed = FunctionSignature::canBeUsedWithArgCount($callback, 2, false);
 

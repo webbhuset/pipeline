@@ -12,7 +12,7 @@ class Factory implements FunctionInterface
     protected $callback;
 
 
-    public function __construct($callback)
+    public function __construct(callable $callback)
     {
         $this->callback = $callback;
     }

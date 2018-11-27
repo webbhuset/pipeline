@@ -8,17 +8,17 @@ use Webbhuset\Whaskell\WhaskellException;
 
 class GroupCount implements FunctionInterface
 {
-    protected $batchSize;
+    protected $size;
     protected $batch = [];
 
 
-    public function __construct($batchSize)
+    public function __construct($size)
     {
-        if ($batchSize !== 0 && $batchSize < 2) {
+        if ($size !== 0 && $size < 2) {
             throw new WhaskellException('Batch size has to be larger than 1 (or 0 for infinite).');
         }
 
-        $this->batchSize = $batchSize;
+        $this->size = $size;
     }
 
     public function __invoke($values, $finalize = true)
@@ -30,7 +30,7 @@ class GroupCount implements FunctionInterface
                 continue;
             }
 
-            if ($this->batchSize && count($this->batch) >= $this->batchSize) {
+            if ($this->size && count($this->batch) >= $this->size) {
                 yield $this->batch;
 
                 $this->batch = [];

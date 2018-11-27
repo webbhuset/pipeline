@@ -13,7 +13,7 @@ class Defer implements FunctionInterface
     protected $function;
 
 
-    public function __construct($callback)
+    public function __construct(callable $callback)
     {
         $canBeUsed = FunctionSignature::canBeUsedWithArgCount($callback, 0, false);
 

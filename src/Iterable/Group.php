@@ -12,7 +12,7 @@ class Group implements FunctionInterface
     protected $batch = [];
 
 
-    public function __construct($callback)
+    public function __construct(callable $callback)
     {
         $canBeUsed = FunctionSignature::canBeUsedWithArgCount($callback, 3, false);
 
