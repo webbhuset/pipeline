@@ -2,6 +2,7 @@
 
 namespace Webbhuset\Whaskell\Iterable;
 
+use Webbhuset\Whaskell\FunctionInterface;
 use Webbhuset\Whaskell\FunctionSignature;
 use Webbhuset\Whaskell\WhaskellException;
 
