@@ -4,7 +4,7 @@ namespace Webbhuset\Whaskell\Iterable;
 
 use Webbhuset\Whaskell\FunctionInterface;
 
-class Take implements FunctionInterface
+class Drop implements FunctionInterface
 {
     protected $amount;
     protected $current;
