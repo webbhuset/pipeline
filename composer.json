@@ -4,8 +4,7 @@
     "license": "proprietary",
     "description": "A library of data-manipulation functions.",
     "require": {
-        "php": "^5.5 || ^7.0",
-        "salsify/json-streaming-parser": "^7.0"
+        "php": "^5.5 || ^7.0"
     },
     "require-dev": {
         "webbhuset/test": "*"
@@ -23,11 +22,5 @@
         "psr-4": {
             "Webbhuset\\Whaskell\\Test\\": "tests/"
         }
-    },
-    "repositories": [
-        {
-            "type": "composer",
-            "url": "https://packages-php.webbhuset.com"
-        }
-    ]
+    }
 }
