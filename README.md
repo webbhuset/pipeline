@@ -22,7 +22,7 @@ Functions are most easily constructed using the static methods in the Constructo
 * [Reduce](docs/functions/reduce.md) - Reduce all input values to a single value.
 * [Scan](docs/functions/scan.md) - Reduce all input values, returning the intermediate results.
 * [Take](docs/functions/take.md) - Return the first N input values and discard the rest.
-* [TakeEvery](docs/functions/take-every.md) - Return every Nth input value.
+* [TakeEvery](docs/functions/take-every.md) - Return every N<sup>th</sup> input value.
 * [TakeUntil](docs/functions/take-until.md) - Return input values until callback returns false.
 
 
