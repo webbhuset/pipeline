@@ -11,12 +11,18 @@ class Filter implements FunctionInterface
     protected $callback;
 
 
-    public function __construct(callable $callback)
+    public function __construct(callable $callback = null)
     {
-        $canBeUsed = FunctionSignature::canBeUsedWithArgCount($callback, 1, false);
+        if ($callback !== null) {
+            $canBeUsed = FunctionSignature::canBeUsedWithArgCount($callback, 1, false);
 
-        if ($canBeUsed !== true) {
-            throw new WhaskellException($canBeUsed . ' e.g. function($value): bool');
+            if ($canBeUsed !== true) {
+                throw new WhaskellException($canBeUsed . ' e.g. function($value): bool');
+            }
+        } else {
+            $callback = function($value) {
+                return $value;
+            };
         }
 
         $this->callback = $callback;
