@@ -20,7 +20,7 @@ class Observe implements FunctionInterface
         }
     }
 
-    public function __invoke($values, $finalize = true)
+    public function __invoke($values, $keepState = false)
     {
         foreach ($values as $value) {
             call_user_func($this->callback, $value);

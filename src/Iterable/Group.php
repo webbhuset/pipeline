@@ -23,7 +23,7 @@ class Group implements FunctionInterface
         $this->callback = $callback;
     }
 
-    public function __invoke($values, $finalize = true)
+    public function __invoke($values, $keepState = false)
     {
         foreach ($values as $value) {
             if (empty($this->batch)) {
@@ -42,7 +42,7 @@ class Group implements FunctionInterface
             $this->batch[] = $value;
         }
 
-        if ($finalize
+        if (!$keepState
             && call_user_func($this->callback, null, $this->batch, true)
             && count($this->batch)
         ) {

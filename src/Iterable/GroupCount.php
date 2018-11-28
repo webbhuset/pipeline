@@ -21,7 +21,7 @@ class GroupCount implements FunctionInterface
         $this->size = $size;
     }
 
-    public function __invoke($values, $finalize = true)
+    public function __invoke($values, $keepState = false)
     {
         foreach ($values as $value) {
             if (empty($this->batch)) {
@@ -39,7 +39,7 @@ class GroupCount implements FunctionInterface
             $this->batch[] = $value;
         }
 
-        if ($finalize && $this->batch) {
+        if (!$keepState && $this->batch) {
             yield $this->batch;
 
             $this->batch = [];

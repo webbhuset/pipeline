@@ -4,5 +4,5 @@ namespace Webbhuset\Whaskell;
 
 interface FunctionInterface
 {
-    public function __invoke($items, $finalize = true);
+    public function __invoke($items, $keepState = false);
 }

@@ -28,7 +28,7 @@ class Filter implements FunctionInterface
         $this->callback = $callback;
     }
 
-    public function __invoke($values, $finalize = true)
+    public function __invoke($values, $keepState = false)
     {
         foreach ($values as $value) {
             $result = call_user_func($this->callback, $value);

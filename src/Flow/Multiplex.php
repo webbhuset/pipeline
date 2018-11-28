@@ -50,7 +50,7 @@ class Multiplex implements FunctionInterface
         $this->functions    = $functions;
     }
 
-    public function __invoke($values, $finalize = true)
+    public function __invoke($values, $keepState = false)
     {
         foreach ($values as $value) {
             $key = call_user_func($this->callback, $value);
@@ -59,16 +59,16 @@ class Multiplex implements FunctionInterface
                 throw new WhaskellException("Unknown multiplex function {$key}.");
             }
 
-            $results = call_user_func($this->functions[$key], [$value], false);
+            $results = call_user_func($this->functions[$key], [$value], true);
 
             foreach ($results as $result) {
                 yield $result;
             }
         }
 
-        if ($finalize) {
+        if (!$keepState) {
             foreach ($this->functions as $function) {
-                $results = $function([], true);
+                $results = $function([], false);
 
                 foreach ($results as $result) {
                     yield $result;

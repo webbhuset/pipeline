@@ -17,18 +17,20 @@ class Factory implements FunctionInterface
         $this->callback = $callback;
     }
 
-    public function __invoke($values, $finalize = true)
+    public function __invoke($values)
     {
-        $function = call_user_func($this->callback, $value);
+        foreach ($values as $value) {
+            $function = call_user_func($this->callback, $value);
 
-        if (is_array($function)) {
-            $function = F::Compose($function);
+            if (is_array($function)) {
+                $function = F::Compose($function);
+            }
+
+            if (!$function instanceof FunctionInterface) {
+                throw new WhaskellException('Function must implement FunctionInterface.');
+            }
+
+            yield $function($values, false);
         }
-
-        if (!$function instanceof FunctionInterface) {
-            throw new WhaskellException('Function must implement FunctionInterface.');
-        }
-
-        return $function($values, $finalize);
     }
 }

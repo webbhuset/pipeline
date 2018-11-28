@@ -36,12 +36,22 @@ class Constructor
 
     // Iterable
 
+    public static function Drop($amount)
+    {
+        return new Iterable\Drop($amount);
+    }
+
+    public static function DropUntil(callable $callback)
+    {
+        return new Iterable\DropUntil($callback);
+    }
+
     public static function Expand(callable $callback = null)
     {
         return new Iterable\Expand($callback);
     }
 
-    public static function Filter(callable $callback)
+    public static function Filter(callable $callback = null)
     {
         return new Iterable\Filter($callback);
     }
@@ -76,8 +86,18 @@ class Constructor
         return new Iterable\Scan($callback, $initialValue);
     }
 
-    public static function Slice($amount, $skip = 0)
+    public static function Take($amount)
     {
-        return new Iterable\Slice($amount, $skip);
+        return new Iterable\Take($amount);
+    }
+
+    public static function TakeEvery($amount)
+    {
+        return new Iterable\TakeEvery($amount);
+    }
+
+    public static function TakeUntil(callable $callback)
+    {
+        return new Iterable\TakeUntil($callback);
     }
 }

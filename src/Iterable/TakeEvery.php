@@ -4,13 +4,13 @@ use Webbhuset\Whaskell\FunctionInterface;
 
 class TakeEvery implements FunctionInterface
 {
-    protected $every;
+    protected $amount;
     protected $current;
 
 
-    public function __construct($every)
+    public function __construct($amount)
     {
-        $this->every = (int)$every;
+        $this->amount = (int)$amount;
     }
 
     public function __invoke($values, $keepState = false)
@@ -18,7 +18,7 @@ class TakeEvery implements FunctionInterface
         foreach ($values as $value) {
             $this->current++;
 
-            if ($this->current % $this->every == 0) {
+            if ($this->current % $this->amount == 0) {
                 yield $value;
             }
         }

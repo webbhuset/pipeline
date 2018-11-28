@@ -24,7 +24,7 @@ class Defer implements FunctionInterface
         $this->callback = $callback;
     }
 
-    public function __invoke($values, $finalize = true)
+    public function __invoke($values, $keepState = false)
     {
         if (!$this->function) {
             $function = call_user_func($this->callback);
@@ -42,6 +42,6 @@ class Defer implements FunctionInterface
             $function = $this->function;
         }
 
-        return $function($values, $finalize);
+        return $function($values, $keepState);
     }
 }

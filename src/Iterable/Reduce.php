@@ -26,13 +26,13 @@ class Reduce implements FunctionInterface
         $this->initialValue = $initialValue;
     }
 
-    public function __invoke($values, $finalize = true)
+    public function __invoke($values, $keepState = false)
     {
         foreach ($values as $value) {
             $this->carry = call_user_func($this->callback, $value, $this->carry);
         }
 
-        if ($finalize) {
+        if (!$keepState) {
             yield $this->carry;
 
             $this->carry = $this->initialValue;

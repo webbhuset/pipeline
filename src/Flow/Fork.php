@@ -29,11 +29,11 @@ class Fork implements FunctionInterface
         $this->functions = $functions;
     }
 
-    public function __invoke($values, $finalize = true)
+    public function __invoke($values, $keepState = false)
     {
         foreach ($values as $value) {
             foreach ($this->functions as $function) {
-                $results = $function([$value], false);
+                $results = $function([$value], true);
 
                 foreach ($results as $res) {
                     yield $res;
@@ -41,9 +41,9 @@ class Fork implements FunctionInterface
             }
         }
 
-        if ($finalize) {
+        if (!$keepState) {
             foreach ($this->functions as $function) {
-                $results = $function([], true);
+                $results = $function([], false);
 
                 foreach ($results as $res) {
                     yield $res;
