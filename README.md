@@ -53,6 +53,7 @@ foreach ($generator as $value) {
     echo $value . "\n";
 }
 ```
+
 Output:
 ```
 2
@@ -78,6 +79,7 @@ foreach ($generator as $value) {
     echo $value . "\n";
 }
 ```
+
 Output:
 ```
 1
