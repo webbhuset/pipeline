@@ -12,18 +12,18 @@ Functions are most easily constructed using the static methods in the Constructo
 ### Iterable
 
 * [Drop](docs/functions/drop.md) - Discard the first N input values and return the rest.
-* [DropUntil](docs/functions/drop-until.md) - Discard input values until callback returns false.
+* [DropWhile](docs/functions/drop-while.md) - Discard input values while callback returns true.
 * [Expand](docs/functions/expand.md) - Yields one or more values from every input value.
 * [Filter](docs/functions/filter.md) - Remove input values based on a callback.
-* [Group](docs/functions/group.md) - Group input values based on a callback.
-* [GroupCount](docs/functions/group-count.md) - Group input values in groups of a specified size.
+* [Group](docs/functions/group.md) - Group input values in groups of a specified size.
+* [GroupWhile](docs/functions/group-while.md) - Group input values based on a callback.
 * [Map](docs/functions/map.md) - Modify every input value with a callback.
 * [Observe](docs/functions/observe.md) - Send input values to a callback without modifying them.
 * [Reduce](docs/functions/reduce.md) - Reduce all input values to a single value.
 * [Scan](docs/functions/scan.md) - Reduce all input values, returning the intermediate results.
 * [Take](docs/functions/take.md) - Return the first N input values and discard the rest.
 * [TakeEvery](docs/functions/take-every.md) - Return every N<sup>th</sup> input value.
-* [TakeUntil](docs/functions/take-until.md) - Return input values until callback returns false.
+* [TakeWhile](docs/functions/take-while.md) - Return input values while callback returns true.
 
 
 ### Flow
@@ -85,6 +85,47 @@ Output:
 1
 23
 4
-31
-1230000
+5
+12000
+```
+
+
+### Example 3 - Import to a database from a file, logging invalid rows
+```php
+<?php
+use Webbhuset\Whaskell\Constructor as F;
+
+$insertToDb = F::Observe(function($row) {
+    DbConnection::insert($row);
+});
+
+$logErrors = F::Observe(function($row) {
+    $msg = sprintf(
+        'Invalid row: %s',
+        json_encode($row)
+    );
+    Logger::writeLog($msg);
+});
+
+$function = F::Compose([
+    F::Expand(function($file) {
+        $file = fopen($file);
+
+        while ($row = fgetcsv($file)) {
+            yield $row;
+        }
+    }),
+    F::Multiplex(
+        function($row) {
+            return count($row) == 4 ? 'insert' : 'log';
+        },
+        [
+            'insert' => $insertToDb,
+            'log' => $logErrors,
+        ]
+    ),
+]);
+
+$generator = $function(['data.csv']);
+iterator_to_array($generator);
 ```

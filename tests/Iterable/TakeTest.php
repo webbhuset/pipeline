@@ -2,8 +2,8 @@
 
 namespace Webbhuset\Whaskell\Test\Iterable;
 
-use Webbhuset\Whaskell\Constructor as F;
 use Eris\Generator;
+use Webbhuset\Whaskell\Constructor as F;
 
 final class TakeTest extends \PHPUnit\Framework\TestCase
 {
@@ -17,11 +17,15 @@ final class TakeTest extends \PHPUnit\Framework\TestCase
                 Generator\nat(),
                 Generator\seq(Generator\nat())
             )
-            ->then(function($amount, $array) {
+            ->then(function($amount, $input) {
                 $fun    = F::Take($amount);
-                $result = iterator_to_array($fun($array));
+                $result = iterator_to_array($fun($input));
 
-                $this->assertLessThanOrEqual($amount, count($result));
+                $this->assertEquals(
+                    min(count($input), $amount),
+                    count($result),
+                    'The size of the result should be equal to min(count($input), $amount).'
+                );
             });
     }
 
@@ -40,7 +44,7 @@ final class TakeTest extends \PHPUnit\Framework\TestCase
                     return;
                 }
 
-                $this->fail('A negative amount should throw an exception.');
+                $this->fail('A negative $amount should throw an exception.');
             });
     }
 
@@ -59,7 +63,7 @@ final class TakeTest extends \PHPUnit\Framework\TestCase
                     return;
                 }
 
-                $this->fail('A string amount should throw an exception.');
+                $this->fail('A string $amount should throw an exception.');
             });
     }
 }

@@ -14,8 +14,14 @@ class GroupCount implements FunctionInterface
 
     public function __construct($size)
     {
-        if ($size !== 0 && $size < 2) {
-            throw new WhaskellException('Batch size has to be larger than 1 (or 0 for infinite).');
+        if (!is_numeric($size)) {
+            throw new \InvalidArgumentException(FunctionSignature::invalidTypeMessage('$size', 'int', $size));
+        }
+
+        $size = (int)$size;
+
+        if ($size < 2) {
+            throw new \InvalidArgumentException('$size must be larger than 1.');
         }
 
         $this->size = $size;
@@ -30,7 +36,7 @@ class GroupCount implements FunctionInterface
                 continue;
             }
 
-            if ($this->size && count($this->batch) >= $this->size) {
+            if (count($this->batch) >= $this->size) {
                 yield $this->batch;
 
                 $this->batch = [];
