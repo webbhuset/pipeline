@@ -9,18 +9,57 @@ final class TakeTest extends \PHPUnit\Framework\TestCase
 {
     use \Eris\TestTrait;
 
-    public function testTake5()
+
+    public function testTake()
     {
-        $take5 = F::Take(5);
+        $this
+            ->forAll(
+                Generator\nat(),
+                Generator\seq(Generator\nat())
+            )
+            ->then(function($amount, $array) {
+                $fun    = F::Take($amount);
+                $result = iterator_to_array($fun($array));
+
+                $this->assertLessThanOrEqual($amount, count($result));
+            });
+    }
+
+    public function testNegativeAmount()
+    {
+        $this->expectNotToPerformAssertions();
 
         $this
             ->forAll(
-                Generator\seq(Generator\nat())
+                Generator\neg()
             )
-            ->then(function($array) use ($take5) {
-                $result = iterator_to_array($take5($array));
+            ->then(function($amount) {
+                try {
+                    F::Take($amount);
+                } catch (\InvalidArgumentException $e) {
+                    return;
+                }
 
-                $this->assertLessThanOrEqual(5, count($result));
+                $this->fail('A negative amount should throw an exception.');
+            });
+    }
+
+    public function testNonIntAmount()
+    {
+        $this->expectNotToPerformAssertions();
+
+        $this
+            ->forAll(
+                Generator\string()
+            )
+            ->then(function($amount) {
+                try {
+                    F::Take($amount);
+                } catch (\InvalidArgumentException $e) {
+                    return;
+                }
+
+                $this->fail('A string amount should throw an exception.');
             });
     }
 }
