@@ -11,12 +11,12 @@ Functions are most easily constructed using the static methods in the Constructo
 
 ### Iterable
 
+* [Chunk](docs/functions/chunk.md) - Group input values in groups of a specified size.
 * [Drop](docs/functions/drop.md) - Discard the first N input values and return the rest.
 * [DropWhile](docs/functions/drop-while.md) - Discard input values while callback returns true.
 * [Expand](docs/functions/expand.md) - Yields one or more values from every input value.
 * [Filter](docs/functions/filter.md) - Remove input values based on a callback.
-* [Group](docs/functions/group.md) - Group input values in groups of a specified size.
-* [GroupWhile](docs/functions/group-while.md) - Group input values based on a callback.
+* [Group](docs/functions/group.md) - Group input values based on a callback.
 * [Map](docs/functions/map.md) - Modify every input value with a callback.
 * [Observe](docs/functions/observe.md) - Send input values to a callback without modifying them.
 * [Reduce](docs/functions/reduce.md) - Reduce all input values to a single value.
