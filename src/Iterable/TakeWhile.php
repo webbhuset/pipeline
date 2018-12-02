@@ -4,7 +4,7 @@ use Webbhuset\Whaskell\FunctionInterface;
 use Webbhuset\Whaskell\FunctionSignature;
 use Webbhuset\Whaskell\WhaskellException;
 
-class TakeUntil implements FunctionInterface
+class TakeWhile implements FunctionInterface
 {
     protected $callback;
     protected $done;

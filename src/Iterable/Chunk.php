@@ -6,7 +6,7 @@ use Webbhuset\Whaskell\FunctionInterface;
 use Webbhuset\Whaskell\FunctionSignature;
 use Webbhuset\Whaskell\WhaskellException;
 
-class GroupCount implements FunctionInterface
+class Chunk implements FunctionInterface
 {
     protected $size;
     protected $batch = [];

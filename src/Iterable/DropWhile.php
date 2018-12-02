@@ -4,7 +4,7 @@ use Webbhuset\Whaskell\FunctionInterface;
 use Webbhuset\Whaskell\FunctionSignature;
 use Webbhuset\Whaskell\WhaskellException;
 
-class DropUntil implements FunctionInterface
+class DropWhile implements FunctionInterface
 {
     protected $callback;
     protected $done;
