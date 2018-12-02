@@ -31,9 +31,7 @@ class Defer implements FunctionInterface
 
             if (is_array($function)) {
                 $function = F::Compose($function);
-            }
-
-            if (!$function instanceof FunctionInterface) {
+            } elseif (!$function instanceof FunctionInterface) {
                 throw new WhaskellException('Function must implement FunctionInterface.');
             }
 

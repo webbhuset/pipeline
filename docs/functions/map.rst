@@ -7,6 +7,7 @@ Map
 
 Modify every input value with a callback.
 
+
 Parameters
 ----------
 
@@ -17,6 +18,7 @@ callback
 
     value
         The value being modified
+
 
 Examples
 --------
@@ -46,6 +48,7 @@ Output::
     4
     10
     24
+
 
 See Also
 --------

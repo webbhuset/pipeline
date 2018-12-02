@@ -2,6 +2,7 @@
 
 namespace Webbhuset\Whaskell\Flow;
 
+use Webbhuset\Whaskell\Constructor as F;
 use Webbhuset\Whaskell\FunctionInterface;
 use Webbhuset\Whaskell\WhaskellException;
 
@@ -19,7 +20,9 @@ class Fork implements FunctionInterface
                 continue;
             }
 
-            if (!$function instanceof FunctionInterface) {
+            if (is_array($function)) {
+                $function = F::Compose($function);
+            } elseif (!$function instanceof FunctionInterface) {
                 $class = is_object($function) ? get_class($function) : $function;
 
                 throw new WhaskellException("Function {$idx} ({$class}) does not implement FunctionInterface.");
