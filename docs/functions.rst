@@ -1,8 +1,8 @@
-Functions
-=========
+List of Functions
+=================
 
-Iterable
---------
+Iterable Functions
+------------------
 
 .. toctree::
     :hidden:
@@ -36,8 +36,8 @@ Iterable
 * :doc:`/functions/take-every` - Return every N\ :sup:`th` input value.
 * :doc:`/functions/take-while` - Return input values while callback returns true.
 
-Flow
-----
+Flow Functions
+--------------
 
 .. toctree::
     :hidden:

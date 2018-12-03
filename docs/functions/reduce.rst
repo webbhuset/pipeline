@@ -5,7 +5,7 @@ Reduce
 
     Reduce(callable $callback, mixed $initialValue = [])
 
-Reduce all input values into a single value.
+Reduces all input values to a single value with the callback function.
 
 Parameters
 ----------
@@ -16,12 +16,10 @@ callback
         mixed callback (mixed $value, mixed $carry)
 
     value
-        Current value.
+        The current value that is being reduced.
 
     carry
-        Return value of previous iteration.
-
-
+        The return value of previous iteration.
 
 initialValue
     The initial value of $carry.
@@ -30,20 +28,17 @@ initialValue
 Examples
 --------
 
-Example 1
-_________
+Example #1
+__________
 
-.. code-block:: php
+Basic example, summing all input values.
 
-    <?php
-    F::Reduce(function($value, $carry) {
-        $carry += $value['qty'];
-
-        return $carry;
-    }, 0);
+.. literalinclude:: ../../examples/functions/reduce/1.php
+    :language: php
 
 
 See Also
 --------
 
-* :doc:`group`
+* :doc:`group` - Group input values based on a callback function.
+* :doc:`scan` - Reduce input values, returning the intermediate results.

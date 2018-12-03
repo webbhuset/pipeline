@@ -18,6 +18,8 @@ class Observe implements FunctionInterface
         if ($canBeUsed !== true) {
             throw new WhaskellException($canBeUsed . ' e.g. function($value)');
         }
+
+        $this->callback = $callback;
     }
 
     public function __invoke($values, $keepState = false)

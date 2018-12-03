@@ -23,31 +23,13 @@ callback
 Examples
 --------
 
-Example #1 - Basic Usage
-________________________
+Example #1
+__________
 
-.. code-block:: php
+Basic usage example.
 
-    <?php
-    use Webbhuset\Whaskell\Constructor as F;
-
-    $map = F::Map(function($value) {
-        return $value * 2;
-    });
-
-    $input = [1, 2, 5, 12];
-
-    foreach ($map($input) as $value) {
-        echo $value . "\n";
-    }
-
-
-Output::
-
-    2
-    4
-    10
-    24
+.. literalinclude:: ../../examples/functions/map/1.php
+    :language: php
 
 
 See Also

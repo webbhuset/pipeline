@@ -7,6 +7,7 @@ Welcome to Whaskell's documentation!
 ====================================
 
 .. toctree::
-    :hidden:
+    :includehidden:
+    :maxdepth: 3
 
     functions
