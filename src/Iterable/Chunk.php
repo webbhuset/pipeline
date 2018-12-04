@@ -1,10 +1,10 @@
 <?php
 
-namespace Webbhuset\Whaskell\Iterable;
+namespace Webbhuset\Pipeline\Iterable;
 
-use Webbhuset\Whaskell\FunctionInterface;
-use Webbhuset\Whaskell\FunctionSignature;
-use Webbhuset\Whaskell\WhaskellException;
+use Webbhuset\Pipeline\FunctionInterface;
+use Webbhuset\Pipeline\FunctionSignature;
+use Webbhuset\Pipeline\PipelineException;
 
 class Chunk implements FunctionInterface
 {

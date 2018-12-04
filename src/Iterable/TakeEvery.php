@@ -1,6 +1,6 @@
 <?php
 
-use Webbhuset\Whaskell\FunctionInterface;
+use Webbhuset\Pipeline\FunctionInterface;
 
 class TakeEvery implements FunctionInterface
 {

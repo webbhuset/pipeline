@@ -1,5 +1,5 @@
 <?php
-use Webbhuset\Whaskell\Constructor as F;
+use Webbhuset\Pipeline\Constructor as F;
 
 $map = F::Map(function($value) {
     return $value * 2;

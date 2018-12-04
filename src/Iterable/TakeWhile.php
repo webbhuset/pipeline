@@ -1,8 +1,8 @@
 <?php
 
-use Webbhuset\Whaskell\FunctionInterface;
-use Webbhuset\Whaskell\FunctionSignature;
-use Webbhuset\Whaskell\WhaskellException;
+use Webbhuset\Pipeline\FunctionInterface;
+use Webbhuset\Pipeline\FunctionSignature;
+use Webbhuset\Pipeline\PipelineException;
 
 class TakeWhile implements FunctionInterface
 {
@@ -15,7 +15,7 @@ class TakeWhile implements FunctionInterface
         $canBeUsed = FunctionSignature::canBeUsedWithArgCount($callback, 1, false);
 
         if ($canBeUsed !== true) {
-            throw new WhaskellException($canBeUsed . ' e.g. function($value): bool');
+            throw new PipelineException($canBeUsed . ' e.g. function($value): bool');
         }
 
         $this->callback = $callback;

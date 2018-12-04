@@ -12,12 +12,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Webbhuset\\Whaskell\\": "src/"
+            "Webbhuset\\Pipeline\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Webbhuset\\Whaskell\\Test\\": "tests/"
+            "Webbhuset\\Pipeline\\Test\\": "tests/"
         }
     }
 }

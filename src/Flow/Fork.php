@@ -1,10 +1,10 @@
 <?php
 
-namespace Webbhuset\Whaskell\Flow;
+namespace Webbhuset\Pipeline\Flow;
 
-use Webbhuset\Whaskell\Constructor as F;
-use Webbhuset\Whaskell\FunctionInterface;
-use Webbhuset\Whaskell\WhaskellException;
+use Webbhuset\Pipeline\Constructor as F;
+use Webbhuset\Pipeline\FunctionInterface;
+use Webbhuset\Pipeline\PipelineException;
 
 class Fork implements FunctionInterface
 {
@@ -25,7 +25,7 @@ class Fork implements FunctionInterface
             } elseif (!$function instanceof FunctionInterface) {
                 $class = is_object($function) ? get_class($function) : $function;
 
-                throw new WhaskellException("Function {$idx} ({$class}) does not implement FunctionInterface.");
+                throw new PipelineException("Function {$idx} ({$class}) does not implement FunctionInterface.");
             }
         }
 

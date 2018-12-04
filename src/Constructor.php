@@ -1,9 +1,9 @@
 <?php
 
-namespace Webbhuset\Whaskell;
+namespace Webbhuset\Pipeline;
 
-use Webbhuset\Whaskell\Flow;
-use Webbhuset\Whaskell\Iterable as Iterables;
+use Webbhuset\Pipeline\Flow;
+use Webbhuset\Pipeline\Iterable as Iterables;
 
 class Constructor
 {

@@ -1,10 +1,10 @@
 <?php
 
-namespace Webbhuset\Whaskell\Iterable;
+namespace Webbhuset\Pipeline\Iterable;
 
-use Webbhuset\Whaskell\FunctionInterface;
-use Webbhuset\Whaskell\FunctionSignature;
-use Webbhuset\Whaskell\WhaskellException;
+use Webbhuset\Pipeline\FunctionInterface;
+use Webbhuset\Pipeline\FunctionSignature;
+use Webbhuset\Pipeline\PipelineException;
 
 class Scan implements FunctionInterface
 {
@@ -18,7 +18,7 @@ class Scan implements FunctionInterface
         $canBeUsed = FunctionSignature::canBeUsedWithArgCount($callback, 2, false);
 
         if ($canBeUsed !== true) {
-            throw new WhaskellException($canBeUsed . ' Eg. function($value, $carry)');
+            throw new PipelineException($canBeUsed . ' Eg. function($value, $carry)');
         }
 
         $this->callback     = $callback;

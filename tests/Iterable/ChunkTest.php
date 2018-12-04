@@ -1,16 +1,16 @@
 <?php
 
-namespace Webbhuset\Whaskell\Test\Iterable;
+namespace Webbhuset\Pipeline\Test\Iterable;
 
 use Eris\Generator;
-use Webbhuset\Whaskell\Constructor as F;
+use Webbhuset\Pipeline\Constructor as F;
 
-final class GroupCountTest extends \PHPUnit\Framework\TestCase
+final class ChunkTest extends \PHPUnit\Framework\TestCase
 {
     use \Eris\TestTrait;
 
 
-    public function testGroupCount()
+    public function testChunk()
     {
         $this
             ->forAll(
@@ -18,7 +18,7 @@ final class GroupCountTest extends \PHPUnit\Framework\TestCase
                 Generator\seq(Generator\nat())
             )
             ->then(function($size, $input) {
-                $fun    = F::GroupCount($size);
+                $fun    = F::Chunk($size);
                 $result = iterator_to_array($fun($input));
 
                 $this->assertEquals(

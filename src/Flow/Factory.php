@@ -1,11 +1,11 @@
 <?php
 
-namespace Webbhuset\Whaskell\Flow;
+namespace Webbhuset\Pipeline\Flow;
 
-use Webbhuset\Whaskell\Constructor as F;
-use Webbhuset\Whaskell\FunctionInterface;
-use Webbhuset\Whaskell\FunctionSignature;
-use Webbhuset\Whaskell\WhaskellException;
+use Webbhuset\Pipeline\Constructor as F;
+use Webbhuset\Pipeline\FunctionInterface;
+use Webbhuset\Pipeline\FunctionSignature;
+use Webbhuset\Pipeline\PipelineException;
 
 class Factory implements FunctionInterface
 {
@@ -27,7 +27,7 @@ class Factory implements FunctionInterface
             }
 
             if (!$function instanceof FunctionInterface) {
-                throw new WhaskellException('Function must implement FunctionInterface.');
+                throw new PipelineException('Function must implement FunctionInterface.');
             }
 
             yield $function($values, false);

@@ -1,14 +1,14 @@
 <?php
 
-namespace Webbhuset\Whaskell;
+namespace Webbhuset\Pipeline;
 
 /**
- * Exception class used for Whaskell-specific exceptions.
+ * Exception class used for Pipeline-specific exceptions.
  *
  * @author    Webbhuset AB <info@webbhuset.se>
  * @copyright Copyright (C) 2016 Webbhuset AB
  */
-class WhaskellException extends \Exception
+class PipelineException extends \Exception
 {
     /**
      * Message prefix.

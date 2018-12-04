@@ -1,11 +1,11 @@
 <?php
 
-namespace Webbhuset\Whaskell\Flow;
+namespace Webbhuset\Pipeline\Flow;
 
-use Webbhuset\Whaskell\Constructor as F;
-use Webbhuset\Whaskell\FunctionInterface;
-use Webbhuset\Whaskell\FunctionSignature;
-use Webbhuset\Whaskell\WhaskellException;
+use Webbhuset\Pipeline\Constructor as F;
+use Webbhuset\Pipeline\FunctionInterface;
+use Webbhuset\Pipeline\FunctionSignature;
+use Webbhuset\Pipeline\PipelineException;
 
 class Multiplex implements FunctionInterface
 {
@@ -26,7 +26,7 @@ class Multiplex implements FunctionInterface
         $canBeUsed = FunctionSignature::canBeUsedWithArgCount($callback, 1);
 
         if ($canBeUsed !== true) {
-            throw new WhaskellException($canBeUsed . ' e.g. function($value)');
+            throw new PipelineException($canBeUsed . ' e.g. function($value)');
         }
 
         foreach ($functions as $key => $function) {
@@ -42,7 +42,7 @@ class Multiplex implements FunctionInterface
             } elseif (!$function instanceof FunctionInterface) {
                 $class = is_object($function) ? get_class($function) : $function;
 
-                throw new WhaskellException("Function {$idx} ({$class}) does not implement FunctionInterface.");
+                throw new PipelineException("Function {$idx} ({$class}) does not implement FunctionInterface.");
             }
         }
 
@@ -56,7 +56,7 @@ class Multiplex implements FunctionInterface
             $key = call_user_func($this->callback, $value);
 
             if (!isset($this->functions[$key])) {
-                throw new WhaskellException("Unknown multiplex function {$key}.");
+                throw new PipelineException("Unknown multiplex function {$key}.");
             }
 
             $results = call_user_func($this->functions[$key], [$value], true);

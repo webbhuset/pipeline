@@ -1,8 +1,8 @@
 <?php
 
-namespace Webbhuset\Whaskell\Iterable;
+namespace Webbhuset\Pipeline\Iterable;
 
-use Webbhuset\Whaskell\FunctionInterface;
+use Webbhuset\Pipeline\FunctionInterface;
 
 class Take implements FunctionInterface
 {

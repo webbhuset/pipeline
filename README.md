@@ -1,8 +1,8 @@
-# Whaskell
+# Pipeline
 
-Whaskell is a collection of functions for manipulating data designed so that they can be chained together.
+Pipeline is a collection of functions for manipulating data designed so that they can be chained together.
 
-Every Whaskell function is a class implementing \_\_invoke(), thus allowing instances to be run as functions.
+Every Pipeline function is a class implementing \_\_invoke(), thus allowing instances to be run as functions.
 Every function takes a Traversable as input and returns a Generator.
 Functions are most easily constructed using the static methods in the Constructor class, but can also be constructed directly using `new`.
 
@@ -40,7 +40,7 @@ Functions are most easily constructed using the static methods in the Constructo
 ### Example 1 - Basic usage
 ```php
 <?php
-use Webbhuset\Whaskell\Constructor as F; // Alias constructor for ease of use.
+use Webbhuset\Pipeline\Constructor as F; // Alias constructor for ease of use.
 
 $function = F::Map(function($value) {
     $value *= 2;
@@ -66,7 +66,7 @@ Output:
 ### Example 2 - Composing functions
 ```php
 <?php
-use Webbhuset\Whaskell\Constructor as F;
+use Webbhuset\Pipeline\Constructor as F;
 
 $function = F::Compose([
     F::Map('trim'),
@@ -93,7 +93,7 @@ Output:
 ### Example 3 - Import to a database from a file, logging invalid rows
 ```php
 <?php
-use Webbhuset\Whaskell\Constructor as F;
+use Webbhuset\Pipeline\Constructor as F;
 
 $insertToDb = F::Observe(function($row) {
     DbConnection::insert($row);

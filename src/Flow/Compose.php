@@ -1,13 +1,13 @@
 <?php
 
-namespace Webbhuset\Whaskell\Flow;
+namespace Webbhuset\Pipeline\Flow;
 
 use RecursiveArrayIterator;
 use RecursiveIteratorIterator;
-use Webbhuset\Whaskell\AbstractFunction;
-use Webbhuset\Whaskell\FunctionInterface;
-use Webbhuset\Whaskell\Observe\ObserverInterface;
-use Webbhuset\Whaskell\WhaskellException;
+use Webbhuset\Pipeline\AbstractFunction;
+use Webbhuset\Pipeline\FunctionInterface;
+use Webbhuset\Pipeline\Observe\ObserverInterface;
+use Webbhuset\Pipeline\PipelineException;
 
 class Compose implements FunctionInterface
 {
@@ -34,7 +34,7 @@ class Compose implements FunctionInterface
             if (!$function instanceof FunctionInterface) {
                 $class = is_object($function) ? get_class($function) : $function;
 
-                throw new WhaskellException("Function {$idx} ({$class}) does not implement FunctionInterface.");
+                throw new PipelineException("Function {$idx} ({$class}) does not implement FunctionInterface.");
             }
         }
 

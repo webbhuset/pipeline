@@ -1,9 +1,9 @@
 <?php
 
-namespace Webbhuset\Whaskell\Test\Iterable;
+namespace Webbhuset\Pipeline\Test\Iterable;
 
 use Eris\Generator;
-use Webbhuset\Whaskell\Constructor as F;
+use Webbhuset\Pipeline\Constructor as F;
 
 final class TakeTest extends \PHPUnit\Framework\TestCase
 {

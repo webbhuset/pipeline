@@ -1,6 +1,6 @@
 <?php
 
-namespace Webbhuset\Whaskell;
+namespace Webbhuset\Pipeline;
 
 use ReflectionMethod;
 use ReflectionFunction;

@@ -1,5 +1,5 @@
 <?php
-use Webbhuset\Whaskell\Constructor as F;
+use Webbhuset\Pipeline\Constructor as F;
 
 $function = F::Compose([
     F::Scan(function($value, $carry) {
