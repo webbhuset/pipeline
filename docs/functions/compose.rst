@@ -13,14 +13,31 @@ Parameters
 ----------
 
 functions
-    Array of functions to should be composed.
+    Array of functions that should be chained.
+    If the array is multidimensional and/or contains another Compose it will be flattened.
 
 
 Examples
 --------
 
+Example #1
+__________
+
+Basic usage.
+
+.. literalinclude:: ../../examples/functions/compose/1.php
+    :language: php
+
+Example #2
+__________
+
+Demonstrating how multidimensional arrays and other Composes are flattened.
+
+.. literalinclude:: ../../examples/functions/compose/2.php
+    :language: php
+
 
 See Also
 --------
 
-* :doc:`fork`
+* :doc:`fork` - Send every input value to multiple functions.

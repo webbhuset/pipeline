@@ -36,6 +36,11 @@ class Constructor
 
     // Iterable
 
+    public static function Chunk($size)
+    {
+        return new Iterable\Chunk($size);
+    }
+
     public static function Drop($amount)
     {
         return new Iterable\Drop($amount);
@@ -59,11 +64,6 @@ class Constructor
     public static function Group(callable $callback)
     {
         return new Iterable\Group($callback);
-    }
-
-    public static function GroupCount($size)
-    {
-        return new Iterable\GroupCount($size);
     }
 
     public static function Map(callable $callback)
