@@ -5,14 +5,16 @@ Compose
 
     Compose(array $functions)
 
-Chains functions together, using the output of each function as input to the next.
+Chains :ref:`functions <functions>` together, using the output of each function as input to the next.
 Output is the output of the last function in the chain.
 
 
 Parameters
 ----------
 
-functions
+.. _functions:
+
+:ref:`functions <functions>`
     Array of functions that should be chained.
     If the array is multidimensional and/or contains another Compose it will be flattened.
 

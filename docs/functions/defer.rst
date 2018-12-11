@@ -13,7 +13,9 @@ This is useful if for example constructing the inner function is resource-intens
 Parameters
 ----------
 
-callback
+.. _callback:
+
+:ref:`callback <callback>`
     .. code-block:: php
 
         mixed callback (void)
