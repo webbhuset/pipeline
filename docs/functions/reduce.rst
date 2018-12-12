@@ -3,7 +3,7 @@ Reduce
 
 .. code-block:: php
 
-    Reduce(callable $callback, mixed $initialValue = [])
+    Reduce ( callable $callback [, mixed $initialValue = [] ] )
 
 Reduces all input values to a single value with the :ref:`callback <callback>` function.
 

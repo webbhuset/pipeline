@@ -3,7 +3,7 @@ Drop
 
 .. code-block:: php
 
-    Drop(int $amount)
+    Drop ( int $amount )
 
 Discards the first :ref:`amount <amount>` input values, returning the remaining values.
 

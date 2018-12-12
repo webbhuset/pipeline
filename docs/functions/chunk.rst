@@ -3,7 +3,7 @@ Chunk
 
 .. code-block:: php
 
-    Chunk(int $size)
+    Chunk ( int $size )
 
 Groups all input values into arrays with :ref:`size <size>` values in each array.
 The last output array may contain less than :ref:`size <size>` values.

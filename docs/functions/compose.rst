@@ -3,7 +3,7 @@ Compose
 
 .. code-block:: php
 
-    Compose(array $functions)
+    Compose ( array $functions )
 
 Chains :ref:`functions <functions>` together, using the output of each function as input to the next.
 Output is the output of the last function in the chain.

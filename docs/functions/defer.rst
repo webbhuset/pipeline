@@ -3,11 +3,11 @@ Defer
 
 .. code-block:: php
 
-    Defer(callable $callback)
+    Defer ( callable $callback )
 
 Delays construction of the inner function until execution.
 Input is sent to inner function, and output is the output of the inner function.
-This is useful if for example constructing the inner function is resource-intensive.
+Defer is useful if for example constructing the inner function is resource-intensive.
 
 
 Parameters
@@ -18,7 +18,7 @@ Parameters
 :ref:`callback <callback>`
     .. code-block:: php
 
-        mixed callback (void)
+        mixed callback ( void )
 
     A callback that returns either a FunctionInterface or an array.
     If the callback returns an array it will be passed as argument to :doc:`compose`,

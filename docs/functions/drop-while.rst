@@ -3,7 +3,7 @@ DropWhile
 
 .. code-block:: php
 
-    DropWhile(callable $callback)
+    DropWhile ( callable $callback )
 
 Discards input values while the :ref:`callback <callback>` function returns true, then all remaining values are returned.
 The first value returned from the function is the one for which the :ref:`callback <callback>` returned false.
@@ -17,7 +17,7 @@ Parameters
 :ref:`callback <callback>`
     .. code-block:: php
 
-        bool callback (mixed $value)
+        bool callback ( mixed $value )
 
     .. _value:
 
