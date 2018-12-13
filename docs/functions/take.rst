@@ -17,6 +17,6 @@ Examples
 See Also
 --------
 
-* :doc:`drop` - Discard the first N values.
+* :doc:`drop` - Discard a specific amount of input values.
 * :doc:`take-every` - Return every N values.
-* :doc:`take-while` - Return values based on a callback function.
+* :doc:`take-while` - Return input values while a callback function returns true.

@@ -20,7 +20,7 @@ class Fork implements FunctionInterface
             }
 
             if (is_array($function)) {
-                $function[$idx] = F::Compose($function);
+                $functions[$idx] = F::Compose($function);
             } elseif (!$function instanceof FunctionInterface) {
                 $class = is_object($function) ? get_class($function) : $function;
 
@@ -35,6 +35,7 @@ class Fork implements FunctionInterface
     {
         foreach ($values as $value) {
             foreach ($this->functions as $function) {
+
                 $results = $function([$value], true);
 
                 foreach ($results as $res) {

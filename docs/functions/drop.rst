@@ -32,5 +32,6 @@ Basic usage.
 See Also
 --------
 
-* :doc:`drop-while` - Discard input values based on a callback function.
+* :doc:`drop-while` - Discard input values while a callback function returns true.
+* :doc:`filter` - Discard input values based on a callback function.
 * :doc:`take` - Return a specific amount of input values.

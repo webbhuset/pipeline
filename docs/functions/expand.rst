@@ -5,7 +5,8 @@ Expand
 
     Expand ( [ callable $callback ] )
 
-Applies :ref:`callback <callback>` to every input value, yielding from the resulting Generator.
+Passes every input value to the :ref:`callback <callback>` function,
+yielding from the resulting Generator.
 
 
 Parameters
@@ -16,11 +17,11 @@ Parameters
 :ref:`callback <callback>`
     .. code-block:: php
 
-        Generator callback (mixed $value)
+        Generator callback ( mixed $value )
 
     Callback function that returns a Generator.
 
-    If no :ref:`callback <callback>` is supplied, Expand will ``yield from`` every input value.
+    If no :ref:`callback <callback>` is supplied, every input value is passed to ``yield from``.
 
     .. _value:
 

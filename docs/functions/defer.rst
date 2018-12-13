@@ -22,7 +22,7 @@ Parameters
 
     A callback that returns either a FunctionInterface or an array.
     If the callback returns an array it will be passed as argument to :doc:`compose`,
-    and then that Compose will be used as the inner function.
+    which is then used as the inner function.
 
 
 Examples
