@@ -4,7 +4,6 @@ namespace Webbhuset\Pipeline\Iterable;
 
 use Webbhuset\Pipeline\FunctionInterface;
 use Webbhuset\Pipeline\FunctionSignature;
-use Webbhuset\Pipeline\PipelineException;
 
 class Chunk implements FunctionInterface
 {

@@ -4,7 +4,6 @@ namespace Webbhuset\Pipeline\Iterable;
 
 use Webbhuset\Pipeline\FunctionInterface;
 use Webbhuset\Pipeline\FunctionSignature;
-use Webbhuset\Pipeline\PipelineException;
 
 class Map implements FunctionInterface
 {
@@ -16,7 +15,7 @@ class Map implements FunctionInterface
         $canBeUsed = FunctionSignature::canBeUsedWithArgCount($callback, 1, false);
 
         if ($canBeUsed !== true) {
-            throw new PipelineException($canBeUsed . ' e.g. function($value)');
+            throw new \InvalidArgumentException($canBeUsed . ' e.g. function($value)');
         }
 
         $this->callback = $callback;

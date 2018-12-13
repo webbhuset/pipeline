@@ -5,7 +5,6 @@ namespace Webbhuset\Pipeline\Flow;
 use Webbhuset\Pipeline\Constructor as F;
 use Webbhuset\Pipeline\FunctionInterface;
 use Webbhuset\Pipeline\FunctionSignature;
-use Webbhuset\Pipeline\PipelineException;
 
 class Defer implements FunctionInterface
 {
@@ -18,7 +17,7 @@ class Defer implements FunctionInterface
         $canBeUsed = FunctionSignature::canBeUsedWithArgCount($callback, 0, false);
 
         if ($canBeUsed !== true) {
-            throw new PipelineException($canBeUsed . ' e.g. function()');
+            throw new \InvalidArgumentException($canBeUsed . ' e.g. function()');
         }
 
         $this->callback = $callback;
@@ -32,7 +31,7 @@ class Defer implements FunctionInterface
             if (is_array($function)) {
                 $function = F::Compose($function);
             } elseif (!$function instanceof FunctionInterface) {
-                throw new PipelineException('Function must implement FunctionInterface.');
+                throw new \InvalidArgumentException('Function must implement FunctionInterface.');
             }
 
             $this->function = $function;

@@ -7,7 +7,6 @@ use RecursiveIteratorIterator;
 use Webbhuset\Pipeline\AbstractFunction;
 use Webbhuset\Pipeline\FunctionInterface;
 use Webbhuset\Pipeline\Observe\ObserverInterface;
-use Webbhuset\Pipeline\PipelineException;
 
 class Compose implements FunctionInterface
 {
@@ -25,7 +24,7 @@ class Compose implements FunctionInterface
         $functions = iterator_to_array($it);
 
         foreach ($functions as $idx => $function) {
-            if ($function === false) {
+            if ($function === []) {
                 unset($functions[$idx]);
 
                 continue;
@@ -34,7 +33,7 @@ class Compose implements FunctionInterface
             if (!$function instanceof FunctionInterface) {
                 $class = is_object($function) ? get_class($function) : $function;
 
-                throw new PipelineException("Function {$idx} ({$class}) does not implement FunctionInterface.");
+                throw new \InvalidArgumentException("Function {$idx} ({$class}) does not implement FunctionInterface.");
             }
         }
 
@@ -47,6 +46,8 @@ class Compose implements FunctionInterface
 
             return $functions;
         }, []);
+
+        // TODO: Flatten multidimensional
 
         $this->functions = $flattenedFunctions;
     }

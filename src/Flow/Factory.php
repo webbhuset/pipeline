@@ -5,7 +5,6 @@ namespace Webbhuset\Pipeline\Flow;
 use Webbhuset\Pipeline\Constructor as F;
 use Webbhuset\Pipeline\FunctionInterface;
 use Webbhuset\Pipeline\FunctionSignature;
-use Webbhuset\Pipeline\PipelineException;
 
 class Factory implements FunctionInterface
 {
@@ -27,7 +26,7 @@ class Factory implements FunctionInterface
             }
 
             if (!$function instanceof FunctionInterface) {
-                throw new PipelineException('Function must implement FunctionInterface.');
+                throw new \InvalidArgumentException('Function must implement FunctionInterface.');
             }
 
             yield $function($values, false);

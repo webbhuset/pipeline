@@ -4,7 +4,6 @@ namespace Webbhuset\Pipeline\Flow;
 
 use Webbhuset\Pipeline\Constructor as F;
 use Webbhuset\Pipeline\FunctionInterface;
-use Webbhuset\Pipeline\PipelineException;
 
 class Fork implements FunctionInterface
 {
@@ -14,18 +13,18 @@ class Fork implements FunctionInterface
     public function __construct(array $functions)
     {
         foreach ($functions as $idx => $function) {
-            if ($function === false) {
+            if ($function === []) {
                 unset($functions[$idx]);
 
                 continue;
             }
 
             if (is_array($function)) {
-                $function = F::Compose($function);
+                $function[$idx] = F::Compose($function);
             } elseif (!$function instanceof FunctionInterface) {
                 $class = is_object($function) ? get_class($function) : $function;
 
-                throw new PipelineException("Function {$idx} ({$class}) does not implement FunctionInterface.");
+                throw new \InvalidArgumentException("Function {$idx} ({$class}) does not implement FunctionInterface.");
             }
         }
 

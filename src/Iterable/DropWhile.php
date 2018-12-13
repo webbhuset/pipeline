@@ -2,7 +2,6 @@
 
 use Webbhuset\Pipeline\FunctionInterface;
 use Webbhuset\Pipeline\FunctionSignature;
-use Webbhuset\Pipeline\PipelineException;
 
 class DropWhile implements FunctionInterface
 {
@@ -15,7 +14,7 @@ class DropWhile implements FunctionInterface
         $canBeUsed = FunctionSignature::canBeUsedWithArgCount($callback, 1, false);
 
         if ($canBeUsed !== true) {
-            throw new PipelineException($canBeUsed . ' e.g. function($value): bool');
+            throw new \InvalidArgumentException($canBeUsed . ' e.g. function($value): bool');
         }
 
         $this->callback = $callback;

@@ -4,7 +4,6 @@ namespace Webbhuset\Pipeline\Iterable;
 
 use Webbhuset\Pipeline\FunctionInterface;
 use Webbhuset\Pipeline\FunctionSignature;
-use Webbhuset\Pipeline\PipelineException;
 
 class Group implements FunctionInterface
 {
@@ -17,7 +16,7 @@ class Group implements FunctionInterface
         $canBeUsed = FunctionSignature::canBeUsedWithArgCount($callback, 3, false);
 
         if ($canBeUsed !== true) {
-            throw new PipelineException($canBeUsed . ' e.g. function($value, $batch, $finalize)');
+            throw new \InvalidArgumentException($canBeUsed . ' e.g. function($value, $batch, $finalize)');
         }
 
         $this->callback = $callback;
