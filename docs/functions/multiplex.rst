@@ -3,20 +3,32 @@ Multiplex
 
 .. code-block:: php
 
-    Multiplex(callable $callback, array $functions)
+    Multiplex ( callable $callback , array $functions )
 
-Sends the input to one of the inner function based on the result of the callback.
-Output is the output of the inner function.
+Sends every input value to one of the inner :ref:`functions <functions>` based
+on the result of the :ref:`callback <callback>` function.
+Output is the output of the inner :ref:`functions <functions>`.
 
 
 Parameters
 ----------
 
-callback
-    Callback
+.. _callback:
 
-functions
-    Functions.
+:ref:`callback <callback>`
+    .. code-block:: php
+
+        mixed callback ( mixed $value )
+
+    A callback that returns the key of the function to which the value should
+    be passed.
+
+.. _functions:
+
+:ref:`functions <functions>`
+    An array of Pipeline functions. If any of the elements in the array is
+    an array it will be passed as argument to :doc:`compose`, which is then
+    used as the function.
 
 
 Examples
@@ -24,6 +36,8 @@ Examples
 
 Example #1
 __________
+
+Basic usage example.
 
 .. code-block:: php
 
@@ -41,3 +55,5 @@ __________
 
 See Also
 --------
+
+* :doc:`fork` - Send every input value to multiple functions.

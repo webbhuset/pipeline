@@ -3,21 +3,25 @@ Map
 
 .. code-block:: php
 
-    Map(callable $callback)
+    Map ( callable $callback )
 
-Modify every input value with a callback.
+Modify every input value with a :ref:`callback <callback>` function.
 
 
 Parameters
 ----------
 
-callback
+.. _callback:
+
+:ref:`callback <callback>`
     .. code-block:: php
 
-        mixed callback (mixed $value)
+        mixed callback ( mixed $value )
 
-    value
-        The value being modified
+    .. _value:
+
+    :ref:`value <value>`
+        The current value.
 
 
 Examples
@@ -35,4 +39,5 @@ Basic usage example.
 See Also
 --------
 
-* :doc:`expand`
+* :doc:`expand` - Yield one or more values from every input value.
+* :doc:`observe` - Send every input value to a callback function without modifying it.

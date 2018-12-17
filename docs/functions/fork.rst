@@ -14,8 +14,9 @@ Parameters
 .. _functions:
 
 :ref:`functions <functions>`
-    Array of functions. If any of the elements in the array is an array it will
-    be passed as argument to :doc:`compose`, which is then used as the function.
+    An array of Pipeline functions. If any of the elements in the array is
+    an array it will be passed as argument to :doc:`compose`, which is then
+    used as the function.
 
 
 Examples
