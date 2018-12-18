@@ -15,41 +15,7 @@ class Compose implements FunctionInterface
 
     public function __construct(array $functions)
     {
-        $it = new RecursiveIteratorIterator(
-            new RecursiveArrayIterator(
-                $functions,
-                RecursiveArrayIterator::CHILD_ARRAYS_ONLY
-            )
-        );
-        $functions = iterator_to_array($it);
-
-        foreach ($functions as $idx => $function) {
-            if ($function === []) {
-                unset($functions[$idx]);
-
-                continue;
-            }
-
-            if (!$function instanceof FunctionInterface) {
-                $class = is_object($function) ? get_class($function) : $function;
-
-                throw new \InvalidArgumentException("Function {$idx} ({$class}) does not implement FunctionInterface.");
-            }
-        }
-
-        $flattenedFunctions = array_reduce($functions, function($functions, $function) {
-            if ($function instanceof self) {
-                $functions = array_merge($functions, $function->getFunctions());
-            } else {
-                $functions[] = $function;
-            }
-
-            return $functions;
-        }, []);
-
-        // TODO: Flatten multidimensional
-
-        $this->functions = $flattenedFunctions;
+        $this->functions = $this->flatten($functions);
     }
 
     public function __invoke($values, $keepState = false)
@@ -59,6 +25,27 @@ class Compose implements FunctionInterface
         }
 
         return $values;
+    }
+
+    protected function flatten(array $functions): array
+    {
+        $flattened = [];
+
+        foreach ($functions as $function) {
+            if (is_array($function)) {
+                $flattened = array_merge($flattened, $this->flatten($function));
+            } elseif ($function instanceof self) {
+                $flattened = array_merge($flattened, $function->getFunctions());
+            } elseif (!$function instanceof FunctionInterface) {
+                $class = is_object($function) ? get_class($function) : $function;
+
+                throw new \InvalidArgumentException("Input function {$class} does not implement FunctionInterface.");
+            } else {
+                $flattened[] = $function;
+            }
+        }
+
+        return $flattened;
     }
 
     protected function getFunctions()

@@ -14,6 +14,7 @@ $compose = F::Compose([
     F::Compose([
         F::Filter('is_numeric')
     ]),
+    [],
     [
         [
             F::Map('intval'),
