@@ -1,5 +1,11 @@
-Useful Patterns
-===============
+Useful Programming Patterns
+===========================
 
-Using the Constructor class
----------------------------
+Functions Returning Arrays
+--------------------------
+
+Since :ref:`flow-functions`
+
+
+Separating Flow Functions and Iterable Functions
+------------------------------------------------

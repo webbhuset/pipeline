@@ -1,5 +1,13 @@
-List of Functions
-=================
+List of Pipeline Functions
+==========================
+
+Pipeline functions are divided into two types: :ref:`iterable-functions` and
+:ref:`flow-functions`. Iterable functions work with the values and modify them,
+while flow functions are wrappers for other functions allowing you to puzzle
+multiple functions into one.
+
+
+.. _iterable-functions:
 
 Iterable Functions
 ------------------
@@ -34,6 +42,8 @@ Iterable Functions
 * :doc:`/functions/take` - Return the first N input values and discard the rest.
 * :doc:`/functions/take-while` - Return input values while callback returns true.
 
+
+.. _flow-functions:
 
 Flow Functions
 --------------
