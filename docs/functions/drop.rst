@@ -25,7 +25,7 @@ __________
 
 Basic usage.
 
-.. literalinclude:: ../../examples/functions/drop/1.php
+.. literalinclude:: /../examples/functions/drop/1.php
     :language: php
 
 

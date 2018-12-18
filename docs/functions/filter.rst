@@ -38,7 +38,7 @@ __________
 
 Basic usage example.
 
-.. literalinclude:: ../../examples/functions/filter/1.php
+.. literalinclude:: /../examples/functions/filter/1.php
     :language: php
 
 

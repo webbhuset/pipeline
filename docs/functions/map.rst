@@ -32,7 +32,7 @@ __________
 
 Basic usage example.
 
-.. literalinclude:: ../../examples/functions/map/1.php
+.. literalinclude:: /../examples/functions/map/1.php
     :language: php
 
 

@@ -33,7 +33,7 @@ __________
 
 Basic usage.
 
-.. literalinclude:: ../../examples/functions/defer/1.php
+.. literalinclude:: /../examples/functions/defer/1.php
     :language: php
 
 Example #2
@@ -41,7 +41,7 @@ __________
 
 Using Defer together with :doc:`multiplex` to only open a log file if something needs to be written to it.
 
-.. literalinclude:: ../../examples/functions/defer/2.php
+.. literalinclude:: /../examples/functions/defer/2.php
     :language: php
 
 See Also

@@ -27,7 +27,7 @@ __________
 
 Basic usage.
 
-.. literalinclude:: ../../examples/functions/chunk/1.php
+.. literalinclude:: /../examples/functions/chunk/1.php
     :language: php
 
 Example #2
@@ -35,7 +35,7 @@ __________
 
 Using Chunk to batch database queries.
 
-.. literalinclude:: ../../examples/functions/chunk/2.php
+.. literalinclude:: /../examples/functions/chunk/2.php
     :language: php
 
 

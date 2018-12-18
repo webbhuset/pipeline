@@ -36,7 +36,7 @@ __________
 
 Basic usage with default :ref:`callback <callback>`.
 
-.. literalinclude:: ../../examples/functions/expand/1.php
+.. literalinclude:: /../examples/functions/expand/1.php
     :language: php
 
 Example #2
@@ -44,7 +44,7 @@ __________
 
 Using Expand to create values of the cartesian product of two arrays.
 
-.. literalinclude:: ../../examples/functions/expand/2.php
+.. literalinclude:: /../examples/functions/expand/2.php
     :language: php
 
 

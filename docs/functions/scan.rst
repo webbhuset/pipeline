@@ -33,7 +33,7 @@ __________
 
 Basic example, summing all input values.
 
-.. literalinclude:: ../../examples/functions/scan/1.php
+.. literalinclude:: /../examples/functions/scan/1.php
     :language: php
 
 
@@ -42,7 +42,7 @@ __________
 
 Building a string, and using :doc:`drop` to skip the initial value.
 
-.. literalinclude:: ../../examples/functions/scan/2.php
+.. literalinclude:: /../examples/functions/scan/2.php
     :language: php
 
 

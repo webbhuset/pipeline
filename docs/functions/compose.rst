@@ -27,7 +27,7 @@ __________
 
 Basic usage.
 
-.. literalinclude:: ../../examples/functions/compose/1.php
+.. literalinclude:: /../examples/functions/compose/1.php
     :language: php
 
 Example #2
@@ -35,7 +35,7 @@ __________
 
 Demonstrating how multidimensional arrays and other Composes are flattened.
 
-.. literalinclude:: ../../examples/functions/compose/2.php
+.. literalinclude:: /../examples/functions/compose/2.php
     :language: php
 
 

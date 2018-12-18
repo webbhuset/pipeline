@@ -39,18 +39,8 @@ __________
 
 Basic usage example.
 
-.. code-block:: php
-
-    <?php
-    F::Multiplex(
-        function($item) {
-            return $item ? 'a' : 'b';
-        },
-        [
-            'a' => F::Compose(...),
-            'b' => F::Compose(...),
-        ]
-    );
+.. literalinclude:: /../examples/functions/multiplex/1.php
+    :language: php
 
 
 See Also

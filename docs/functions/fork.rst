@@ -27,7 +27,7 @@ __________
 
 Basic usage example.
 
-.. literalinclude:: ../../examples/functions/fork/1.php
+.. literalinclude:: /../examples/functions/fork/1.php
     :language: php
 
 

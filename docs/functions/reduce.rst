@@ -41,7 +41,7 @@ __________
 
 Basic usage example, summing all input values.
 
-.. literalinclude:: ../../examples/functions/reduce/1.php
+.. literalinclude:: /../examples/functions/reduce/1.php
     :language: php
 
 
