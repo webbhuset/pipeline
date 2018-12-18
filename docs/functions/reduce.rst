@@ -7,6 +7,7 @@ Reduce
 
 Reduces all input values to a single value with the :ref:`callback <callback>` function.
 
+
 Parameters
 ----------
 
@@ -15,7 +16,7 @@ Parameters
 :ref:`callback <callback>`
     .. code-block:: php
 
-        mixed callback (mixed $value, mixed $carry)
+        mixed callback ( mixed $value , mixed $carry )
 
     .. _value:
 

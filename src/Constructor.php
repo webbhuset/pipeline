@@ -46,9 +46,9 @@ class Constructor
         return new Iterable\Drop($amount);
     }
 
-    public static function DropUntil(callable $callback)
+    public static function DropWhile(callable $callback)
     {
-        return new Iterable\DropUntil($callback);
+        return new Iterable\DropWhile($callback);
     }
 
     public static function Expand(callable $callback = null)
@@ -91,13 +91,8 @@ class Constructor
         return new Iterable\Take($amount);
     }
 
-    public static function TakeEvery($amount)
+    public static function TakeWhile(callable $callback)
     {
-        return new Iterable\TakeEvery($amount);
-    }
-
-    public static function TakeUntil(callable $callback)
-    {
-        return new Iterable\TakeUntil($callback);
+        return new Iterable\TakeWhile($callback);
     }
 }

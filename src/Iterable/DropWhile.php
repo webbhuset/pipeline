@@ -1,5 +1,7 @@
 <?php
 
+namespace Webbhuset\Pipeline\Iterable;
+
 use Webbhuset\Pipeline\FunctionInterface;
 use Webbhuset\Pipeline\FunctionSignature;
 

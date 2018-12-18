@@ -9,5 +9,8 @@ Welcome to Pipeline's documentation!
 .. toctree::
     :includehidden:
     :maxdepth: 3
+    :caption: Table of Contents
 
+    installation
+    patterns
     functions

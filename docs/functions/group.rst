@@ -16,7 +16,7 @@ Parameters
 :ref:`callback <callback>`
     .. code-block:: php
 
-        bool callback ( mixed $value, array $batch, bool $finalize )
+        bool callback ( mixed $value , array $batch , bool $finalize )
 
     If the callback function returns true the current :ref:`value <value>` is
     added to the current :ref:`batch <batch>`. If it returns false it is added

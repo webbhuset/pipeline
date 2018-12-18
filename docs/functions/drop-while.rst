@@ -5,8 +5,9 @@ DropWhile
 
     DropWhile ( callable $callback )
 
-Discards input values while the :ref:`callback <callback>` function returns true, then all remaining values are returned.
-The first value returned from the function is the one for which the :ref:`callback <callback>` returned false.
+Discards input values while the :ref:`callback <callback>` function returns true,
+then all remaining values are returned. The first value returned is the one for
+which the :ref:`callback <callback>` function returned false.
 
 
 Parameters
@@ -31,7 +32,7 @@ Examples
 Example #1
 __________
 
-Basic usage.
+Basic usage example.
 
 .. literalinclude:: /../examples/functions/drop-while/1.php
     :language: php

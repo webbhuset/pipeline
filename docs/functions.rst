@@ -19,7 +19,6 @@ Iterable Functions
     functions/reduce
     functions/scan
     functions/take
-    functions/take-every
     functions/take-while
 
 * :doc:`/functions/chunk` - Group input values in groups of a specified size.
@@ -33,14 +32,15 @@ Iterable Functions
 * :doc:`/functions/reduce` - Reduce all input values to a single value.
 * :doc:`/functions/scan` - Reduce all input values, returning the intermediate results.
 * :doc:`/functions/take` - Return the first N input values and discard the rest.
-* :doc:`/functions/take-every` - Return every N\ :sup:`th` input value.
 * :doc:`/functions/take-while` - Return input values while callback returns true.
+
 
 Flow Functions
 --------------
 
 .. toctree::
     :hidden:
+    :maxdepth: 1
 
     functions/compose
     functions/defer

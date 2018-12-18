@@ -23,7 +23,7 @@ Examples
 Example #1
 __________
 
-Basic usage.
+Basic usage example.
 
 .. literalinclude:: /../examples/functions/drop/1.php
     :language: php
