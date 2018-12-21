@@ -2,6 +2,7 @@ Useful Programming Patterns
 ===========================
 
 - Building Pipeline functions in named functions.
+- Using config parameters to build functions.
 
 Functions Returning Arrays
 --------------------------
