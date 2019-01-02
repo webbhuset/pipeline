@@ -32,19 +32,19 @@ class Compose implements FunctionInterface
                 $flattened = array_merge($flattened, $this->flatten($function));
             } elseif ($function instanceof self) {
                 $flattened = array_merge($flattened, $function->getFunctions());
-            } elseif (!$function instanceof FunctionInterface) {
+            } elseif ($function instanceof FunctionInterface) {
+                $flattened[] = $function;
+            } else {
                 $class = is_object($function) ? get_class($function) : $function;
 
                 throw new \InvalidArgumentException("Input function {$class} does not implement FunctionInterface.");
-            } else {
-                $flattened[] = $function;
             }
         }
 
         return $flattened;
     }
 
-    protected function getFunctions()
+    protected function getFunctions(): array
     {
         return $this->functions;
     }
