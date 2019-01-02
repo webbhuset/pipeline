@@ -2,11 +2,7 @@
 
 namespace Webbhuset\Pipeline\Flow;
 
-use RecursiveArrayIterator;
-use RecursiveIteratorIterator;
-use Webbhuset\Pipeline\AbstractFunction;
 use Webbhuset\Pipeline\FunctionInterface;
-use Webbhuset\Pipeline\Observe\ObserverInterface;
 
 class Compose implements FunctionInterface
 {
