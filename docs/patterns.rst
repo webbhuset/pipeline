@@ -15,7 +15,7 @@ Since :ref:`flow-functions`
     :dedent: 4
 
 
-Separating Flow Functions and Iterable Functions
+Separating Flow Functions and Value Functions
 ------------------------------------------------
 
 .. literalinclude:: /../examples/patterns.php

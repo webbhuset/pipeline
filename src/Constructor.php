@@ -3,7 +3,7 @@
 namespace Webbhuset\Pipeline;
 
 use Webbhuset\Pipeline\Flow;
-use Webbhuset\Pipeline\Iterable as Iterables;
+use Webbhuset\Pipeline\Value;
 
 class Constructor
 {
@@ -34,65 +34,65 @@ class Constructor
         return new Flow\Multiplex($callback, $functions);
     }
 
-    // Iterable
+    // Value
 
     public static function Chunk($size)
     {
-        return new Iterable\Chunk($size);
+        return new Value\Chunk($size);
     }
 
     public static function Drop($amount)
     {
-        return new Iterable\Drop($amount);
+        return new Value\Drop($amount);
     }
 
     public static function DropWhile(callable $callback)
     {
-        return new Iterable\DropWhile($callback);
+        return new Value\DropWhile($callback);
     }
 
     public static function Expand(callable $callback = null)
     {
-        return new Iterable\Expand($callback);
+        return new Value\Expand($callback);
     }
 
     public static function Filter(callable $callback = null)
     {
-        return new Iterable\Filter($callback);
+        return new Value\Filter($callback);
     }
 
     public static function Group(callable $callback)
     {
-        return new Iterable\Group($callback);
+        return new Value\Group($callback);
     }
 
     public static function Map(callable $callback)
     {
-        return new Iterable\Map($callback);
+        return new Value\Map($callback);
     }
 
     public static function Observe(callable $callback)
     {
-        return new Iterable\Observe($callback);
+        return new Value\Observe($callback);
     }
 
     public static function Reduce(callable $callback, $initialValue = [])
     {
-        return new Iterable\Reduce($callback, $initialValue);
+        return new Value\Reduce($callback, $initialValue);
     }
 
     public static function Scan(callable $callback, $initialValue = [])
     {
-        return new Iterable\Scan($callback, $initialValue);
+        return new Value\Scan($callback, $initialValue);
     }
 
     public static function Take($amount)
     {
-        return new Iterable\Take($amount);
+        return new Value\Take($amount);
     }
 
     public static function TakeWhile(callable $callback)
     {
-        return new Iterable\TakeWhile($callback);
+        return new Value\TakeWhile($callback);
     }
 }

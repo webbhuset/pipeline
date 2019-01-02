@@ -1,6 +1,6 @@
 <?php
 
-namespace Webbhuset\Pipeline\Test\Iterable;
+namespace Webbhuset\Pipeline\Test\Value;
 
 use Eris\Generator;
 use Webbhuset\Pipeline\Constructor as F;

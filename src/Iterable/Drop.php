@@ -1,6 +1,6 @@
 <?php
 
-namespace Webbhuset\Pipeline\Iterable;
+namespace Webbhuset\Pipeline\Value;
 
 use Webbhuset\Pipeline\FunctionInterface;
 

@@ -9,7 +9,7 @@ Functions are most easily constructed using the static methods in the Constructo
 
 ## Functions
 
-### Iterable
+### Value
 
 * [Chunk](docs/functions/chunk.md) - Group input values in groups of a specified size.
 * [Drop](docs/functions/drop.md) - Discard the first N input values and return the rest.

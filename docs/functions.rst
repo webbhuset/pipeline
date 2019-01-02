@@ -2,14 +2,14 @@ List of Pipeline Functions
 ==========================
 
 Pipeline functions are divided into two types: :ref:`iterable-functions` and
-:ref:`flow-functions`. Iterable functions work with the values and modify them,
+:ref:`flow-functions`. Value functions work with the values and modify them,
 while flow functions are wrappers for other functions allowing you to puzzle
 multiple functions into one.
 
 
 .. _iterable-functions:
 
-Iterable Functions
+Value Functions
 ------------------
 
 .. toctree::
