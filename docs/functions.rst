@@ -33,7 +33,7 @@ Value Functions
 * :doc:`/functions/drop` - Discard the first N input values and return the rest.
 * :doc:`/functions/drop-while` - Discard input values while callback returns true.
 * :doc:`/functions/expand` - Yields one or more values from every input value.
-* :doc:`/functions/filter` - Remove input values based on a callback.
+* :doc:`/functions/filter` - Discard input values based on a callback.
 * :doc:`/functions/group` - Group input values based on a callback.
 * :doc:`/functions/map` - Modify every input value with a callback.
 * :doc:`/functions/observe` - Send input values to a callback without modifying them.

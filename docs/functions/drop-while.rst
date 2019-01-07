@@ -42,4 +42,5 @@ See Also
 --------
 
 * :doc:`drop` - Discard a specific amount of input values.
+* :doc:`filter` - Discard input values based on a callback.
 * :doc:`take-while` - Return input values while callback returns true.

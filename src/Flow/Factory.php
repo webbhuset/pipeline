@@ -13,10 +13,16 @@ class Factory implements FunctionInterface
 
     public function __construct(callable $callback)
     {
+        $canBeUsed = FunctionSignature::canBeUsedWithArgCount($callback, 1, false);
+
+        if ($canBeUsed !== true) {
+            throw new \InvalidArgumentException($canBeUsed . ' e.g. function($value)');
+        }
+
         $this->callback = $callback;
     }
 
-    public function __invoke($values)
+    public function __invoke($values, $keepState = false)
     {
         foreach ($values as $value) {
             $function = call_user_func($this->callback, $value);
@@ -29,7 +35,9 @@ class Factory implements FunctionInterface
                 throw new \InvalidArgumentException('Function must implement FunctionInterface.');
             }
 
-            yield $function($values, false);
+            foreach ($function([$value], false) as $outValue) {
+                yield $outValue;
+            }
         }
     }
 }
