@@ -39,6 +39,10 @@ class Defer implements FunctionInterface
             $function = $this->function;
         }
 
+        if (!$keepState) {
+            $this->function = null;
+        }
+
         return $function($values, $keepState);
     }
 }

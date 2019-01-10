@@ -43,8 +43,3 @@ Using Defer together with :doc:`multiplex` to only open a log file if something 
 
 .. literalinclude:: /../examples/functions/defer/2.php
     :language: php
-
-See Also
---------
-
-* :doc:`factory` - Construct a function for every input value.

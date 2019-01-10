@@ -54,12 +54,10 @@ Flow Functions
 
     functions/compose
     functions/defer
-    functions/factory
     functions/fork
     functions/multiplex
 
 * :doc:`/functions/compose` - Chain functions together.
 * :doc:`/functions/defer` - Delay construction of a function.
-* :doc:`/functions/factory` - Construct a function for every input value.
 * :doc:`/functions/fork` - Send every input value to multiple functions.
 * :doc:`/functions/multiplex` - Send every input value to one function based on a callback.

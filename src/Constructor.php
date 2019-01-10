@@ -19,11 +19,6 @@ class Constructor
         return new Flow\Defer($callback);
     }
 
-    public static function Factory(callable $callback)
-    {
-        return new Flow\Factory($callback);
-    }
-
     public static function Fork(array $functions)
     {
         return new Flow\Fork($functions);
