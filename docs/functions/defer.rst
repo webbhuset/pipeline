@@ -31,15 +31,7 @@ Examples
 Example #1
 __________
 
-Basic usage.
+Basic usage example.
 
 .. literalinclude:: /../examples/functions/defer/1.php
-    :language: php
-
-Example #2
-__________
-
-Using Defer together with :doc:`multiplex` to only open a log file if something needs to be written to it.
-
-.. literalinclude:: /../examples/functions/defer/2.php
     :language: php
