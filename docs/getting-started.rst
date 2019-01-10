@@ -37,5 +37,5 @@ Using the Result
 
 Since all Pipeline functions return a `Generator`_ they are actually not executed
 until the generator is iterated, and you cannot iterate the result more than once.
-If you need to iterate more than once you need to convert the result to an array
+If you need to iterate more than once, consider converting the result to an array
 using `iterator_to_array`_.

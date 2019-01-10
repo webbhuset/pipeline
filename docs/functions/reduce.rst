@@ -46,6 +46,20 @@ Basic usage example, summing all input values.
     :language: php
 
 
+Example #2
+__________
+
+Using Reduce, :doc:`filter`, and :doc:`map` to write to a file and return the path.
+Reduce opens a file pointer, and :doc:`map` closes it and returns the path.
+
+Since Reduce always returns a value even with an empty input, we use :doc:`filter`
+to prevent an attempt to close a non-existent pointer and returning the path
+when input is empty.
+
+.. literalinclude:: /../examples/functions/reduce/2.php
+    :language: php
+
+
 See Also
 --------
 
