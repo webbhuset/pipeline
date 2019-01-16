@@ -1,13 +1,19 @@
 Getting Started
 ===============
 
+Requirements
+------------
+
+* PHP 5.5 or greater.
+
+
 Installation
 ------------
 
 .. _Composer: https://getcomposer.org/
 
 You can install Pipeline with `Composer`_ by adding ``"webbhuset/pipeline": "*"`` to your
-composer.json or running ``composer require webbhuset/pipeline`` in your terminal.
+composer.json or by running ``composer require webbhuset/pipeline`` in your terminal.
 
 
 Building Pipeline Functions
