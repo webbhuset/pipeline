@@ -23,14 +23,8 @@ The easiest way to construct Pipeline functions is to use the Constructor class.
 functions for constructing :doc:`every Pipeline function <functions>`, allowing you to construct all
 functions in a concise manner with a single use statement.
 
-.. code-block:: php
-
-    <?php
-    use Webbhuset\Pipeline\Constructor as F;
-
-    $take5 = F::Take(5);
-
-    $result = $take5(range(1,10));
+.. literalinclude:: /../examples/functions/take/1.php
+    :language: php
 
 It is of course also possible to construct the functions with ``new`` if that is preferred.
 
