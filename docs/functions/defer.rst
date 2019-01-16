@@ -5,9 +5,9 @@ Defer
 
     Defer ( callable $callback )
 
-Delays construction of the inner function until execution.
-Input is sent to inner function, and output is the output of the inner function.
-Defer is useful if for example constructing the inner function is resource-intensive.
+Delays construction of the inner function until execution. Input is sent to inner function, and
+output is the output of the inner function. Defer is useful if for example constructing the inner
+function is resource-intensive.
 
 
 Parameters
@@ -20,9 +20,8 @@ Parameters
 
         mixed callback ( void )
 
-    A callback that returns either a FunctionInterface or an array.
-    If the callback returns an array it will be passed as argument to :doc:`compose`,
-    which is then used as the inner function.
+    A callback that returns either a FunctionInterface or an array. If the callback returns an array
+    it will be passed as argument to :doc:`compose`, which is then used as the inner function.
 
 
 Examples

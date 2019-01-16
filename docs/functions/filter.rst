@@ -5,8 +5,8 @@ Filter
 
     Filter ( [ callable $callback ] )
 
-Passes every input value to the :ref:`callback <callback>` function,
-returning only values for which the :ref:`callback <callback>` returns true.
+Passes every input value to the :ref:`callback <callback>` function, returning only values for which
+the :ref:`callback <callback>` returns true.
 
 
 Parameters
@@ -19,8 +19,8 @@ Parameters
 
         bool callback ( mixed $value )
 
-    If no :ref:`callback <callback>` is supplied, all values that equal false
-    (after being `converted to bool`_) are removed.
+    If no :ref:`callback <callback>` is supplied, all values that equal false (after being
+    `converted to bool`_) are removed.
 
     .. _converted to bool: http://php.net/manual/en/language.types.boolean.php#language.types.boolean.casting
 

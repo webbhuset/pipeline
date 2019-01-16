@@ -5,10 +5,9 @@ TakeWhile
 
     TakeWhile ( callable $callback )
 
-Returns input values while the :ref:`callback <callback>` function returns true,
-then all remaining values are ignored. The last value returned is the the one
-previous to the value for which the :ref:`callback <callback>` function returned
-false.
+Returns input values while the :ref:`callback <callback>` function returns true, then all remaining
+values are ignored. The last value returned is the the one previous to the value for which the
+:ref:`callback <callback>` function returned false.
 
 
 Parameters

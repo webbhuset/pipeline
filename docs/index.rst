@@ -8,5 +8,5 @@ Welcome to Pipeline's documentation!
 
     introduction
     getting-started
-    patterns
     functions
+    patterns

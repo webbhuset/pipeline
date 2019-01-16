@@ -5,8 +5,9 @@ Scan
 
     Scan ( callable $callback [, mixed $initialValue = [] ] )
 
-Reduces all input values to a single value with the :ref:`callback <callback>`
-function, while returning the intermediate result of every iteration.
+Reduces all input values to a single value with the :ref:`callback <callback>` function, while
+returning the intermediate result of every iteration.
+
 
 Parameters
 ----------

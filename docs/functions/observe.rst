@@ -5,8 +5,7 @@ Observe
 
     Observe ( callable $callback )
 
-Passes every input value to the :ref:`callback <callback>` function without
-modifying it.
+Passes every input value to the :ref:`callback <callback>` function without modifying it.
 
 
 Parameters

@@ -5,8 +5,8 @@ Expand
 
     Expand ( [ callable $callback ] )
 
-Passes every input value to the :ref:`callback <callback>` function,
-yielding from the resulting Generator.
+Passes every input value to the :ref:`callback <callback>` function, yielding from the resulting
+Generator.
 
 
 Parameters

@@ -33,9 +33,9 @@ Using the Result
 ----------------
 
 .. _Generator: http://php.net/manual/en/language.generators.php
-.. _iterator_to_array: http://php.net/manual/en/function.iterator-to-array.php
+.. _iterator_to_array(): http://php.net/manual/en/function.iterator-to-array.php
 
 Since all Pipeline functions return a `Generator`_ they are actually not executed
 until the generator is iterated, and you cannot iterate the result more than once.
 If you need to iterate more than once, consider converting the result to an array
-using `iterator_to_array`_.
+using `iterator_to_array()`_.

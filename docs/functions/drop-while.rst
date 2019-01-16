@@ -5,9 +5,9 @@ DropWhile
 
     DropWhile ( callable $callback )
 
-Discards input values while the :ref:`callback <callback>` function returns true,
-then all remaining values are returned. The first value returned is the one for
-which the :ref:`callback <callback>` function returned false.
+Discards input values while the :ref:`callback <callback>` function returns true, then all remaining
+values are returned. The first value returned is the one for which the :ref:`callback <callback>`
+function returned false.
 
 
 Parameters
