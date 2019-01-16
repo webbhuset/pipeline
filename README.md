@@ -7,7 +7,7 @@ function takes a Traversable as input and returns a Generator.
 
 ## Documentation
 
-Documentation is available at [https://php-pipeline.readthedocs.io/](ReadTheDocs).
+Documentation is available at [ReadTheDocs](https://php-pipeline.readthedocs.io/).
 
 
 ## License
