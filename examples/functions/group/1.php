@@ -2,9 +2,8 @@
 
 use Webbhuset\Pipeline\Constructor as F;
 
-$group = F::Group(function($value, $batch, $finalize) {
-    return $finalize                // Return if last batch
-        || !$batch                  // Add to batch if empty
+$group = F::Group(function($value, $batch) {
+    return !$batch                  // Add to batch if empty
         || $value == reset($batch); // Add if value is the same as values in batch
 });
 

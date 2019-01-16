@@ -13,10 +13,10 @@ class Group implements FunctionInterface
 
     public function __construct(callable $callback)
     {
-        $canBeUsed = FunctionSignature::canBeUsedWithArgCount($callback, 3, false);
+        $canBeUsed = FunctionSignature::canBeUsedWithArgCount($callback, 2, false);
 
         if ($canBeUsed !== true) {
-            throw new \InvalidArgumentException($canBeUsed . ' e.g. function($value, $batch, $finalize)');
+            throw new \InvalidArgumentException($canBeUsed . ' e.g. function($value, $batch)');
         }
 
         $this->callback = $callback;
@@ -31,7 +31,7 @@ class Group implements FunctionInterface
                 continue;
             }
 
-            $addToCurrentBatch = call_user_func($this->callback, $value, $this->batch, false);
+            $addToCurrentBatch = call_user_func($this->callback, $value, $this->batch);
             if (!$addToCurrentBatch) {
                 yield $this->batch;
 
@@ -41,10 +41,7 @@ class Group implements FunctionInterface
             $this->batch[] = $value;
         }
 
-        if (!$keepState
-            && call_user_func($this->callback, null, $this->batch, true)
-            && count($this->batch)
-        ) {
+        if (!$keepState && count($this->batch)) {
             yield $this->batch;
 
             $this->batch = [];
