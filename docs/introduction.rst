@@ -21,8 +21,9 @@ functions, e.g. build a function that reads input files, maps their data, and im
 database.
 
 Of course you could just write a normal PHP function, but Pipeline handles all function chaining for
-you, and makes it easier to understand the flow of data at a glance. Compare the following
-functions:
+you, and makes it easier to understand the flow of data at a glance. Additionally every Pipeline
+function is lazy, meaning you (usually) don't have to worry about large amount of data. Compare the
+following functions:
 
 .. code-block:: php
 
@@ -31,11 +32,20 @@ functions:
     // Using normal PHP
     function importToDatabase(array $files, int $batchSize = 100) {
         foreach ($files as $file) {
-            $data = $this->readDataFromFile($file);
-            $data = $this->mapFileData($data);
-            $this->importDataToDatabase($data, $batchSize);
-            $logData = $this->formatLogData($data);
-            $this->logDataToFile($logData);
+            $rows = $this->readRowsFromFile($file);
+            foreach ($rows as $idx => $row) {
+                $rows[$idx] = $this->mapFileData($row);
+            }
+
+            $chunks = array_chunk($rows, $batchSize);
+            foreach ($chunks as $chunk) {
+                $this->importRowsToDatabase($chunk);
+            }
+
+            foreach ($rows as $row) {
+                $logData = $this->formatLogData($data);
+                $this->logDataToFile($logData);
+            }
         }
     }
 
@@ -43,13 +53,16 @@ functions:
     function importToDatabase(array $files, int $batchSize = 100)
     {
         $fun = F::Compose([
-            $this->readDataFromFile(),
-            $this->mapFileData(),
+            F::Expand([$this, 'readRowsFromFile']),
+            F::Map([$this, 'mapFileData']),
             F::Fork([
-                $this->importDataToDatabase($batchSize),
                 [
-                    $this->formatLogData(),
-                    $this->logDataToFile(),
+                    F::Chunk($batchSize),
+                    F::Observe([$this, 'importRowsToDatabase']),
+                ],
+                [
+                    F::Map([$this, 'formatLogData']),
+                    F::Observe([$this, 'logDataToFile']),
                 ]
             ])
         ]);

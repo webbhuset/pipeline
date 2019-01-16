@@ -30,7 +30,9 @@ Separating Flow and Logic
 -------------------------
 
 Just like when writing normal functions it is preferable to have multiple functions with descriptive
-names instead of one big function that does everything. Compare the following:
+names instead of adding everything into one function that does everything. Additionally this
+promotes separating functions responsible for the flow of data and functions responsible for
+manipulating data.  Compare the following:
 
 Using named functions:
 

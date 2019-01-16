@@ -19,10 +19,10 @@ Parameters
 
         bool callback ( mixed $value )
 
+    .. _converted to bool: http://php.net/manual/en/language.types.boolean.php#language.types.boolean.casting
+
     If no :ref:`callback <callback>` is supplied, all values that equal false (after being
     `converted to bool`_) are removed.
-
-    .. _converted to bool: http://php.net/manual/en/language.types.boolean.php#language.types.boolean.casting
 
     .. _value:
 

@@ -5,10 +5,10 @@ Chunk
 
     Chunk ( int $size )
 
+.. _array_chunk(): http://php.net/manual/en/function.array-chunk.php
+
 Groups all input values into arrays with :ref:`size <size>` values in each array.  The last output
 array may contain less than :ref:`size <size>` values.  This is similar to PHP's `array_chunk()`_.
-
-.. _array_chunk(): http://php.net/manual/en/function.array-chunk.php
 
 
 Parameters
