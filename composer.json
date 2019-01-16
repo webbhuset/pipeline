@@ -1,5 +1,5 @@
 {
-    "name": "webbhuset/whaskell",
+    "name": "webbhuset/pipeline",
     "type": "library",
     "license": "proprietary",
     "description": "A library of data-manipulation functions.",
