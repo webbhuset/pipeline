@@ -19,9 +19,9 @@ composer.json or by running ``composer require webbhuset/pipeline`` in your term
 Building Pipeline Functions
 ---------------------------
 
-The easiest way to construct Pipeline functions is to use the Constructor class.  It has static
-functions for every Pipeline function, allowing you to construct all functions in a concise manner
-with a single use statement.
+The easiest way to construct Pipeline functions is to use the Constructor class. It has a static
+functions for constructing :doc:`every Pipeline function <functions>`, allowing you to construct all
+functions in a concise manner with a single use statement.
 
 .. code-block:: php
 
