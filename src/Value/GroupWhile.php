@@ -16,7 +16,7 @@ class GroupWhile implements FunctionInterface
         $canBeUsed = FunctionSignature::canBeUsedWithArgCount($callback, 2, false);
 
         if ($canBeUsed !== true) {
-            throw new \InvalidArgumentException($canBeUsed . ' e.g. function($value, $batch)');
+            throw new \InvalidArgumentException($canBeUsed . ' e.g. function ($value, $batch)');
         }
 
         $this->callback = $callback;

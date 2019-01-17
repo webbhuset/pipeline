@@ -15,10 +15,10 @@ class Expand implements FunctionInterface
             $canBeUsed = FunctionSignature::canBeUsedWithArgCount($callback, 1, true);
 
             if ($canBeUsed !== true) {
-                throw new \InvalidArgumentException($canBeUsed . ' e.g. function($value)');
+                throw new \InvalidArgumentException($canBeUsed . ' e.g. function ($value)');
             }
         } else {
-            $callback = function($values) {
+            $callback = function ($values) {
                 foreach ($values as $value) {
                     yield $value;
                 }

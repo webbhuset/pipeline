@@ -17,7 +17,7 @@ class Defer implements FunctionInterface
         $canBeUsed = FunctionSignature::canBeUsedWithArgCount($callback, 0, false);
 
         if ($canBeUsed !== true) {
-            throw new \InvalidArgumentException($canBeUsed . ' e.g. function()');
+            throw new \InvalidArgumentException($canBeUsed . ' e.g. function ()');
         }
 
         $this->callback = $callback;

@@ -1,7 +1,7 @@
 <?php
 use Webbhuset\Pipeline\Constructor as F;
 
-$scan = F::Scan(function($value, $carry) {
+$scan = F::Scan(function ($value, $carry) {
     return $carry + $value;
 }, 0);
 

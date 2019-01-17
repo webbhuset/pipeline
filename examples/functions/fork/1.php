@@ -2,10 +2,10 @@
 use Webbhuset\Pipeline\Constructor as F;
 
 $fork = F::Fork([
-    F::Map(function($value) {
+    F::Map(function ($value) {
         return $value * 2;
     }),
-    F::Map(function($value) {
+    F::Map(function ($value) {
         return str_repeat('a', $value);
     }),
 ]);

@@ -16,10 +16,10 @@ class Filter implements FunctionInterface
             $canBeUsed = FunctionSignature::canBeUsedWithArgCount($callback, 1, false);
 
             if ($canBeUsed !== true) {
-                throw new \InvalidArgumentException($canBeUsed . ' e.g. function($value): bool');
+                throw new \InvalidArgumentException($canBeUsed . ' e.g. function ($value): bool');
             }
         } else {
-            $callback = function($value) {
+            $callback = function ($value) {
                 return $value;
             };
         }

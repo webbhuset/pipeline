@@ -2,7 +2,7 @@
 
 use Webbhuset\Pipeline\Constructor as F;
 
-$expand = F::Expand(function($value) {
+$expand = F::Expand(function ($value) {
     foreach ($value['foos'] as $foo) {
         foreach ($value['bars'] as $bar) {
             yield [

@@ -25,7 +25,7 @@ class Multiplex implements FunctionInterface
         $canBeUsed = FunctionSignature::canBeUsedWithArgCount($callback, 1);
 
         if ($canBeUsed !== true) {
-            throw new \InvalidArgumentException($canBeUsed . ' e.g. function($value)');
+            throw new \InvalidArgumentException($canBeUsed . ' e.g. function ($value)');
         }
 
         foreach ($functions as $key => $function) {

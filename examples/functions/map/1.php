@@ -1,7 +1,7 @@
 <?php
 use Webbhuset\Pipeline\Constructor as F;
 
-$map = F::Map(function($value) {
+$map = F::Map(function ($value) {
     return $value * 2;
 });
 

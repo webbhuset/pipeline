@@ -3,10 +3,10 @@
 use Webbhuset\Pipeline\Constructor as F;
 
 $fun = F::Compose([
-    F::GroupWhile(function($value, $batch) {
+    F::GroupWhile(function ($value, $batch) {
         return array_sum($batch) < 10;
     }),
-    F::Filter(function($values) {
+    F::Filter(function ($values) {
         return array_sum($values) >= 10;
     })
 ]);

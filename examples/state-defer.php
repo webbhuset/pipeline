@@ -3,7 +3,7 @@ use Webbhuset\Pipeline\Constructor as F;
 
 $take = F::Take(5);
 
-$takeWithDefer = F::Defer(function() {
+$takeWithDefer = F::Defer(function () {
     return F::Take(5);
 });
 

@@ -17,7 +17,7 @@ final class TakeTest extends \PHPUnit\Framework\TestCase
                 Generator\nat(),
                 Generator\seq(Generator\nat())
             )
-            ->then(function($amount, $input) {
+            ->then(function ($amount, $input) {
                 $fun    = F::Take($amount);
                 $result = iterator_to_array($fun($input));
 
@@ -37,7 +37,7 @@ final class TakeTest extends \PHPUnit\Framework\TestCase
             ->forAll(
                 Generator\neg()
             )
-            ->then(function($amount) {
+            ->then(function ($amount) {
                 try {
                     F::Take($amount);
                 } catch (\InvalidArgumentException $e) {
@@ -56,7 +56,7 @@ final class TakeTest extends \PHPUnit\Framework\TestCase
             ->forAll(
                 Generator\string()
             )
-            ->then(function($amount) {
+            ->then(function ($amount) {
                 try {
                     F::Take($amount);
                 } catch (\InvalidArgumentException $e) {

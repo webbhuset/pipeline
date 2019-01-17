@@ -17,7 +17,7 @@ final class ChunkTest extends \PHPUnit\Framework\TestCase
                 Generator\choose(2, 100),
                 Generator\seq(Generator\nat())
             )
-            ->then(function($size, $input) {
+            ->then(function ($size, $input) {
                 $fun    = F::Chunk($size);
                 $result = iterator_to_array($fun($input));
 

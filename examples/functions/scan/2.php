@@ -2,7 +2,7 @@
 use Webbhuset\Pipeline\Constructor as F;
 
 $function = F::Compose([
-    F::Scan(function($value, $carry) {
+    F::Scan(function ($value, $carry) {
         return $carry . $value;
     }, ''),
     F::Drop(1),

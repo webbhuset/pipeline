@@ -1,7 +1,7 @@
 <?php
 use Webbhuset\Pipeline\Constructor as F;
 
-$filter = F::Filter(function($value) {
+$filter = F::Filter(function ($value) {
     return $value % 2 == 0;
 });
 

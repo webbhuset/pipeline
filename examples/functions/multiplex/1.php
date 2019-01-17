@@ -3,14 +3,14 @@
 use Webbhuset\Pipeline\Constructor as F;
 
 $multiplex = F::Multiplex(
-    function($value) {
+    function ($value) {
         return $value % 2 == 0 ? 'even' : 'odd';
     },
     [
-        'even' => F::Map(function($value) {
+        'even' => F::Map(function ($value) {
             return $value / 2;
         }),
-        'odd' => F::Map(function($value) {
+        'odd' => F::Map(function ($value) {
             return $value * 2;
         }),
     ]

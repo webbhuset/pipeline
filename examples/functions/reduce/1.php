@@ -1,7 +1,7 @@
 <?php
 use Webbhuset\Pipeline\Constructor as F;
 
-$reduce = F::Reduce(function($value, $carry) {
+$reduce = F::Reduce(function ($value, $carry) {
     return $carry + $value;
 }, 0);
 

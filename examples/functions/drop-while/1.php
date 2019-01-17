@@ -1,7 +1,7 @@
 <?php
 use Webbhuset\Pipeline\Constructor as F;
 
-$dropWhile = F::DropWhile(function($value) {
+$dropWhile = F::DropWhile(function ($value) {
     return $value < 7;
 });
 

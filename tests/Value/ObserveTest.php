@@ -12,7 +12,7 @@ final class ObserveTest extends \PHPUnit\Framework\TestCase
 
     public function testObserve()
     {
-        $observe = F::Observe(function($value) {
+        $observe = F::Observe(function ($value) {
             return null;
         });
 
@@ -20,7 +20,7 @@ final class ObserveTest extends \PHPUnit\Framework\TestCase
             ->forAll(
                 Generator\seq(Generator\nat())
             )
-            ->then(function($input) use ($observe) {
+            ->then(function ($input) use ($observe) {
                 $result = iterator_to_array($observe($input));
 
                 $this->assertSame(

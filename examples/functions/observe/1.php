@@ -2,7 +2,7 @@
 
 use Webbhuset\Pipeline\Constructor as F;
 
-$observe = F::Observe(function($value) {
+$observe = F::Observe(function ($value) {
     echo $value . "\n";
 });
 

@@ -15,7 +15,7 @@ class Observe implements FunctionInterface
         $canBeUsed = FunctionSignature::canBeUsedWithArgCount($callback, 1);
 
         if ($canBeUsed !== true) {
-            throw new \InvalidArgumentException($canBeUsed . ' e.g. function($value)');
+            throw new \InvalidArgumentException($canBeUsed . ' e.g. function ($value)');
         }
 
         $this->callback = $callback;

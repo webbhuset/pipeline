@@ -17,7 +17,7 @@ class Scan implements FunctionInterface
         $canBeUsed = FunctionSignature::canBeUsedWithArgCount($callback, 2, false);
 
         if ($canBeUsed !== true) {
-            throw new \InvalidArgumentException($canBeUsed . ' Eg. function($value, $carry)');
+            throw new \InvalidArgumentException($canBeUsed . ' Eg. function ($value, $carry)');
         }
 
         $this->callback     = $callback;

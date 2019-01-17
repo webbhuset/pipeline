@@ -1,7 +1,7 @@
 <?php
 use Webbhuset\Pipeline\Constructor as F;
 
-$takeWhile = F::TakeWhile(function($value) {
+$takeWhile = F::TakeWhile(function ($value) {
     return $value < 7;
 });
 

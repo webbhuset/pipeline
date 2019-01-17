@@ -3,11 +3,11 @@
 use Webbhuset\Pipeline\Constructor as F;
 
 $multiplex = F::Multiplex(
-    function($value) {
+    function ($value) {
         return $value <= 10;
     },
     [
-        true => F::Map(function($value) {
+        true => F::Map(function ($value) {
             return $value * 2;
         }),
         false => [],

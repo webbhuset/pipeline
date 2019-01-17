@@ -1,7 +1,7 @@
 <?php
 use Webbhuset\Pipeline\Constructor as F;
 
-$defer = F::Defer(function() {
+$defer = F::Defer(function () {
     sleep(1); // Sleep to simulate fetching IDs from a database.
     $idMap = [
         'alpha' => 1,
@@ -9,7 +9,7 @@ $defer = F::Defer(function() {
         'gamma' => 3,
     ];
 
-    return F::Map(function($value) use ($idMap) {
+    return F::Map(function ($value) use ($idMap) {
         return $idMap[$value] ?? null;
     });
 });
