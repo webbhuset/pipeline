@@ -56,9 +56,9 @@ class Constructor
         return new Value\Filter($callback);
     }
 
-    public static function Group(callable $callback)
+    public static function GroupWhile(callable $callback)
     {
-        return new Value\Group($callback);
+        return new Value\GroupWhile($callback);
     }
 
     public static function Map(callable $callback)

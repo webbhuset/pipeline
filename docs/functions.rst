@@ -20,7 +20,7 @@ Value Functions
     functions/drop-while
     functions/expand
     functions/filter
-    functions/group
+    functions/group-while
     functions/map
     functions/observe
     functions/reduce
@@ -33,7 +33,7 @@ Value Functions
 * :doc:`/functions/drop-while` - Discard input values while callback returns true.
 * :doc:`/functions/expand` - Yields one or more values from every input value.
 * :doc:`/functions/filter` - Discard input values based on a callback.
-* :doc:`/functions/group` - Group input values based on a callback.
+* :doc:`/functions/group-while` - Group input values based on a callback.
 * :doc:`/functions/map` - Modify every input value with a callback.
 * :doc:`/functions/observe` - Send input values to a callback without modifying them.
 * :doc:`/functions/reduce` - Reduce all input values to a single value.

@@ -43,4 +43,4 @@ Using Chunk to batch database queries.
 See Also
 --------
 
-* :doc:`group` - Group input values based on a callback function.
+* :doc:`group-while` - Group input values based on a callback function.

@@ -62,5 +62,5 @@ attempt to close a non-existent pointer and returning the path when input is emp
 See Also
 --------
 
-* :doc:`group` - Group input values based on a callback function.
+* :doc:`group-while` - Group input values based on a callback function.
 * :doc:`scan` - Reduce input values, returning the intermediate results.

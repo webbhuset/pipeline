@@ -1,9 +1,9 @@
-Group
-=====
+GroupWhile
+==========
 
 .. code-block:: php
 
-    Group ( callable $callback )
+    GroupWhile ( callable $callback )
 
 Groups input values into arrays based on the :ref:`callback <callback>` function.
 
@@ -40,7 +40,7 @@ __________
 
 Basic usage example, grouping repeated values.
 
-.. literalinclude:: /../examples/functions/group/1.php
+.. literalinclude:: /../examples/functions/group-while/1.php
     :language: php
 
 Example #2
@@ -49,7 +49,7 @@ __________
 Group values in groups where the sum of their values is >= 10, and uses :doc:`filter` to filter any
 trailing group.
 
-.. literalinclude:: /../examples/functions/group/2.php
+.. literalinclude:: /../examples/functions/group-while/2.php
     :language: php
 
 

@@ -5,7 +5,7 @@ namespace Webbhuset\Pipeline\Value;
 use Webbhuset\Pipeline\FunctionInterface;
 use Webbhuset\Pipeline\FunctionSignature;
 
-class Group implements FunctionInterface
+class GroupWhile implements FunctionInterface
 {
     protected $callback;
     protected $batch = [];
