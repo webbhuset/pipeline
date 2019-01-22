@@ -12,22 +12,27 @@ final class ObserveTest extends \PHPUnit\Framework\TestCase
 
     public function testObserve()
     {
-        $observe = F::Observe(function ($value) {
-            return null;
-        });
-
-        $this
-            ->forAll(
-                Generator\seq(Generator\nat())
-            )
-            ->then(function ($input) use ($observe) {
-                $result = iterator_to_array($observe($input));
-
-                $this->assertSame(
-                    $input,
-                    $result,
-                    'The result should be exactly the same as the input.'
-                );
+        $this->forAll(
+            Generator\seq(Generator\nat())
+        )
+        ->then(function ($input) {
+            $count = 0;
+            $fun = F::Observe(function ($value) use (&$count) {
+                $count++;
             });
+            $result = iterator_to_array($fun($input));
+
+            $this->assertSame(
+                $input,
+                $result,
+                'The result should be exactly the same as the input.'
+            );
+
+            $this->assertEquals(
+                $count,
+                count($input),
+                'The callback function should be run once per input value.'
+            );
+        });
     }
 }
