@@ -1,7 +1,7 @@
 {
     "name": "webbhuset/pipeline",
     "type": "library",
-    "license": "proprietary",
+    "license": "MIT",
     "description": "A library of data-manipulation functions.",
     "require": {
         "php": "^5.5 || ^7.0"
