@@ -1,33 +1,23 @@
 {
-    "name": "webbhuset/whaskell",
+    "name": "webbhuset/pipeline",
     "type": "library",
     "license": "proprietary",
     "description": "A library of data-manipulation functions.",
     "require": {
-        "php": "^5.5 || ^7.0",
-        "salsify/json-streaming-parser": "^7.0"
+        "php": "^5.5 || ^7.0"
     },
     "require-dev": {
-        "webbhuset/test": "*"
-    },
-    "config": {
-        "secure-http": false,
-        "minimum-stability": "dev"
+        "phpunit/phpunit": "^7",
+        "giorgiosironi/eris": "^0.11"
     },
     "autoload": {
         "psr-4": {
-            "Webbhuset\\Whaskell\\": "src/"
+            "Webbhuset\\Pipeline\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Webbhuset\\Whaskell\\Test\\": "tests/"
+            "Webbhuset\\Pipeline\\Test\\": "tests/"
         }
-    },
-    "repositories": [
-        {
-            "type": "composer",
-            "url": "https://packages-php.webbhuset.com"
-        }
-    ]
+    }
 }

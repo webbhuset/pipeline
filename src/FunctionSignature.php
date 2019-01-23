@@ -1,6 +1,6 @@
 <?php
 
-namespace Webbhuset\Whaskell;
+namespace Webbhuset\Pipeline;
 
 use ReflectionMethod;
 use ReflectionFunction;
@@ -61,5 +61,43 @@ class FunctionSignature
         }
 
         return $reflection;
+    }
+
+    /**
+     * Generates an invalid type error message.
+     *
+     * @param string $name Variable name
+     * @param string $type Expected type
+     * @param mixed $value Given value
+     * @return string
+     */
+    public static function invalidTypeMessage($name, $type, $value)
+    {
+        return sprintf(
+            '%s must be of type %s, but %s was given.',
+            $name,
+            $type,
+            static::getTypeString($value)
+        );
+    }
+
+    /**
+     * Returns the type of a value.
+     *
+     * @param mixed $value
+     * @return string
+     */
+    public static function getTypeString($value)
+    {
+        if (is_null($value)) return 'null';
+        if (is_bool($value)) return 'bool';
+        if (is_int($value)) return 'int';
+        if (is_float($value)) return 'float';
+        if (is_string($value)) return 'string';
+        if (is_array($value)) return 'array';
+        if (is_object($value)) return get_class($value);
+        if (is_resource($value)) return 'resource';
+
+        return 'unknown type';
     }
 }

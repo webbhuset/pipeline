@@ -1,38 +1,37 @@
 <?php
 
-namespace Webbhuset\Whaskell\Flow;
+namespace Webbhuset\Pipeline\Flow;
 
-use Webbhuset\Whaskell\AbstractFunction;
-use Webbhuset\Whaskell\Constructor as F;
-use Webbhuset\Whaskell\FunctionInterface;
-use Webbhuset\Whaskell\FunctionSignature;
-use Webbhuset\Whaskell\Observe\ObserverInterface;
-use Webbhuset\Whaskell\WhaskellException;
+use Webbhuset\Pipeline\Constructor as F;
+use Webbhuset\Pipeline\FunctionInterface;
+use Webbhuset\Pipeline\FunctionSignature;
 
-class Multiplex extends AbstractFunction
+class Multiplex implements FunctionInterface
 {
-    protected $conditionCallback;
+    protected $callback;
     protected $functions;
+
 
     /**
      * Construct.
      *
-     * @param callable $conditionCallback
+     * @param callable $callback
      * @param array $functions
      *
      * @return void
      */
-    public function __construct(callable $conditionCallback, array $functions)
+    public function __construct(callable $callback, array $functions)
     {
-        $canBeUsed = FunctionSignature::canBeUsedWithArgCount($conditionCallback, 1);
+        $canBeUsed = FunctionSignature::canBeUsedWithArgCount($callback, 1);
 
         if ($canBeUsed !== true) {
-            throw new WhaskellException($canBeUsed . ' Eg. function($item)');
+            throw new \InvalidArgumentException($canBeUsed . ' e.g. function ($value)');
         }
 
         foreach ($functions as $key => $function) {
             if ($function === false) {
                 unset($functions[$key]);
+
                 continue;
             }
 
@@ -40,48 +39,40 @@ class Multiplex extends AbstractFunction
                 $function = F::Compose($function);
                 $functions[$key] = $function;
             } elseif (!$function instanceof FunctionInterface) {
-                // TODO: toString on $function
-                $class = get_class($function);
-                throw new WhaskellException("Function {$idx} ({$class}) does not implement FunctionInterface.");
-            }
+                $class = is_object($function) ? get_class($function) : $function;
 
-            // TODO: Validate callable.
+                throw new \InvalidArgumentException("Function {$idx} ({$class}) does not implement FunctionInterface.");
+            }
         }
 
-        $this->conditionCallback    = $conditionCallback;
-        $this->functions            = $functions;
+        $this->callback     = $callback;
+        $this->functions    = $functions;
     }
 
-    protected function invoke($items, $finalize = true)
+    public function __invoke($values, $keepState = false)
     {
-        foreach ($items as $item) {
-            $key = call_user_func($this->conditionCallback, $item);
+        foreach ($values as $value) {
+            $key = call_user_func($this->callback, $value);
 
-            if (isset($this->functions[$key])) {
-                $function   = $this->functions[$key];
-                $results    = $function([$item], false);
-                foreach ($results as $result) {
-                    yield $result;
-                }
-            } else {
-                yield $item;
+            if (!isset($this->functions[$key])) {
+                throw new \OutOfBoundsException("Unknown multiplex function {$key}.");
+            }
+
+            $results = call_user_func($this->functions[$key], [$value], true);
+
+            foreach ($results as $result) {
+                yield $result;
             }
         }
 
-        if ($finalize) {
+        if (!$keepState) {
             foreach ($this->functions as $function) {
-                $results = $function([], true);
+                $results = $function([], false);
+
                 foreach ($results as $result) {
                     yield $result;
                 }
             }
-        }
-    }
-
-    public function registerObserver(ObserverInterface $observer)
-    {
-        foreach ($this->functions as $function) {
-            $function->registerObserver($observer);
         }
     }
 }

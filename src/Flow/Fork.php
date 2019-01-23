@@ -1,59 +1,57 @@
 <?php
 
-namespace Webbhuset\Whaskell\Flow;
+namespace Webbhuset\Pipeline\Flow;
 
-use Webbhuset\Whaskell\AbstractFunction;
-use Webbhuset\Whaskell\FunctionInterface;
-use Webbhuset\Whaskell\Observe\ObserverInterface;
-use Webbhuset\Whaskell\WhaskellException;
+use Webbhuset\Pipeline\Constructor as F;
+use Webbhuset\Pipeline\FunctionInterface;
 
-class Fork extends AbstractFunction
+class Fork implements FunctionInterface
 {
     protected $functions;
+
 
     public function __construct(array $functions)
     {
         foreach ($functions as $idx => $function) {
-            if ($function === false) {
+            if ($function === []) {
                 unset($functions[$idx]);
+
                 continue;
             }
 
-            if (!$function instanceof FunctionInterface) {
-                // TODO: toString on $function
+            if (is_array($function)) {
+                $functions[$idx] = F::Compose($function);
+            } elseif (!$function instanceof FunctionInterface) {
                 $class = is_object($function) ? get_class($function) : $function;
-                throw new WhaskellException("Function {$idx} ({$class}) does not implement FunctionInterface.");
+
+                throw new \InvalidArgumentException("Function {$idx} ({$class}) does not implement FunctionInterface.");
             }
         }
 
         $this->functions = $functions;
     }
 
-    protected function invoke($items, $finalize = true)
+    public function __invoke($values, $keepState = false)
     {
-        foreach ($items as $item) {
+        foreach ($values as $value) {
             foreach ($this->functions as $function) {
-                $results = $function([$item], false);
+
+                $results = $function([$value], true);
+
                 foreach ($results as $res) {
                     yield $res;
                 }
             }
         }
 
-        if ($finalize) {
+        if (!$keepState) {
             foreach ($this->functions as $function) {
-                $results = $function([], true);
+                $results = $function([], false);
+
                 foreach ($results as $res) {
                     yield $res;
                 }
             }
-        }
-    }
-
-    public function registerObserver(ObserverInterface $observer)
-    {
-        foreach ($this->functions as $function) {
-            $function->registerObserver($observer);
         }
     }
 }

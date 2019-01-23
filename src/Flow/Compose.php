@@ -1,67 +1,50 @@
 <?php
 
-namespace Webbhuset\Whaskell\Flow;
+namespace Webbhuset\Pipeline\Flow;
 
-use Webbhuset\Whaskell\AbstractFunction;
-use Webbhuset\Whaskell\Constructor as F;
-use Webbhuset\Whaskell\FunctionInterface;
-use Webbhuset\Whaskell\Observe\ObserverInterface;
-use Webbhuset\Whaskell\WhaskellException;
+use Webbhuset\Pipeline\FunctionInterface;
 
-class Compose extends AbstractFunction
+class Compose implements FunctionInterface
 {
     protected $functions;
 
+
     public function __construct(array $functions)
     {
-        $treeToLeaves = F::TreeToLeaves();
+        $this->functions = $this->flatten($functions);
+    }
 
-        $functions = iterator_to_array($treeToLeaves([$functions]));
-
-        foreach ($functions as $idx => $function) {
-            if ($function === false) {
-                unset($functions[$idx]);
-                continue;
-            }
-
-            if (!$function instanceof FunctionInterface) {
-                // TODO: toString on $function
-                $class = is_object($function) ? get_class($function) : $function;
-                throw new WhaskellException("Function {$idx} ({$class}) does not implement FunctionInterface.");
-            }
+    public function __invoke($values, $keepState = false)
+    {
+        foreach ($this->functions as $function) {
+            $values = $function($values, $keepState);
         }
 
-        $flattenedFunctions = [];
+        return $values;
+    }
+
+    protected function flatten(array $functions): array
+    {
+        $flattened = [];
+
         foreach ($functions as $function) {
-            if ($function instanceof self) {
-                foreach ($function->getFunctions() as $childFunction) {
-                    $flattenedFunctions[] = $childFunction;
-                }
+            if (is_array($function)) {
+                $flattened = array_merge($flattened, $this->flatten($function));
+            } elseif ($function instanceof self) {
+                $flattened = array_merge($flattened, $function->getFunctions());
+            } elseif ($function instanceof FunctionInterface) {
+                $flattened[] = $function;
             } else {
-                $flattenedFunctions[] = $function;
+                $class = is_object($function) ? get_class($function) : $function;
+
+                throw new \InvalidArgumentException("Input function {$class} does not implement FunctionInterface.");
             }
         }
 
-        $this->functions = $flattenedFunctions;
+        return $flattened;
     }
 
-    protected function invoke($items, $finalize = true)
-    {
-        foreach ($this->functions as $function) {
-            $items = $function($items, $finalize);
-        }
-
-        return $items;
-    }
-
-    public function registerObserver(ObserverInterface $observer)
-    {
-        foreach ($this->functions as $function) {
-            $function->registerObserver($observer);
-        }
-    }
-
-    public function getFunctions()
+    protected function getFunctions(): array
     {
         return $this->functions;
     }

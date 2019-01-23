@@ -1,41 +1,37 @@
 <?php
 
-namespace Webbhuset\Whaskell\Flow;
+namespace Webbhuset\Pipeline\Flow;
 
-use Webbhuset\Whaskell\AbstractFunction;
-use Webbhuset\Whaskell\Constructor as F;
-use Webbhuset\Whaskell\FunctionInterface;
-use Webbhuset\Whaskell\WhaskellException;
+use Webbhuset\Pipeline\Constructor as F;
+use Webbhuset\Pipeline\FunctionInterface;
+use Webbhuset\Pipeline\FunctionSignature;
 
-class Defer extends AbstractFunction
+class Defer implements FunctionInterface
 {
     protected $callback;
-    protected $args = [];
     protected $function;
 
-    public function __construct($callback)
+
+    public function __construct(callable $callback)
     {
-        $args = func_get_args();
-        array_shift($args);
+        $canBeUsed = FunctionSignature::canBeUsedWithArgCount($callback, 0, false);
+
+        if ($canBeUsed !== true) {
+            throw new \InvalidArgumentException($canBeUsed . ' e.g. function ()');
+        }
+
         $this->callback = $callback;
-        $this->args = $args;
     }
 
-    protected function invoke($items, $finalize = true)
+    public function __invoke($values, $keepState = false)
     {
         if (!$this->function) {
-            $function = call_user_func_array($this->callback, $this->args);
+            $function = call_user_func($this->callback);
 
             if (is_array($function)) {
                 $function = F::Compose($function);
-            }
-
-            if (!$function instanceof FunctionInterface) {
-                throw new WhaskellException('Function must implement FunctionInterface.');
-            }
-
-            if ($this->observer) {
-                $function->registerObserver($this->observer);
+            } elseif (!$function instanceof FunctionInterface) {
+                throw new \InvalidArgumentException('Function must implement FunctionInterface.');
             }
 
             $this->function = $function;
@@ -43,6 +39,10 @@ class Defer extends AbstractFunction
             $function = $this->function;
         }
 
-        return $function($items, $finalize);
+        if (!$keepState) {
+            $this->function = null;
+        }
+
+        return $function($values, $keepState);
     }
 }
