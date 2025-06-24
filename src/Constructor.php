@@ -46,12 +46,12 @@ class Constructor
         return new Value\DropWhile($callback);
     }
 
-    public static function Expand(callable $callback = null)
+    public static function Expand(?callable $callback = null)
     {
         return new Value\Expand($callback);
     }
 
-    public static function Filter(callable $callback = null)
+    public static function Filter(?callable $callback = null)
     {
         return new Value\Filter($callback);
     }

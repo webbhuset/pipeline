@@ -9,7 +9,7 @@ class Expand implements FunctionInterface
 {
     protected $callback;
 
-    public function __construct(callable $callback = null)
+    public function __construct(?callable $callback = null)
     {
         if ($callback !== null) {
             $canBeUsed = FunctionSignature::canBeUsedWithArgCount($callback, 1, true);
